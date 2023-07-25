@@ -1,27 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "hedsvote";
-
-async function getProposals() {
-  const { getAllProposalsInSpace } = createClient();
-  const proposals = await getAllProposalsInSpace("heds");
-  if (!proposals) {
-    throw new Error("no proposals");
-  }
-  return proposals.data;
-}
-
-async function getAllTapes() {
-  const res = await fetch(
-    "https://us-central1-heds-104d8.cloudfunctions.net/api/tapes"
-  );
-  const data = await res.json();
-  return data;
-}
 
 export default async function Home() {
-  const proposals = await getProposals();
-  const allTapes = await getAllTapes();
   const mockProposals = [
     {
       id: 1,
@@ -57,9 +37,6 @@ export default async function Home() {
     },
   ];
 
-  console.log("proposals", proposals);
-  console.log("allTapes", allTapes);
-
   return (
     <main className="flex min-h-screen flex-col items-center">
       <div className="w-2/3 p-12">
@@ -86,8 +63,8 @@ export default async function Home() {
       </div>
       <div className="flex w-full flex-col items-center bg-zinc-50">
         <div className="w-2/3 p-12">
-          <Link href="/proposals">
-            <p className="text-4xl text-[#2D2934]">ALL PROPOSALS</p>
+          <Link href="/spaces">
+            <p className="text-4xl text-[#2D2934]">SPACES</p>
           </Link>
           <div className="flex flex-row justify-between">
             {mockProposals &&
@@ -97,7 +74,6 @@ export default async function Home() {
                 //     <p>{proposal.title}</p>
                 //   </Link>
                 // </div>
-
                 <div
                   className="mt-8 box-border flex w-56 flex-col items-center justify-between rounded-2xl border-4 border-black p-4"
                   key={proposal.id}>
