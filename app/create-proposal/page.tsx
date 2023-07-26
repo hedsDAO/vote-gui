@@ -1,15 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
 import VerticalStepper from "./VerticalStepper";
 import TapeDetailsForm from "./TapeDetailsForm";
+import OptionsForm from "./OptionsForm";
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
 
+  console.log("acitveStep", activeStep);
+
   return (
     <div className="mx-auto mt-12 w-1/2">
-      <p className="py-8">Create Proposal</p>
+      <Link href={"/"}>
+        <div className="flex flex-row items-center py-2">
+          <svg
+            className="h-5 w-5 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 8 14">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
+            />
+          </svg>
+          <p className="text-sm">Back</p>
+        </div>
+      </Link>
+      <p className="py-2 text-4xl">Create Proposal</p>
       <hr className="mb-12 h-0.5 border-t-0 bg-neutral-100 opacity-100 dark:opacity-50" />
       <div className="flex flex-row">
         <VerticalStepper
@@ -17,6 +41,7 @@ export default function Page() {
           setActiveStep={setActiveStep}
         />
         {activeStep === 0 && <TapeDetailsForm />}
+        {activeStep === 1 && <OptionsForm />}
       </div>
     </div>
   );
