@@ -66,7 +66,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div className="mt-12">
-      <h1 className="mx-auto w-2/3 py-8 text-4xl font-bold">Proposals</h1>
+      <h1 className="mx-auto w-2/3 py-8 text-4xl font-bold">
+        {params.slug} proposals
+      </h1>
       <div className="mx-auto flex w-2/3 flex-wrap justify-between">
         {mockProposals.map((proposal) => (
           <Link href={`/proposals/${proposal.ipfs}`} key={proposal.id}>

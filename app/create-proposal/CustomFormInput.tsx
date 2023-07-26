@@ -7,14 +7,17 @@ interface OwnProps {
   placeholder?: string;
   value: string;
   onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    idx?: number
   ) => void;
+  name?: string;
   inputType?: string;
   formType?: string;
   options?: Array<Record<string, string>>;
 }
 
 const CustomFormInput = ({
+  name,
   label,
   placeholder,
   value,
@@ -32,6 +35,7 @@ const CustomFormInput = ({
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            name={name}
           />
         );
       case "select":
@@ -55,6 +59,7 @@ const CustomFormInput = ({
             value={value}
             onChange={onChange}
             type={inputType}
+            name={name}
           />
         );
     }

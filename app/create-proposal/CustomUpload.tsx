@@ -6,6 +6,7 @@ interface OwnProps {
   label: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   fileName: string;
+  name?: string;
   acceptFileType: string;
 }
 
@@ -13,6 +14,7 @@ const CustomUpload = ({
   label,
   onChange,
   fileName,
+  name,
   acceptFileType,
 }: OwnProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +33,7 @@ const CustomUpload = ({
           onChange={onChange}
           hidden
           ref={inputRef}
+          name={name}
         />
         <button className="w-full cursor-pointer py-4 text-center">
           <svg

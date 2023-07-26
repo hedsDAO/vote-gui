@@ -64,7 +64,7 @@ export default async function Home() {
       <div className="flex w-full flex-col items-center bg-zinc-50">
         <div className="w-2/3 p-12">
           <Link href="/spaces">
-            <p className="text-4xl text-[#2D2934]">SPACES</p>
+            <p className="text-4xl text-[#2D2934]">VIEW ALL SPACES</p>
           </Link>
           <div className="flex flex-row justify-between">
             {mockProposals &&
@@ -97,6 +97,33 @@ export default async function Home() {
       </div>
       <div className="w-2/3 p-12">
         <p className="text-4xl text-white">YOU VOTED ON</p>
+        <div className="flex flex-row justify-between">
+          {mockProposals &&
+            mockProposals.map((proposal) => (
+              // <div className="border-2 rounded-md" key={proposal.ipfs_hash}>
+              //   <Link href={`/proposals/${proposal.ipfs_hash}`}>
+              //     <p>{proposal.title}</p>
+              //   </Link>
+              // </div>
+              <div
+                className="mt-8 box-border flex w-56 flex-col items-center justify-between rounded-2xl border-2 border-white p-4"
+                key={proposal.id}>
+                <div className="fit-content self-start rounded-2xl border-2	border-white px-3 text-center text-white">
+                  {proposal.timeline}
+                </div>
+                <Image
+                  className="rounded-full border-2 border-white"
+                  alt="Proposal cover image"
+                  src={proposal.image}
+                  width={75}
+                  height={75}
+                />
+                <p className="font-mono text-white">{proposal.name}</p>
+                <p className="text-white">CREATED BY</p>
+                <p className="text-white">{proposal.created_by}</p>
+              </div>
+            ))}
+        </div>
       </div>
     </main>
   );
