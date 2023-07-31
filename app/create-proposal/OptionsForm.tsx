@@ -33,6 +33,7 @@ const OptionsForm = () => {
       imageFile: "",
       audioFile: "",
     };
+    console.log("clicked");
 
     setOptions((prev) => [...prev, newField]);
   };
@@ -40,8 +41,8 @@ const OptionsForm = () => {
   console.log("options", options);
 
   return (
-    <div className="ml-auto w-2/3">
-      <form>
+    <div className="w-full">
+      <div className="space-y-5 pl-12">
         {options.map((option, idx) => (
           <div className="flex flex-col" key={idx}>
             <CustomFormInput
@@ -68,10 +69,10 @@ const OptionsForm = () => {
             </div>
           </div>
         ))}
-      </form>
-      <button className="border" onClick={addFields}>
-        +
-      </button>
+        <button className="rounded-lg border px-4" onClick={addFields}>
+          +
+        </button>
+      </div>
     </div>
   );
 };

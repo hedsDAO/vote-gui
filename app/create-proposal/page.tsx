@@ -10,8 +10,6 @@ import OptionsForm from "./OptionsForm";
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
 
-  console.log("acitveStep", activeStep);
-
   return (
     <div className="mx-auto mt-12 w-1/2">
       <Link href={"/"}>
