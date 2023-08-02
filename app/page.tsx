@@ -5,11 +5,19 @@ import Image from "next/image";
 import { Web3Button } from "@web3modal/react";
 
 import { useAccount } from "wagmi";
+import { main } from "./_actions";
+import { useEffect } from "react";
 
 export default function Home() {
   const { isConnected } = useAccount();
 
   console.log("isConnected", isConnected);
+  const testDbLoad = async () => {
+    main()
+  }
+  useEffect(() => {
+    testDbLoad();
+  },[])
 
   const mockProposals = [
     {
