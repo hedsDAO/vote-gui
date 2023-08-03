@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, ChangeEvent } from "react";
+import { useRef, useState, ChangeEvent } from "react";
+import { pinFileToIpfs } from '../_actions';
 
 interface OwnProps {
   label: string;
@@ -17,7 +18,27 @@ const CustomUpload = ({
   name,
   acceptFileType,
 }: OwnProps) => {
+  const [files, setFile] = useState<FileList | null>();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const uploadFile = async () => {
+    const data = new FormData();
+    
+    // Metadata for pinata can be customized as needed
+    const pinataMetadata = {
+      name: "test next upload",
+      keyvalues: {
+        fieldName: name,
+      },
+    };
+  
+    data.append('pinataMetadata', JSON.stringify(pinataMetadata));
+    data.append('file', files ? files[0] : "");
+    const pinnedFile = pinFileToIpfs(data);
+    console.log(pinnedFile);
+  }
+  console.log(files)
+ 
   return (
     <div className="mb-4">
       <label className="mb-2 block font-mono text-sm font-semibold tracking-tight text-gray-200">
@@ -30,7 +51,7 @@ const CustomUpload = ({
           type="file"
           id="upload"
           accept={acceptFileType}
-          onChange={onChange}
+          onChange={(e) => setFile(e.target.files || null)}
           hidden
           ref={inputRef}
           name={name}
@@ -54,6 +75,9 @@ const CustomUpload = ({
           {fileName ? fileName : "no file selected"}
         </p>
       </div>
+      <button type="submit" onClick={uploadFile}>
+          upload file
+        </button>
     </div>
   );
 };

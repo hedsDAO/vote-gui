@@ -5,11 +5,21 @@ import Image from "next/image";
 import { Web3Button } from "@web3modal/react";
 
 import { useAccount } from "wagmi";
+import { getuserData } from "./_actions";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const [userData, setUserData] = useState();
 
   console.log("isConnected", isConnected);
+  console.log("user data", userData);
+  useEffect(() => {
+    if (!address) return;
+    getuserData(address).then((result) => {
+      setUserData(result);
+    })
+  },[address])
 
   const mockProposals = [
     {
