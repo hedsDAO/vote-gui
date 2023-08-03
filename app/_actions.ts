@@ -15,11 +15,16 @@ export const pinFileToIpfs = async (formData: any) => {
 
 const prisma = new PrismaClient()
 
-export async function main() {
+export async function getuserData(user: `0x${string}`) {
   try {
-  const allUsers = await prisma.users.findMany()
-  console.log(allUsers)
-  await prisma.$disconnect()
+  const userProfileData = await prisma.users.findUnique({
+    where: {
+      wallet: user.toLowerCase(),
+    }
+  });
+  console.log(userProfileData)
+  await prisma.$disconnect();
+  return userProfileData;
   } catch(e) {
     console.error(e)
     await prisma.$disconnect()
