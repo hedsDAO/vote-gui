@@ -30,9 +30,11 @@ export default function Page() {
       </Link>
       <div className="flex flex-row items-center justify-between py-2">
         <h1 className="text-4xl font-bold">Spaces</h1>
-        <button className="rounded-xl border border-white p-3 text-sm">
-          CREATE A SPACE
-        </button>
+        <Link href={"/spaces/create-space"}>
+          <button className="rounded-xl border border-white p-3 text-sm">
+            CREATE A SPACE
+          </button>
+        </Link>
       </div>
       <div className="flex flex-wrap justify-between">
         {spaces.map((space) => (
