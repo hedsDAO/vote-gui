@@ -10,18 +10,23 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.0.10",
+    "@prisma/client": "^5.1.1",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "@web3modal/ethereum": "^2.7.1",
     "@web3modal/react": "^2.7.1",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "connectkit": "^1.5.0",
+    "encoding": "^0.1.13",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "ethers": "^6.6.5",
     "hedsvote": "^0.1.85",
+    "lokijs": "^1.5.12",
     "next": "13.4.9",
+    "pino-pretty": "^10.2.0",
     "postcss": "8.4.25",
     "react": "18.2.0",
     "react-datepicker": "^4.16.0",
@@ -36,6 +41,6 @@
     "@types/react-datepicker": "^4.15.0",
     "prettier": "2.8",
     "prettier-plugin-tailwindcss": "^0.4.1",
-    "prisma": "^5.0.0"
+    "prisma": "^5.1.1"
   }
 }
