@@ -6,6 +6,7 @@ import Link from "next/link";
 import VerticalStepper from "./VerticalStepper";
 import TapeDetailsForm from "./TapeDetailsForm";
 import OptionsForm from "./OptionsForm";
+import TimelineForm from "./TimelineForm";
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -40,6 +41,7 @@ export default function Page() {
         />
         {activeStep === 0 && <TapeDetailsForm />}
         {activeStep === 1 && <OptionsForm />}
+        {activeStep === 2 && <TimelineForm />}
       </div>
     </div>
   );

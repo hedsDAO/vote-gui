@@ -9,8 +9,6 @@ import { useAccount } from "wagmi";
 export default function Home() {
   const { isConnected } = useAccount();
 
-  console.log("isConnected", isConnected);
-
   const mockProposals = [
     {
       id: 1,
@@ -48,8 +46,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center">
-      <Web3Button />
       <div className="w-2/3 p-12">
+        <Web3Button />
         <div className="flex flex-row items-center justify-between">
           <p className="text-8xl font-bold">VOTING FOR</p>
           <Link href="/create-proposal">
