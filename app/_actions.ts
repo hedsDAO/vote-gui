@@ -22,7 +22,6 @@ export async function getuserData(user: `0x${string}`) {
       wallet: user.toLowerCase(),
     }
   });
-  console.log(userProfileData)
   await prisma.$disconnect();
   return userProfileData;
   } catch(e) {
