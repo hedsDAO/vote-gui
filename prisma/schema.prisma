@@ -134,7 +134,7 @@ model users {
   description         String?               @db.VarChar
   display_name        String?               @db.VarChar
   role                user_role_type?
-  wallet              String?               @db.VarChar
+  wallet              String               @db.VarChar @unique
   joined              Float?
   spotlight           String?               @db.VarChar
   collection          Json?
