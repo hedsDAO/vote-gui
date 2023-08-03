@@ -1,5 +1,6 @@
 import { createClient } from "hedsvote";
 import Image from "next/image";
+import { getTapeByProposalId } from "../../utils/prismaUtils";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -10,19 +11,25 @@ async function getProposal(id: string) {
   return proposal.data;
 }
 
-async function getTapeById(id: string) {
-  const res = await fetch(
-    `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
-  );
-  const data = await res.json();
-  return data;
-}
+// async function getTapeById(id: string) {
+//   const res = await fetch(
+//     `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
+//   );
+//   const data = await res.json();
+//   return data;
+// }
 
 export default async function Page({ params }: { params: { id: string } }) {
   // const proposal = await getProposal(params.id);
-  const proposal = await getProposal(
+  const proposalResult = await getProposal(
     "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
   );
+  
+  const tapeDataResult = getTapeByProposalId("bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e");
+
+  //Load proposal and tapeData in parallel
+ const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
+
 
   const scores = proposal.scores || [];
 
@@ -59,13 +66,14 @@ export default async function Page({ params }: { params: { id: string } }) {
                   className="m-0.5 flex w-64 flex-row rounded-lg border border-white"
                   key={choice.id}>
                   <div className="flex items-center p-2">
-                    <Image
+                    {choice.image && <Image
                       alt="Choice cover image"
                       className="rounded-md"
                       src={choice.image}
                       width={75}
                       height={75}
-                    />
+                      />
+                    }
                   </div>
                   <div className="w-full py-2 pl-2 pr-4">
                     <p className="text-xs">{choice.name}</p>

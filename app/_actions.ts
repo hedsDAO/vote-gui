@@ -1,7 +1,7 @@
 'use server'
 
 import axios from "axios";
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 export const pinFileToIpfs = async (formData: any) => {
     return await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
