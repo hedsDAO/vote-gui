@@ -1,9 +1,12 @@
 "use client";
-import { useRef, useState } from "react";
+import { ProposalContext } from "@/context/proposal.context";
+import { useRef, useState, useContext } from "react";
 import Image from "next/image";
 import { Choice } from "hedsvote";
 
 export default function OptionCard({ choice }: { choice: Choice }) {
+  const { state, dispatch } = useContext(ProposalContext);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -14,6 +17,14 @@ export default function OptionCard({ choice }: { choice: Choice }) {
     } else {
       audioRef.current?.play();
       setIsPlaying(true);
+    }
+  };
+
+  const handleClick = (id: number) => {
+    if (state.likes[id]) {
+      dispatch({ type: "REMOVE_LIKE", payload: id });
+    } else {
+      dispatch({ type: "ADD_LIKE", payload: id });
     }
   };
 
@@ -59,9 +70,10 @@ export default function OptionCard({ choice }: { choice: Choice }) {
           xmlns="http://www.w3.org/2000/svg"
           width="32"
           height="32"
-          fill="gray"
+          fill={state.likes[choice.id] ? "#EF4444" : "#FFFFFF"}
           viewBox="0 0 256 256"
-          className="hover:cursor-pointer hover:fill-red-600">
+          className="hover:cursor-pointer hover:fill-red-600"
+          onClick={() => handleClick(choice.id)}>
           <path d="M240,94c0,70-103.79,126.66-108.21,129a8,8,0,0,1-7.58,0C119.79,220.66,16,164,16,94A62.07,62.07,0,0,1,78,32c20.65,0,38.73,8.88,50,23.89C139.27,40.88,157.35,32,178,32A62.07,62.07,0,0,1,240,94Z"></path>
         </svg>
         <audio ref={audioRef} src={choice.media} />
