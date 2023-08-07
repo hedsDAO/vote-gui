@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState, ChangeEvent } from "react";
+import { useContext, useRef, useState, ChangeEvent } from "react";
 import { pinFileToIpfs } from '../_actions';
+import { CreateProposalContext } from "@/context/createProposal.context";
 
 interface OwnProps {
   label: string;
@@ -18,6 +19,7 @@ const CustomUpload = ({
   name,
   acceptFileType,
 }: OwnProps) => {
+  const { state, dispatch } = useContext(CreateProposalContext);
   const [files, setFile] = useState<FileList | null>();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,8 +39,13 @@ const CustomUpload = ({
     // const pinnedFile = pinFileToIpfs(data);
     // console.log(pinnedFile);
   }
-  console.log(files)
- 
+
+  const handleFileDispatch = (e: ChangeEvent<HTMLInputElement>, type: string) => {
+    if (!e.target.files) return;
+    dispatch({ type, payload: e.target.files[0]})
+  }
+  console.log("state", state.files)
+
   return (
     <div className="mb-4">
       <label className="mb-2 block font-mono text-sm font-semibold tracking-tight text-gray-200">
@@ -51,7 +58,7 @@ const CustomUpload = ({
           type="file"
           id="upload"
           accept={acceptFileType}
-          onChange={(e) => setFile(e.target.files || null)}
+          onChange={(e) => handleFileDispatch(e, "ADD_FILE")}
           hidden
           ref={inputRef}
           name={name}
