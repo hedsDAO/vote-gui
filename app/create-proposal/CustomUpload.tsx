@@ -14,31 +14,29 @@ interface OwnProps {
 
 const CustomUpload = ({
   label,
-  onChange,
   fileName,
   name,
   acceptFileType,
 }: OwnProps) => {
   const { state, dispatch } = useContext(CreateProposalContext);
-  const [files, setFile] = useState<FileList | null>();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const uploadFile = async () => {
-    const data = new FormData();
+  // const uploadFile = async () => {
+  //   const data = new FormData();
     
-    // Metadata for pinata can be customized as needed
-    const pinataMetadata = {
-      name: "test next upload",
-      keyvalues: {
-        fieldName: name,
-      },
-    };
+  //   // Metadata for pinata can be customized as needed
+  //   const pinataMetadata = {
+  //     name: "test next upload",
+  //     keyvalues: {
+  //       fieldName: name,
+  //     },
+  //   };
   
-    data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-    data.append('file', files ? files[0] : "");
-    // const pinnedFile = pinFileToIpfs(data);
-    // console.log(pinnedFile);
-  }
+  //   data.append('pinataMetadata', JSON.stringify(pinataMetadata));
+  //   data.append('file', files ? files[0] : "");
+  //   // const pinnedFile = pinFileToIpfs(data);
+  //   // console.log(pinnedFile);
+  // }
 
   const handleFileDispatch = (e: ChangeEvent<HTMLInputElement>, type: string) => {
     if (!e.target.files) return;
@@ -82,9 +80,6 @@ const CustomUpload = ({
           {fileName ? fileName : "no file selected"}
         </p>
       </div>
-      <button type="submit" onClick={uploadFile}>
-          upload file
-        </button>
     </div>
   );
 };
