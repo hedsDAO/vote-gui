@@ -33,11 +33,13 @@ const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
       <div>
         <button
           className="m-2 bg-red-500 p-2 text-white"
+          disabled={activeStep - 1 < 0}
           onClick={() => setActiveStep((prev) => prev - 1)}>
           Prev
         </button>
         <button
           className="m-2 bg-green-500 p-2 text-white"
+          // disabled={activeStep + 1 > 1}
           onClick={() => setActiveStep((prev) => prev + 1)}>
           Next
         </button>

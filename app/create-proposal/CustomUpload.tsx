@@ -34,8 +34,8 @@ const CustomUpload = ({
   
     data.append('pinataMetadata', JSON.stringify(pinataMetadata));
     data.append('file', files ? files[0] : "");
-    const pinnedFile = pinFileToIpfs(data);
-    console.log(pinnedFile);
+    // const pinnedFile = pinFileToIpfs(data);
+    // console.log(pinnedFile);
   }
   console.log(files)
  
