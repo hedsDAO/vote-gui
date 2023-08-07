@@ -2,6 +2,7 @@ import { createClient } from "hedsvote";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import OptionCard from "./OptionCard";
+import LikedSubmissions from "./LikedSubmissions";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -111,8 +112,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               ))}
           </div>
         </div>
-        <div className="mx-auto h-full w-1/4 border">
-          <p>wallet</p>
+        <div className="mx-auto h-full w-1/4">
+          <LikedSubmissions />
         </div>
       </div>
     </div>
