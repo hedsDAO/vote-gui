@@ -65,22 +65,31 @@ export default async function Page({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="h-screen bg-zinc-50 p-12 text-[#2D2934]">
-      <Link href={"/spaces"}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          fill="#2D2934"
-          viewBox="0 0 256 256"
-          className="inline-block">
-          <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
-        </svg>
-        <p className="inline-block">SPACE</p>
-      </Link>
-
-      <div className="mx-auto flex w-3/4 flex-col py-12">
-        <h1 className="text-4xl">{params.slug}</h1>
+    <div className="h-screen bg-zinc-50 text-[#2D2934]">
+      <div className="h-44 border bg-red-500"></div>
+      <div className="mx-auto flex w-3/4 flex-col gap-y-6 p-12">
+        <Link href={"/spaces"}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="#2D2934"
+            viewBox="0 0 256 256"
+            className="inline-block">
+            <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+          </svg>
+          <p className="inline-block">SPACE</p>
+        </Link>
+        <div className="absolute right-64 top-32">
+          <Image
+            className="rounded-full border-4 border-blue-400"
+            src="https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT"
+            alt="Picture of the author"
+            width={200}
+            height={200}
+          />
+        </div>
+        <h1 className="text-6xl">{params.slug}</h1>
         <p className="w-2/3 text-sm font-light tracking-widest">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -90,8 +99,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-        <div className="flex flex-row justify-between">
-          <h1 className="text-4xl">PROPOSALS</h1>
+        <h1 className="text-md">SOCIALS</h1>
+        <div className="mt-12 flex flex-row justify-between">
+          <h1 className="text-4xl font-semibold">PROPOSALS</h1>
           <p>+ create</p>
         </div>
         <div className="flex flex-wrap justify-between">
