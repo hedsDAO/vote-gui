@@ -1,38 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { CreateProposalContext } from "@/context/createProposal.context";
 import CustomUpload from "./CustomUpload";
 import CustomFormInput from "./CustomFormInput";
 import NextStepButton from "./NextStepButton";
 
-const TapeDetailsForm = () => {
-  const [fileName, setFileName] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [bpm, setBpm] = useState<string>("");
-  const [tapeType, setTapeType] = useState<string>("hedstape");
+interface OwnProps {
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
+  const { state, dispatch } = useContext(CreateProposalContext);
+  const {title, description} = state.tapeDetails;
+  const [newTitle, setTitle] = useState<string>(title || "");
+  const [newDescription, setDescription] = useState<string>(description || "");
+  const [newFiles, setFiles] = useState<File[]>(state.files || []);
+  const fileName = state.files && state.files.length > 0 ? state.files[0].name : "";
 
   const handleClick = () => {
-    // dispatch.adminModel.setTapeDetails({ name, description, bpm: Number(bpm), type_type: tapeType });
-    // goToNext();
-    console.log("fileName", fileName);
-    console.log("name", name);
-    console.log("description", description);
-    console.log("bpm", bpm);
-    console.log("tapeType", tapeType);
+    if (newTitle !== title || newDescription !== description) {
+      dispatch({ type: "SET_DETAILS", payload: { title: newTitle, description: newDescription } });
+    }
+    console.log(state);
+    setActiveStep(1);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // dispatch.adminModel.uploadCoverImage(e.target.files[0]);
-    // setFileName(e.target.files[0].name);
-    console.log("fileChange", e);
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      if (state.files.length > 0) {
+        dispatch({ type: "REMOVE_FILE", payload: state.files[0] });
+      }
+      dispatch({ type: "ADD_FILE", payload: selectedFile });
+      setFiles([selectedFile]);
+    }
   };
+  
 
   const formValidation = () => {
-    // if (!fileName || !name || !description || !bpm || !tapeType) {
-    //   return true;
-    // }
+    if ( !newTitle || !newDescription || !newFiles.length) {
+      return true;
+    }
     return false;
   };
 
@@ -41,30 +51,24 @@ const TapeDetailsForm = () => {
       <div className="space-y-5 pl-12">
         <CustomUpload
           label="Upload Cover"
-          onChange={handleFileChange}
-          fileName={fileName}
           acceptFileType="image/*"
+          existingFileName={fileName}
+          onFileChange={handleFileChange}
         />
         <CustomFormInput
           label="Title"
           placeholder="what's the title?"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={newTitle}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <CustomFormInput
           label="Description"
           placeholder="write a description..."
-          value={description}
+          value={newDescription}
           onChange={(e) => setDescription(e.target.value)}
           formType="textarea"
         />
-        <CustomFormInput
-          label="BPM"
-          placeholder="tempo?"
-          value={bpm}
-          onChange={(e) => setBpm(e.target.value)}
-        />
-        <CustomFormInput
+        {/* <CustomFormInput
           label="Type of Tape"
           value={tapeType}
           onChange={(e) => setTapeType(e.target.value)}
@@ -73,7 +77,7 @@ const TapeDetailsForm = () => {
             { value: "hedstape", label: "hedsTAPE" },
             { value: "collabtape", label: "collabTAPE" },
           ]}
-        />
+        /> */}
         <div className="mt-12 flex justify-end">
           <NextStepButton
             onClick={handleClick}

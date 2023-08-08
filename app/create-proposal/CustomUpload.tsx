@@ -1,25 +1,33 @@
 "use client";
 
-import { useContext, useRef, useState, ChangeEvent } from "react";
+import { useContext, useRef, useState, ChangeEvent, useEffect } from "react";
 import { pinFileToIpfs } from '../_actions';
 import { CreateProposalContext } from "@/context/createProposal.context";
 
 interface OwnProps {
   label: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  fileName: string;
   name?: string;
   acceptFileType: string;
+  existingFileName?: string;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CustomUpload = ({
   label,
-  fileName,
   name,
   acceptFileType,
+  existingFileName = "",
+  onFileChange
 }: OwnProps) => {
-  const { state, dispatch } = useContext(CreateProposalContext);
+  const [fileName, setFileName] = useState(existingFileName);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileName(e.target.files[0].name); // Set the local fileName state
+      onFileChange(e); // Call the passed-in handler
+    }
+  };
 
   // const uploadFile = async () => {
   //   const data = new FormData();
@@ -37,13 +45,6 @@ const CustomUpload = ({
   //   // const pinnedFile = pinFileToIpfs(data);
   //   // console.log(pinnedFile);
   // }
-
-  const handleFileDispatch = (e: ChangeEvent<HTMLInputElement>, type: string) => {
-    if (!e.target.files) return;
-    dispatch({ type, payload: e.target.files[0]})
-  }
-  console.log("state", state.files)
-
   return (
     <div className="mb-4">
       <label className="mb-2 block font-mono text-sm font-semibold tracking-tight text-gray-200">
@@ -56,7 +57,7 @@ const CustomUpload = ({
           type="file"
           id="upload"
           accept={acceptFileType}
-          onChange={(e) => handleFileDispatch(e, "ADD_FILE")}
+          onChange={handleFileChange}
           hidden
           ref={inputRef}
           name={name}
@@ -77,7 +78,7 @@ const CustomUpload = ({
           </svg>
         </button>
         <p className="mt-4 w-full overflow-hidden overflow-ellipsis text-sm text-gray-400">
-          {fileName ? fileName : "no file selected"}
+          {fileName ? fileName: "no file selected"}
         </p>
       </div>
     </div>

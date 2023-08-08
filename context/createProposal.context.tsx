@@ -2,17 +2,28 @@
 
 import React, { Dispatch, createContext, useReducer } from "react";
 
-type StateType = {
-  files: File[];
+interface TapeDetails {
+  title: string;
+  description: string;
 };
 
-type ActionType = {
-  type: string;
-  payload: File;
+interface StateType {
+  files: File[];
+  tapeDetails: TapeDetails;
 };
+
+type ActionType =
+  | { type: 'ADD_FILE'; payload: File }
+  | { type: 'REMOVE_FILE'; payload: File }
+  | { type: 'CLEAR_FILES' }
+  | { type: 'SET_DETAILS'; payload: TapeDetails };
 
 const initialState: StateType = {
   files: [],
+  tapeDetails: {
+    title: "",
+    description: ""
+  }
 };
 
 const reducer = (state: StateType, action: ActionType) => {
@@ -38,6 +49,13 @@ const reducer = (state: StateType, action: ActionType) => {
         ...state,
         files: []
       };
+    case "SET_DETAILS":
+      return {
+        ...state,
+        tapeDetails: {
+          ...action.payload
+        }
+      }
     default:
       return state;
   }
