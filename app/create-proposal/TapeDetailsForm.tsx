@@ -16,8 +16,8 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
   const {title, description} = state.tapeDetails;
   const [newTitle, setTitle] = useState<string>(title || "");
   const [newDescription, setDescription] = useState<string>(description || "");
-  const [newFiles, setFiles] = useState<File[]>(state.files || []);
-  const fileName = state.files && state.files.length > 0 ? state.files[0].name : "";
+  const [newFile, setFile] = useState<File>(state.coverFile || new File([],""));
+  const fileName = state.coverFile ? state.coverFile.name : "";
 
   const handleClick = () => {
     if (newTitle !== title || newDescription !== description) {
@@ -30,17 +30,14 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
-      if (state.files.length > 0) {
-        dispatch({ type: "REMOVE_FILE", payload: state.files[0] });
-      }
-      dispatch({ type: "ADD_FILE", payload: selectedFile });
-      setFiles([selectedFile]);
+      dispatch({ type: "ADD_COVER_FILE", payload: selectedFile });
+      setFile(selectedFile);
     }
   };
   
 
   const formValidation = () => {
-    if ( !newTitle || !newDescription || !newFiles.length) {
+    if ( !newTitle || !newDescription || !newFile) {
       return true;
     }
     return false;

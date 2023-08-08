@@ -8,18 +8,21 @@ interface TapeDetails {
 };
 
 interface StateType {
-  files: File[];
+  coverFile: File;
+  choiceFiles: File[];
   tapeDetails: TapeDetails;
 };
 
 type ActionType =
-  | { type: 'ADD_FILE'; payload: File }
-  | { type: 'REMOVE_FILE'; payload: File }
+  | { type: 'ADD_COVER_FILE'; payload: File }
+  | { type: 'ADD_CHOICE_FILE'; payload: File }
+  | { type: 'REMOVE_CHOICE_FILE'; payload: File }
   | { type: 'CLEAR_FILES' }
   | { type: 'SET_DETAILS'; payload: TapeDetails };
 
 const initialState: StateType = {
-  files: [],
+  coverFile: new File([],""),
+  choiceFiles: [],
   tapeDetails: {
     title: "",
     description: ""
@@ -28,26 +31,31 @@ const initialState: StateType = {
 
 const reducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
-    case "ADD_FILE":
+    case "ADD_COVER_FILE":
       return {
         ...state,
-        files: [...state.files, action.payload]
+        coverFile: action.payload
        };
-    case "REMOVE_FILE":
-      const fileToDelete = state.files.findIndex(file => file === action.payload);
+    case "ADD_CHOICE_FILE":
+      return {
+        ...state,
+        choiceFiles: [...state.choiceFiles, action.payload]
+      };
+    case "REMOVE_CHOICE_FILE":
+      const fileToDelete = state.choiceFiles.findIndex(file => file === action.payload);
       if (fileToDelete >= 0) {
-        const newFiles = [...state.files];
+        const newFiles = [...state.choiceFiles];
         newFiles.splice(fileToDelete, 1);
         return {
           ...state,
-          files: newFiles,
+          choiceFiles: newFiles,
         };
       }
       return state; 
     case "CLEAR_FILES":
       return {
         ...state,
-        files: []
+        choiceFiles: []
       };
     case "SET_DETAILS":
       return {
