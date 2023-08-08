@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useRef, useState, ChangeEvent, useEffect } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { pinFileToIpfs } from '../_actions';
 import { CreateProposalContext } from "@/context/createProposal.context";
 
@@ -10,6 +10,7 @@ interface OwnProps {
   acceptFileType: string;
   existingFileName?: string;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputRef?: (instance: HTMLInputElement | null) => void;
 }
 
 const CustomUpload = ({
@@ -17,10 +18,21 @@ const CustomUpload = ({
   name,
   acceptFileType,
   existingFileName = "",
-  onFileChange
+  onFileChange,
+  inputRef
 }: OwnProps) => {
   const [fileName, setFileName] = useState(existingFileName);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const localInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef(localInputRef.current);
+    }
+  }, [inputRef]);
+
+  useEffect(() => {
+    setFileName(existingFileName);
+  }, [existingFileName]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -52,14 +64,14 @@ const CustomUpload = ({
       </label>
       <div
         className="flex h-48 w-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-4 text-center"
-        onClick={() => inputRef.current?.click()}>
+        onClick={() => localInputRef.current?.click()}>
         <input
           type="file"
           id="upload"
           accept={acceptFileType}
           onChange={handleFileChange}
           hidden
-          ref={inputRef}
+          ref={localInputRef}
           name={name}
         />
         <button className="w-full cursor-pointer py-4 text-center">
