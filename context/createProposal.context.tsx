@@ -17,13 +17,17 @@ interface StateType {
   coverFile: File | null;
   choiceOptions: ChoiceOption[];
   tapeDetails: TapeDetails;
+  voteStart: Date;
+  voteDuration: string;
 };
 
 type ActionType =
   | { type: 'ADD_COVER_FILE'; payload: File }
   | { type: 'ADD_OPTION'; payload: ChoiceOption }
   | { type: 'UPDATE_OPTION'; payload: { idx: number, option: ChoiceOption } }
-  | { type: 'SET_DETAILS'; payload: TapeDetails };
+  | { type: 'SET_DETAILS'; payload: TapeDetails }
+  | { type: 'SET_VOTE_START'; payload: Date }
+  | { type: 'SET_VOTE_DURATION'; payload: string };
 
 const initialState: StateType = {
   coverFile: null,
@@ -35,7 +39,9 @@ const initialState: StateType = {
   tapeDetails: {
     title: "",
     description: ""
-  }
+  },
+  voteStart: new Date(),
+  voteDuration: "86400000",
 };
 
 const reducer = (state: StateType, action: ActionType) => {
@@ -63,7 +69,11 @@ const reducer = (state: StateType, action: ActionType) => {
         tapeDetails: {
           ...action.payload
         }
-      }
+      };
+    case "SET_VOTE_START":
+      return { ...state, voteStart: action.payload };
+    case "SET_VOTE_DURATION":
+      return { ...state, voteDuration: action.payload };
     default:
       return state;
   }

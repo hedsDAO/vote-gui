@@ -41,7 +41,7 @@ export default function Page() {
         />
         {activeStep === 0 && <TapeDetailsForm setActiveStep={setActiveStep}/>}
         {activeStep === 1 && <OptionsForm setActiveStep={setActiveStep}/>}
-        {activeStep === 2 && <TimelineForm />}
+        {activeStep === 2 && <TimelineForm setActiveStep={setActiveStep}/>}
       </div>
     </div>
   );
