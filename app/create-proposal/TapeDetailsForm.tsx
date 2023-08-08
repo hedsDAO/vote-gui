@@ -16,7 +16,7 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
   const {title, description} = state.tapeDetails;
   const [newTitle, setTitle] = useState<string>(title || "");
   const [newDescription, setDescription] = useState<string>(description || "");
-  const [newFile, setFile] = useState<File>(state.coverFile || new File([],""));
+  const [newFile, setFile] = useState<File| null>(state.coverFile || null);
   const fileName = state.coverFile ? state.coverFile.name : "";
 
   const handleClick = () => {
