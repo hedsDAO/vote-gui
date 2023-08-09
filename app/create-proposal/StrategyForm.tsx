@@ -77,10 +77,6 @@ const StrategyForm = ({ setActiveStep }: OwnProps) => {
         return;
       };
       
-      
-      
-      console.log(strategies)
-
     const isValidAddress = (address: string) => {
         return /^0x[a-fA-F0-9]{40}$/.test(address);
       };
