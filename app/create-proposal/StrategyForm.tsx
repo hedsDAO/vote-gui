@@ -18,6 +18,7 @@ interface WhitelistEntry {
     weight: number;
 }
 
+//Need to fix bug were duplicate things are rendered if a user leaves form, comes back and then resubmits
 const StrategyForm = ({ setActiveStep }: OwnProps) => {
     const { state, dispatch } = useContext(CreateProposalContext);
     const initialStrategies = state.strategy || [];
