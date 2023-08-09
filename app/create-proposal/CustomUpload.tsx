@@ -1,44 +1,62 @@
 "use client";
 
-import { useRef, useState, ChangeEvent } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { pinFileToIpfs } from '../_actions';
+import { CreateProposalContext } from "@/context/createProposal.context";
 
 interface OwnProps {
   label: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  fileName: string;
   name?: string;
   acceptFileType: string;
+  existingFileName?: string;
+  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputRef?: (instance: HTMLInputElement | null) => void;
 }
 
 const CustomUpload = ({
   label,
-  onChange,
-  fileName,
   name,
   acceptFileType,
+  existingFileName = "",
+  onFileChange,
+  inputRef
 }: OwnProps) => {
-  const [files, setFile] = useState<FileList | null>();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState(existingFileName);
+  const localInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadFile = async () => {
-    const data = new FormData();
+  useEffect(() => {
+    if (inputRef) {
+      inputRef(localInputRef.current);
+    }
+  }, [inputRef]);
+
+  useEffect(() => {
+    setFileName(existingFileName);
+  }, [existingFileName]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileName(e.target.files[0].name); // Set the local fileName state
+      onFileChange(e); // Call the passed-in handler
+    }
+  };
+
+  // const uploadFile = async () => {
+  //   const data = new FormData();
     
-    // Metadata for pinata can be customized as needed
-    const pinataMetadata = {
-      name: "test next upload",
-      keyvalues: {
-        fieldName: name,
-      },
-    };
+  //   // Metadata for pinata can be customized as needed
+  //   const pinataMetadata = {
+  //     name: "test next upload",
+  //     keyvalues: {
+  //       fieldName: name,
+  //     },
+  //   };
   
-    data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-    data.append('file', files ? files[0] : "");
-    const pinnedFile = pinFileToIpfs(data);
-    console.log(pinnedFile);
-  }
-  console.log(files)
- 
+  //   data.append('pinataMetadata', JSON.stringify(pinataMetadata));
+  //   data.append('file', files ? files[0] : "");
+  //   // const pinnedFile = pinFileToIpfs(data);
+  //   // console.log(pinnedFile);
+  // }
   return (
     <div className="mb-4">
       <label className="mb-2 block font-mono text-sm font-semibold tracking-tight text-gray-200">
@@ -46,14 +64,14 @@ const CustomUpload = ({
       </label>
       <div
         className="flex h-48 w-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-4 text-center"
-        onClick={() => inputRef.current?.click()}>
+        onClick={() => localInputRef.current?.click()}>
         <input
           type="file"
           id="upload"
           accept={acceptFileType}
-          onChange={(e) => setFile(e.target.files || null)}
+          onChange={handleFileChange}
           hidden
-          ref={inputRef}
+          ref={localInputRef}
           name={name}
         />
         <button className="w-full cursor-pointer py-4 text-center">
@@ -72,12 +90,9 @@ const CustomUpload = ({
           </svg>
         </button>
         <p className="mt-4 w-full overflow-hidden overflow-ellipsis text-sm text-gray-400">
-          {fileName ? fileName : "no file selected"}
+          {fileName ? fileName: "no file selected"}
         </p>
       </div>
-      <button type="submit" onClick={uploadFile}>
-          upload file
-        </button>
     </div>
   );
 };
