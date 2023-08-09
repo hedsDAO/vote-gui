@@ -3,8 +3,20 @@
 import axios from "axios";
 import { PrismaClient } from '@prisma/client';
 
-export const pinFileToIpfs = async (formData: any) => {
-    return await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+export const pinFileToIpfs = async (file: File, name: string) => {
+  const data = new FormData();
+    
+    // Metadata for pinata can be customized as needed
+    const pinataMetadata = {
+      name: name,
+      keyvalues: {
+        fieldName: name,
+      },
+    };
+  
+    data.append('pinataMetadata', JSON.stringify(pinataMetadata));
+    data.append('file', file);
+    return await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
         maxBodyLength: Infinity,
         headers: {
           pinata_api_key: process.env.PINATA_API_KEY,

@@ -8,7 +8,7 @@ interface TapeDetails {
   description: string;
 };
 
-interface ChoiceOption {
+export interface ChoiceOption {
   title: string;
   imageFile: File | null;
   audioFile: File | null;
