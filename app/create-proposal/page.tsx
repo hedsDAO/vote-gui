@@ -7,6 +7,7 @@ import VerticalStepper from "./VerticalStepper";
 import TapeDetailsForm from "./TapeDetailsForm";
 import OptionsForm from "./OptionsForm";
 import TimelineForm from "./TimelineForm";
+import StrategyForm from "./StrategyForm";
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -42,6 +43,7 @@ export default function Page() {
         {activeStep === 0 && <TapeDetailsForm setActiveStep={setActiveStep}/>}
         {activeStep === 1 && <OptionsForm setActiveStep={setActiveStep}/>}
         {activeStep === 2 && <TimelineForm setActiveStep={setActiveStep}/>}
+        {activeStep === 3 && <StrategyForm setActiveStep = {setActiveStep}/>}
       </div>
     </div>
   );

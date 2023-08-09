@@ -1,6 +1,7 @@
 "use client";
 
 import React, { Dispatch, createContext, useReducer } from "react";
+import {Strategy} from "hedsvote"
 
 interface TapeDetails {
   title: string;
@@ -19,6 +20,7 @@ interface StateType {
   tapeDetails: TapeDetails;
   voteStart: Date;
   voteDuration: string;
+  strategy: Strategy[];
 };
 
 type ActionType =
@@ -27,7 +29,9 @@ type ActionType =
   | { type: 'UPDATE_OPTION'; payload: { idx: number, option: ChoiceOption } }
   | { type: 'SET_DETAILS'; payload: TapeDetails }
   | { type: 'SET_VOTE_START'; payload: Date }
-  | { type: 'SET_VOTE_DURATION'; payload: string };
+  | { type: 'SET_VOTE_DURATION'; payload: string }
+  | { type: 'ADD_STRATEGY'; payload: Strategy[] }
+  | { type: 'REMOVE_STRATEGY'; payload: number };
 
 const initialState: StateType = {
   coverFile: null,
@@ -42,6 +46,7 @@ const initialState: StateType = {
   },
   voteStart: new Date(),
   voteDuration: "86400000",
+  strategy: []
 };
 
 const reducer = (state: StateType, action: ActionType) => {
@@ -74,6 +79,16 @@ const reducer = (state: StateType, action: ActionType) => {
       return { ...state, voteStart: action.payload };
     case "SET_VOTE_DURATION":
       return { ...state, voteDuration: action.payload };
+    case 'ADD_STRATEGY':
+    return {
+      ...state,
+      strategy: [...state.strategy, ...action.payload],
+    };
+    case 'REMOVE_STRATEGY':
+      return {
+        ...state,
+        strategy: state.strategy.filter((_, idx) => idx !== action.payload),
+      };
     default:
       return state;
   }

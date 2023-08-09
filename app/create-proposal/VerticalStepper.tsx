@@ -1,6 +1,6 @@
 "use client";
 
-const steps = ["DETAILS", "OPTIONS", "TIMELINE", "CONFIRM"];
+const steps = ["DETAILS", "OPTIONS", "TIMELINE", "STRATEGY", "CONFIRM"];
 
 interface OwnProps {
   activeStep: number;
