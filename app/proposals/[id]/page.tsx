@@ -1,4 +1,6 @@
 import { createClient } from "hedsvote";
+import Image from "next/image";
+import { getTapeByProposalId } from "../../utils/prismaUtils";
 import { DateTime } from "luxon";
 import Link from "next/link";
 import OptionCard from "./OptionCard";
@@ -13,19 +15,25 @@ async function getProposal(id: string) {
   return proposal.data;
 }
 
-async function getTapeById(id: string) {
-  const res = await fetch(
-    `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
-  );
-  const data = await res.json();
-  return data;
-}
+// async function getTapeById(id: string) {
+//   const res = await fetch(
+//     `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
+//   );
+//   const data = await res.json();
+//   return data;
+// }
 
 export default async function Page({ params }: { params: { id: string } }) {
   // const proposal = await getProposal(params.id);
-  const proposal = await getProposal(
+  const proposalResult = await getProposal(
     "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
   );
+  
+  const tapeDataResult = getTapeByProposalId("bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e");
+
+  //Load proposal and tapeData in parallel
+ const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
+
 
   console.log("proposal*****", proposal);
 

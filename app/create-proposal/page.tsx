@@ -7,6 +7,8 @@ import VerticalStepper from "./VerticalStepper";
 import TapeDetailsForm from "./TapeDetailsForm";
 import OptionsForm from "./OptionsForm";
 import TimelineForm from "./TimelineForm";
+import StrategyForm from "./StrategyForm";
+import ConfirmForm from "./ConfirmForm";
 
 export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -23,9 +25,9 @@ export default function Page() {
             viewBox="0 0 8 14">
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
             />
           </svg>
@@ -39,9 +41,11 @@ export default function Page() {
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
-        {activeStep === 0 && <TapeDetailsForm />}
-        {activeStep === 1 && <OptionsForm />}
-        {activeStep === 2 && <TimelineForm />}
+        {activeStep === 0 && <TapeDetailsForm setActiveStep={setActiveStep}/>}
+        {activeStep === 1 && <OptionsForm setActiveStep={setActiveStep}/>}
+        {activeStep === 2 && <TimelineForm setActiveStep={setActiveStep}/>}
+        {activeStep === 3 && <StrategyForm setActiveStep={setActiveStep}/>}
+        {activeStep === 4 && <ConfirmForm setActiveStep={setActiveStep}/>}
       </div>
     </div>
   );
