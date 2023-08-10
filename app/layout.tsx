@@ -1,9 +1,9 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import RootProvider from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from "next";
+import RootProvider from "./providers";
+import '@fontsource/space-mono';
+import '@fontsource-variable/space-grotesk';
+import "./globals.css"; 
 
 export const metadata: Metadata = {
   title: "hedsVOTE",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <RootProvider>{children}</RootProvider>
       </body>
     </html>

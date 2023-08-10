@@ -15,7 +15,7 @@ const NextStepButton: FC<OwnProps> = ({
 }) => {
   return (
     <button
-      className={`rounded-lg bg-purple-500 px-4 py-2 text-sm font-light tracking-wider text-white disabled:opacity-50 ${
+      className={`rounded-lg bg-purple-200 h-8 px-4 text-sm font-medium tracking-wider font-space-grotesk text-black disabled:opacity-50 ${
         includeIcon ? "flex items-center justify-between" : ""
       }`}
       onClick={onClick}
