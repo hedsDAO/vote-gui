@@ -16,7 +16,7 @@ export default function Home() {
   console.log("user data", userData);
   useEffect(() => {
     if (!address) return;
-    getuserData(address).then((result) => {
+    getuserData(address).then((result: any) => {
       setUserData(result);
     })
   },[address])
