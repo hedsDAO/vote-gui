@@ -13,15 +13,18 @@ interface OwnProps {
 
 const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
   const { state, dispatch } = useContext(CreateProposalContext);
-  const {title, description} = state.tapeDetails;
+  const { title, description } = state.tapeDetails;
   const [newTitle, setTitle] = useState<string>(title || "");
   const [newDescription, setDescription] = useState<string>(description || "");
-  const [newFile, setFile] = useState<File| null>(state.coverFile || null);
+  const [newFile, setFile] = useState<File | null>(state.coverFile || null);
   const fileName = state.coverFile ? state.coverFile.name : "";
 
   const handleClick = () => {
     if (newTitle !== title || newDescription !== description) {
-      dispatch({ type: "SET_DETAILS", payload: { title: newTitle, description: newDescription } });
+      dispatch({
+        type: "SET_DETAILS",
+        payload: { title: newTitle, description: newDescription },
+      });
     }
     console.log(state);
     setActiveStep(1);
@@ -34,10 +37,9 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
       setFile(selectedFile);
     }
   };
-  
 
   const formValidation = () => {
-    if ( !newTitle || !newDescription || !newFile) {
+    if (!newTitle || !newDescription || !newFile) {
       return true;
     }
     return false;
@@ -45,8 +47,9 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
 
   return (
     <div className="w-full">
-      <div className="space-y-5 pl-12">
+      <div className="space-y-5 lg:pl-12">
         <CustomUpload
+          subLabel="jpeg/png"
           label="Upload Cover"
           acceptFileType="image/*"
           existingFileName={fileName}
