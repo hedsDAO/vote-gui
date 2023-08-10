@@ -9,41 +9,46 @@ interface OwnProps {
 
 const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
   return (
-    <div className="w-1/4">
-      <div className="flex flex-col">
-        {steps.map((step, index) => (
-          <div key={index}>
-            <div
-              className={`rounded-md border-2 border-white p-2 
-        ${
-          activeStep === index
-            ? "bg-white text-[#17151C]"
-            : "bg-none text-white"
-        }`}>
-              <p className="font-space text-center text-sm font-bold">{step}</p>
-            </div>
-            {index < steps.length - 1 && (
-              <div className="flex justify-center">
-                <div className="h-10 min-h-[1em] w-0.5 self-stretch bg-neutral-100 opacity-100 dark:opacity-50"></div>
-              </div>
+    <div className="flex flex-row lg:flex-col lg:items-start lg:justify-start justify-center lg:mb-0 mb-10">
+      {steps?.map((step, i) => {
+        return (
+          <div className="lg:flex lg:flex-col flex flex-row lg:items-start items-center" key={step + i}>
+            <button
+              onClick={() => setActiveStep(i)}
+              className={
+                `${
+                  i === activeStep ? "bg-white" : ""
+                } ` +
+                `${
+                  i <= activeStep ? "bg-white" : "bg-transparent opacity-60"
+                } ` +
+                "flex lg:min-w-[16ch] lg:min-h-auto min-w-[1.5ch] min-h-[1.5ch] items-center justify-center rounded-full lg:rounded-xl border-2 lg:border border-white py-1.5"
+              }
+            >
+              <p
+                className={
+                  `${i === activeStep ? "text-black" : "hidden lg:block"} ` +
+                  `${i <= activeStep ? "text-black" : "text-white "} ` +
+                  "font-space-grotesk tracking-wider font-medium text-sm px-3"
+                }
+              >
+                {step}
+              </p>
+            </button>
+            {i !== steps.length - 1 ? (
+              <div
+                className={
+                  `${i === activeStep ? "animate-pulse" : ""} ` +
+                  `${i <= activeStep ? "bg-white" : "bg-white/30"} ` +
+                  "mx-auto h-[0.2rem] w-9 lg:h-9 lg:w-[0.2rem]"
+                }
+              />
+            ) : (
+              <></>
             )}
           </div>
-        ))}
-      </div>
-      <div>
-        <button
-          className="m-2 bg-red-500 p-2 text-white"
-          disabled={activeStep - 1 < 0}
-          onClick={() => setActiveStep((prev) => prev - 1)}>
-          Prev
-        </button>
-        <button
-          className="m-2 bg-green-500 p-2 text-white"
-          // disabled={activeStep + 1 > 1}
-          onClick={() => setActiveStep((prev) => prev + 1)}>
-          Next
-        </button>
-      </div>
+        );
+      })}
     </div>
   );
 };

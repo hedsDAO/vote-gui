@@ -1,11 +1,12 @@
 "use client";
 
 import { useContext, useRef, useState, useEffect } from "react";
-import { pinFileToIpfs } from '../_actions';
+import { pinFileToIpfs } from "../_actions";
 import { CreateProposalContext } from "@/context/createProposal.context";
 
 interface OwnProps {
   label: string;
+  subLabel?: string;
   name?: string;
   acceptFileType: string;
   existingFileName?: string;
@@ -15,11 +16,12 @@ interface OwnProps {
 
 const CustomUpload = ({
   label,
+  subLabel,
   name,
   acceptFileType,
   existingFileName = "",
   onFileChange,
-  inputRef
+  inputRef,
 }: OwnProps) => {
   const [fileName, setFileName] = useState(existingFileName);
   const localInputRef = useRef<HTMLInputElement>(null);
@@ -41,30 +43,15 @@ const CustomUpload = ({
     }
   };
 
-  // const uploadFile = async () => {
-  //   const data = new FormData();
-    
-  //   // Metadata for pinata can be customized as needed
-  //   const pinataMetadata = {
-  //     name: "test next upload",
-  //     keyvalues: {
-  //       fieldName: name,
-  //     },
-  //   };
-  
-  //   data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-  //   data.append('file', files ? files[0] : "");
-  //   // const pinnedFile = pinFileToIpfs(data);
-  //   // console.log(pinnedFile);
-  // }
   return (
     <div className="mb-4">
-      <label className="mb-2 block font-mono text-sm font-semibold tracking-tight text-gray-200">
+      <label className="mb-4 block font-space-grotesk text-sm font-semibold text-gray-200">
         {label}
       </label>
       <div
-        className="flex h-48 w-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-4 text-center"
-        onClick={() => localInputRef.current?.click()}>
+        className="flex h-44 w-44 flex-col items-center justify-center rounded-2xl border-[4px] border-dashed border-gray-200 p-4 text-center"
+        onClick={() => localInputRef.current?.click()}
+      >
         <input
           type="file"
           id="upload"
@@ -74,23 +61,18 @@ const CustomUpload = ({
           ref={localInputRef}
           name={name}
         />
-        <button className="w-full cursor-pointer py-4 text-center">
+        <button className="flex w-full cursor-pointer justify-center py-3 text-center text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="mx-auto h-6 w-6 text-gray-200"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
+            height="3em"
+            fill="white"
+            viewBox="0 0 448 512"
+          >
+            <path d="M232 72c0-4.4-3.6-8-8-8s-8 3.6-8 8V248H40c-4.4 0-8 3.6-8 8s3.6 8 8 8H216V440c0 4.4 3.6 8 8 8s8-3.6 8-8V264H408c4.4 0 8-3.6 8-8s-3.6-8-8-8H232V72z" />
           </svg>
         </button>
-        <p className="mt-4 w-full overflow-hidden overflow-ellipsis text-sm text-gray-400">
-          {fileName ? fileName: "no file selected"}
+        <p className="mt-4 w-full overflow-hidden overflow-ellipsis font-space-grotesk text-sm tracking-wide text-gray-400">
+          {fileName || subLabel}
         </p>
       </div>
     </div>

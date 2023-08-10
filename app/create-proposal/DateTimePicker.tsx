@@ -22,7 +22,7 @@ const DateTimePicker = ({ startDate, setStartDate, minDate}: OwnProps) => {
 
   return (
     <DatePicker
-      className="text-black"
+      className="text-black max-h-[32px] min-w-[26ch] font-space-grotesk px-5 border-transparent"
       selected={startDate}
       onChange={(date) => date && setStartDate(date)}
       showTimeSelect
