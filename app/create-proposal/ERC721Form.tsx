@@ -1,22 +1,20 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { PlusCircle } from "@phosphor-icons/react";
-import { useState, Fragment, useEffect } from "react";
+import _ from 'lodash';
+import { PlusCircle, CheckCircle, XCircle} from "@phosphor-icons/react";
+import { useState, Fragment, useEffect, useContext } from "react";
+import { CreateProposalContext } from "@/context/createProposal.context";
 
 const defaultState = `{
     "symbol": "HED",
-    "addresses": [
-        "0x00000000000000000000",
-        "0x00000000000000000000",
+    "tokens": [
         "0x00000000000000000000",
         "0x00000000000000000000"
     ],
     "weights": [
         10, 
-        8, 
-        7, 
-        4
+        8
     ]
 }
 `;
@@ -32,16 +30,32 @@ const validateJson = (json: string) => {
 
 const ERC721Form = () => {
   const [open, setOpen] = useState(false);
+  const [jsonData, setJsonData] = useState<any>("");
+  const { state } = useContext(CreateProposalContext);
+  const currentStrategies = state.strategy.length > 0 ? state.strategy[state.strategy.length - 1] : defaultState;
+  const isDefaultStrategy = _.isEqual(currentStrategies, JSON.parse(defaultState));
+  useEffect(() => {
+    setJsonData(currentStrategies);
+
+  }, [currentStrategies]);
+
+  // Callback function to handle updates from the child component
+  const handleJsonDataUpdate = (updatedJsonData: any) => {
+    setJsonData(updatedJsonData);
+  };
   return (
     <div
       onClick={() => setOpen(true)}
       role="button"
       className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[70%]"
     >
-      <ERC721Modal open={open} setOpen={setOpen} />
+      <ERC721Modal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} />
       <div className="flex w-full items-center justify-between">
         <h4 className="font-space-grotesk font-medium text-black">ERC 721</h4>
-        <PlusCircle className="h-5 w-5 text-black" />
+        <div className="flex flex-col items-end justify-between">
+          <PlusCircle className="h-5 w-5 text-black" />
+          {!isDefaultStrategy && jsonData && typeof jsonData === 'object' ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
+        </div>
       </div>
       <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black">
         Choose a set of contracts to base your voting power.
@@ -50,17 +64,47 @@ const ERC721Form = () => {
   );
 };
 
-const ERC721Modal = ({ open, setOpen }: any) => {
-  const [jsonData, setJsonData] = useState<any>(defaultState);
-//   const [isValid, setIsValid] = useState(false);
+const ERC721Modal = ({ open, setOpen, onJsonDataUpdate }: any) => {
+  const { state, dispatch } = useContext(CreateProposalContext);
+  const currentStrategies = state.strategy.length > 0 ? JSON.stringify(state.strategy[state.strategy.length - 1]) : defaultState;
 
-//   useEffect(() => {
-//     if (!isValid) {
-//       setTimeout(() => {
-//         setIsValid(false);
-//       }, 2000);
-//     }
-//   }, [isValid]);
+  const [localJsonData, setLocalJsonData] = useState<any>(currentStrategies);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    setLocalJsonData(formatStrategyToJson(currentStrategies));
+
+  }, [currentStrategies]);
+
+  const formatStrategyToJson = (strategy: any) => {
+    const parsedStrategy = typeof strategy === 'string' ? JSON.parse(strategy) : strategy;
+
+    return JSON.stringify({
+      symbol: parsedStrategy.symbol || "HED",
+      tokens: parsedStrategy.tokens || ["0x00000000000000000000", "0x00000000000000000000"],
+      weights: parsedStrategy.weights || [10, 8],
+    }, null, 2); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
+  };
+
+  const handleDoneClick = () => {
+    const isValidJson = validateJson(localJsonData);
+    if (!isValidJson) {
+      setErrorMessage('Invalid JSON data. Please check your input and try again.');
+      return; // Exit the function early if the JSON is invalid
+    }
+    setErrorMessage(null);
+
+    const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
+
+    if (isValidJson) {
+      dispatch({ type: 'ADD_STRATEGY', payload: [parsedData] }); // Update the context
+    }
+
+    onJsonDataUpdate(parsedData);
+    setOpen(false);
+  };
+  
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -90,9 +134,10 @@ const ERC721Modal = ({ open, setOpen }: any) => {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                   <textarea
                     id="jsonEditor"
-                    value={jsonData}
+                    value={localJsonData}
                     onChange={(e) => {
                     //   if (validateJson(e.target.value)) {
                     //     setIsValid(true);
@@ -101,7 +146,8 @@ const ERC721Modal = ({ open, setOpen }: any) => {
                     //     console.log('false')
                     //     setIsValid(false);
                     //   }
-                      setJsonData(e.target.value);
+                      setErrorMessage(null);
+                      setLocalJsonData(e.target.value);
                     }}
                     className={
                     //   `${isValid ? "border-green-500 transition-all" : "border-red-500 transition-all"}` +
@@ -116,6 +162,13 @@ const ERC721Modal = ({ open, setOpen }: any) => {
                     placeholder="Enter your JSON data here..."
                   />
                 </div>
+                <button
+                  type="button"
+                  className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                  onClick={handleDoneClick}
+                >
+                  Done
+                </button>
               </Dialog.Panel>
             </Transition.Child>
           </div>
