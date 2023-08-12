@@ -30,7 +30,7 @@ type ActionType =
   | { type: 'SET_DETAILS'; payload: TapeDetails }
   | { type: 'SET_VOTE_START'; payload: Date }
   | { type: 'SET_VOTE_DURATION'; payload: string }
-  | { type: 'ADD_STRATEGY'; payload: Strategy[] }
+  | { type: 'ADD_STRATEGY'; payload: Strategy }
   | { type: 'REMOVE_STRATEGY'; payload: number };
 
 const initialState: StateType = {
@@ -82,7 +82,7 @@ const reducer = (state: StateType, action: ActionType) => {
     case 'ADD_STRATEGY':
     return {
       ...state,
-      strategy: [...state.strategy, ...action.payload],
+      strategy: [...state.strategy, action.payload],
     };
     case 'REMOVE_STRATEGY':
       return {
