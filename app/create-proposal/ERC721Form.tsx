@@ -3,8 +3,9 @@
 import { Dialog, Transition } from "@headlessui/react";
 import _ from 'lodash';
 import { PlusCircle, CheckCircle, XCircle} from "@phosphor-icons/react";
-import { useState, Fragment, useEffect, useContext } from "react";
+import { useState, Fragment, useEffect, useContext, useMemo } from "react";
 import { CreateProposalContext } from "@/context/createProposal.context";
+import { StrategyName } from "hedsvote";
 
 const defaultState = `{
     "symbol": "HED",
@@ -32,12 +33,21 @@ const ERC721Form = () => {
   const [open, setOpen] = useState(false);
   const [jsonData, setJsonData] = useState<any>("");
   const { state } = useContext(CreateProposalContext);
-  const currentStrategies = state.strategy.length > 0 ? state.strategy[state.strategy.length - 1] : defaultState;
-  const isDefaultStrategy = _.isEqual(currentStrategies, JSON.parse(defaultState));
-  useEffect(() => {
-    setJsonData(currentStrategies);
+  const defaultStateObject = JSON.parse(defaultState);
+  const [currentStrategies, setCurrentStrategies] = useState(defaultStateObject);
 
-  }, [currentStrategies]);
+  useEffect(() => {
+    const strategy = state.strategy.find((strategy) => strategy.name === StrategyName.ERC721) || defaultStateObject;
+    setCurrentStrategies(strategy.params);
+    setJsonData(strategy.params)
+  }, [state.strategy]);
+  
+  
+  
+  const isDefaultStrategy = useMemo(() => {
+    return _.isEqual(currentStrategies, defaultStateObject) && !_.isEqual(jsonData, defaultStateObject);
+  }, [currentStrategies, jsonData]);
+  
 
   // Callback function to handle updates from the child component
   const handleJsonDataUpdate = (updatedJsonData: any) => {
@@ -54,7 +64,7 @@ const ERC721Form = () => {
         <h4 className="font-space-grotesk font-medium text-black">ERC 721</h4>
         <div className="flex flex-col items-end justify-between">
           <PlusCircle className="h-5 w-5 text-black" />
-          {!isDefaultStrategy && jsonData && typeof jsonData === 'object' ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
+          {!isDefaultStrategy && jsonData && !_.isEqual(jsonData, defaultStateObject) ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
         </div>
       </div>
       <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black">
@@ -98,9 +108,13 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate }: any) => {
     const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
 
     if (isValidJson) {
-      dispatch({ type: 'ADD_STRATEGY', payload: [parsedData] }); // Update the context
+      const newStrategy = {
+        name: StrategyName.ERC721,
+        network: "1",
+        params: parsedData
+      }
+      dispatch({ type: 'ADD_STRATEGY', payload: newStrategy }); // Update the context
     }
-
     onJsonDataUpdate(parsedData);
     setOpen(false);
   };
@@ -139,18 +153,10 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate }: any) => {
                     id="jsonEditor"
                     value={localJsonData}
                     onChange={(e) => {
-                    //   if (validateJson(e.target.value)) {
-                    //     setIsValid(true);
-                    //     console.log('true')
-                    //   } else {
-                    //     console.log('false')
-                    //     setIsValid(false);
-                    //   }
                       setErrorMessage(null);
                       setLocalJsonData(e.target.value);
                     }}
                     className={
-                    //   `${isValid ? "border-green-500 transition-all" : "border-red-500 transition-all"}` +
                       "mt-2 w-full rounded-md border bg-black/90 p-2 text-white shadow-sm focus:border-blue-300 focus:ring focus:ring-opacity-50"
                     }
                     style={{
