@@ -59,7 +59,7 @@ const ERC721Form = () => {
       role="button"
       className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[70%]"
     >
-      <ERC721Modal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} />
+      <ERC721Modal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} currentStrategies={currentStrategies} />
       <div className="flex w-full items-center justify-between">
         <h4 className="font-space-grotesk font-medium text-black">ERC 721</h4>
         <div className="flex flex-col items-end justify-between">
@@ -74,9 +74,9 @@ const ERC721Form = () => {
   );
 };
 
-const ERC721Modal = ({ open, setOpen, onJsonDataUpdate }: any) => {
+const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any) => {
   const { state, dispatch } = useContext(CreateProposalContext);
-  const currentStrategies = state.strategy.length > 0 ? JSON.stringify(state.strategy[state.strategy.length - 1]) : defaultState;
+  // const currentStrategies = state.strategy.length > 0 ? JSON.stringify(state.strategy[state.strategy.length - 1]) : defaultState;
 
   const [localJsonData, setLocalJsonData] = useState<any>(currentStrategies);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -84,10 +84,10 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate }: any) => {
 
   useEffect(() => {
     setLocalJsonData(formatStrategyToJson(currentStrategies));
-
   }, [currentStrategies]);
 
   const formatStrategyToJson = (strategy: any) => {
+    if (!strategy) return defaultState; 
     const parsedStrategy = typeof strategy === 'string' ? JSON.parse(strategy) : strategy;
 
     return JSON.stringify({
