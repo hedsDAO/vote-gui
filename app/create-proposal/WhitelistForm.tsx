@@ -1,18 +1,184 @@
 "use client";
 
-import { PlusCircle } from "@phosphor-icons/react";
+import { Dialog, Transition } from "@headlessui/react";
+import _ from 'lodash';
+import { PlusCircle, CheckCircle, XCircle} from "@phosphor-icons/react";
+import { useState, Fragment, useEffect, useContext, useMemo } from "react";
+import { CreateProposalContext } from "@/context/createProposal.context";
+import { StrategyName } from "hedsvote";
+
+const defaultState = `
+   {
+    "symbol": "WL",
+    "addresses": {
+        "0x00000000000000000000": 1,
+        "0x00000000000000000001": 1
+      }
+   }
+`;
+
+const validateJson = (json: string) => {
+  try {
+    JSON.parse(json);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const WhitelistForm = () => {
+  const [open, setOpen] = useState(false);
+  const [jsonData, setJsonData] = useState<any>("");
+  const { state } = useContext(CreateProposalContext);
+  const defaultStateObject = JSON.parse(defaultState);
+  const [currentStrategies, setCurrentStrategies] = useState(defaultStateObject);
+
+  useEffect(() => {
+    const strategy = state.strategy.find((strategy) => strategy.name === StrategyName.WHITELIST) || defaultStateObject;
+    setCurrentStrategies(strategy.params);
+    setJsonData(strategy.params)
+  }, [state.strategy]);
+  
+  
+  
+  const isDefaultStrategy = useMemo(() => {
+    return _.isEqual(currentStrategies, defaultStateObject) && !_.isEqual(jsonData, defaultStateObject);
+  }, [currentStrategies, jsonData]);
+  
+
+  // Callback function to handle updates from the child component
+  const handleJsonDataUpdate = (updatedJsonData: any) => {
+    setJsonData(updatedJsonData);
+  };
   return (
-    <div className="flex flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 lg:w-[70%] hover:bg-white/80 transition-all">
+    <div
+      onClick={() => setOpen(true)}
+      role="button"
+      className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[70%]"
+    >
+      <WhitelistModal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} currentStrategies={currentStrategies} />
       <div className="flex w-full items-center justify-between">
-        <h4 className="font-space-grotesk font-medium text-black">Whitelist</h4>
-        <PlusCircle className="h-5 w-5 text-black" />
+        <h4 className="font-space-grotesk font-medium text-black">WHITELIST</h4>
+        <div className="flex flex-col items-end justify-between">
+          <PlusCircle className="h-5 w-5 text-black" />
+          {!isDefaultStrategy && jsonData && !_.isEqual(jsonData, defaultStateObject) ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
+        </div>
       </div>
-      <p className="font-space-grotesk text-sm text-black whitespace-pre-wrap max-w-[28ch]">
-        Choose a set of individual addresses to distribute voting power to.
+      <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black">
+        Choose a set of contracts to base your voting power.
       </p>
     </div>
+  );
+};
+
+const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any) => {
+  const { state, dispatch } = useContext(CreateProposalContext);
+  const [localJsonData, setLocalJsonData] = useState<any>(currentStrategies);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    setLocalJsonData(formatStrategyToJson(currentStrategies));
+
+  }, [currentStrategies]);
+
+  const formatStrategyToJson = (strategy: any) => {
+    if (!strategy) return defaultState;
+    const parsedStrategy = typeof strategy === 'string' ? JSON.parse(strategy) : strategy;
+
+    return JSON.stringify({
+      symbol: parsedStrategy.symbol || "WL",
+      addresses: parsedStrategy.addresses || {
+      ["0x00000000000000000000"]: 1,
+      ["0x00000000000000000001"]: 1
+      },
+    }, null, 2); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
+  };
+
+  const handleDoneClick = () => {
+    const isValidJson = validateJson(localJsonData);
+    if (!isValidJson) {
+      setErrorMessage('Invalid JSON data. Please check your input and try again.');
+      return; // Exit the function early if the JSON is invalid
+    }
+    setErrorMessage(null);
+
+    const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
+
+    if (isValidJson) {
+      const newStrategy = {
+        name: StrategyName.WHITELIST,
+        network: "1",
+        params: parsedData
+      }
+      dispatch({ type: 'ADD_STRATEGY', payload: newStrategy }); // Update the context
+    }
+    onJsonDataUpdate(parsedData);
+    setOpen(false);
+  };
+  
+
+  return (
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={() => setOpen(false)}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="flex lg:min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-1">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                  <textarea
+                    id="jsonEditor"
+                    value={localJsonData}
+                    onChange={(e) => {
+                      setErrorMessage(null);
+                      setLocalJsonData(e.target.value);
+                    }}
+                    className={
+                      "mt-2 w-full rounded-md border bg-black/90 p-2 text-white shadow-sm focus:border-blue-300 focus:ring focus:ring-opacity-50"
+                    }
+                    style={{
+                      fontFamily: "monospace",
+                      whiteSpace: "pre",
+                      overflowX: "scroll",
+                    }} // Styling to make it look like code
+                    rows={10} // adjust based on how big you want the textarea
+                    placeholder="Enter your JSON data here..."
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                  onClick={handleDoneClick}
+                >
+                  Done
+                </button>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
   );
 };
 
