@@ -1,13 +1,39 @@
 "use client";
 import { ProposalContext } from "@/context/proposal.context";
+import { useAccount, useWalletClient } from "wagmi";
 import { useContext } from "react";
-import { Choice } from "hedsvote";
+import { Choice, calculateUserVotingPower } from "hedsvote";
+import { Web3Button } from "@web3modal/react";
+import { castVote, getProposalById } from "@/app/_actions";
 
-const LikedSubmissions = () => {
+const LikedSubmissions = ({ params }: { params: { id: string } }) => {
   const { state, dispatch } = useContext(ProposalContext);
+  const { data: walletClient, isError, isLoading } = useWalletClient();
+  const { address, isConnected } = useAccount();
+
+  const handleVote = async (choice: Choice) => {
+    try {
+      const proposal = await getProposalById(params.id);
+      const vp = calculateUserVotingPower(address, proposal.strategies);
+      const { id } = params;
+      const vote = {
+        proposalId: id,
+        signature: "",
+        vp,
+        voter: "",
+        voteChoices: state.likes,
+      };
+      castVote({ vote, walletClient });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <div className="rounded-md border bg-[#EAEAEA] px-4 py-6">
+    <div className="flex h-72 w-72 flex-col justify-items-center gap-y-1.5 overflow-y-scroll rounded-md border bg-[#EAEAEA] px-4 py-6 drop-shadow-lg">
+      <div className="mx-auto">
+        {isConnected ? "connected" : <Web3Button />}
+      </div>
       {state.likes &&
         Object.entries(state.likes).map(([id, score]) => (
           <div
@@ -16,6 +42,7 @@ const LikedSubmissions = () => {
             {id}
             <div className="flex flex-row items-center gap-x-3">
               <svg
+                className="cursor-pointer"
                 onClick={() =>
                   dispatch({ type: "DECREASE_SCORE", payload: Number(id) })
                 }
@@ -28,6 +55,7 @@ const LikedSubmissions = () => {
               </svg>
               {score}
               <svg
+                className="cursor-pointer"
                 onClick={() =>
                   dispatch({ type: "INCREASE_SCORE", payload: Number(id) })
                 }
@@ -41,6 +69,9 @@ const LikedSubmissions = () => {
             </div>
           </div>
         ))}
+      <button className="mx-auto rounded-md bg-[#2D2934] px-4 py-2 text-white">
+        submit
+      </button>
     </div>
   );
 };

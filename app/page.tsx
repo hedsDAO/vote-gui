@@ -18,8 +18,8 @@ export default function Home() {
     if (!address) return;
     getuserData(address).then((result) => {
       setUserData(result);
-    })
-  },[address])
+    });
+  }, [address]);
 
   const mockProposals = [
     {
@@ -57,7 +57,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center">
+    <main className="flex min-h-screen flex-col items-center bg-[#2d2934]">
       <div className="w-2/3 p-12">
         <Web3Button />
         <div className="flex flex-row items-center justify-between">
