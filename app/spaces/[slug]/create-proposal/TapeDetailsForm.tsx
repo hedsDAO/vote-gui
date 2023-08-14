@@ -54,6 +54,7 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
           acceptFileType="image/*"
           existingFileName={fileName}
           onFileChange={handleFileChange}
+          existingFile={state.coverFile}
         />
         <CustomFormInput
           label="Title"
