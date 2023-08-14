@@ -65,7 +65,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="h-screen bg-zinc-50 text-[#2D2934]">
+    <div className="h-screen text-[#2D2934]">
       <div className="h-44 border bg-red-500"></div>
       <div className="mx-auto flex w-3/4 flex-col gap-y-6 p-12">
         <Link href={"/spaces"}>
@@ -80,7 +80,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </svg>
           <p className="inline-block">SPACE</p>
         </Link>
-        <div className="absolute right-64 top-32">
+        <div className="right-64 top-32 lg:absolute">
           <Image
             className="rounded-full border-4 border-blue-400"
             src="https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT"
