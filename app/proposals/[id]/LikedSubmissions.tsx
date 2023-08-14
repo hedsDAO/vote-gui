@@ -2,7 +2,7 @@
 import { ProposalContext } from "@/context/proposal.context";
 import { useAccount, useWalletClient } from "wagmi";
 import { useContext } from "react";
-import { Choice, calculateUserVotingPower } from "hedsvote";
+import { calculateUserVotingPower } from "hedsvote";
 import { Web3Button } from "@web3modal/react";
 import { castVote, getProposalById } from "@/app/_actions";
 
@@ -11,7 +11,7 @@ const LikedSubmissions = ({ params }: { params: { id: string } }) => {
   const { data: walletClient, isError, isLoading } = useWalletClient();
   const { address, isConnected } = useAccount();
 
-  const handleVote = async (choice: Choice) => {
+  const handleVote = async () => {
     try {
       const proposal = await getProposalById(params.id);
       const vp = calculateUserVotingPower(address, proposal.strategies);
@@ -69,7 +69,9 @@ const LikedSubmissions = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         ))}
-      <button className="mx-auto rounded-md bg-[#2D2934] px-4 py-2 text-white">
+      <button
+        onClick={handleVote}
+        className="mx-auto rounded-md bg-[#2D2934] px-4 py-2 text-white">
         submit
       </button>
     </div>
