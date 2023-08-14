@@ -3,27 +3,37 @@
 import axios from "axios";
 import { PrismaClient } from '@prisma/client';
 
-export const pinFileToIpfs = async (file: File, name: string) => {
-  const data = new FormData();
-    
-    // Metadata for pinata can be customized as needed
-    const pinataMetadata = {
-      name: name,
-      keyvalues: {
-        fieldName: name,
+// export const pinFileToIpfs = async (formData: FormData) => {
+//     return await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+//         maxBodyLength: Infinity,
+//         headers: {
+//           pinata_api_key: process.env.PINATA_API_KEY,
+//           pinata_secret_api_key: process.env.PINATA_API_SECRET,
+//         },
+//     });
+// }
+export const pinFileToIpfs = async (formData: FormData) => {
+  try {
+    const response = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'pinata_api_key': process.env.PINATA_API_KEY,
+        'pinata_secret_api_key': process.env.PINATA_API_SECRET,
       },
-    };
-  
-    data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-    data.append('file', file);
-    return await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
-        maxBodyLength: Infinity,
-        headers: {
-          pinata_api_key: process.env.PINATA_API_KEY,
-          pinata_secret_api_key: process.env.PINATA_API_SECRET,
-        },
     });
-}
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 
 const prisma = new PrismaClient()
 

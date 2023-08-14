@@ -18,11 +18,11 @@ const OptionsForm = ({ setActiveStep }: OwnProps) => {
   };
 
   const formValidation = () => {
-    for (let option of state.choiceOptions) {
-      if (!option.title || !option.audioFile || !option.imageFile) {
-        return true;
-      }
-    }
+    // for (let option of state.choiceOptions) {
+    //   if (!option.title || !option.audioFile || !option.imageFile) {
+    //     return true;
+    //   }
+    // }
 
     return false;
   };
@@ -98,7 +98,7 @@ const OptionsForm = ({ setActiveStep }: OwnProps) => {
         {state.choiceOptions.map((option, idx) => (
           <div className="flex flex-col gap-5" key={idx}>
             <div className="flex flex-col lg:flex-row gap-10">
-              <CustomUpload
+              {/* <CustomUpload
                 label="Upload Track"
                 existingFileName={option.audioFile?.name || ""}
                 name="audioFile"
@@ -110,17 +110,20 @@ const OptionsForm = ({ setActiveStep }: OwnProps) => {
                 inputRef={(input) => {
                   fileInputs.current[idx] = input;
                 }} // Reference input
-              />
-              <CustomUpload
-                label="Upload Image"
-                existingFileName={option.imageFile?.name || ""}
-                name="imageFile"
-                subLabel="jpeg/png"
-                acceptFileType="image/*"
-                onFileChange={(e) =>
-                  handleFileChange(e.target.files, idx, "imageFile")
-                }
-              />
+              /> */}
+              <div >
+                <CustomUpload
+                  label="Upload Image"
+                  existingFileName={option.imageFile?.name || ""}
+                  existingFile={state.choiceOptions[idx].imageFile}
+                  name="imageFile"
+                  subLabel="jpeg/png"
+                  acceptFileType="image/*"
+                  onFileChange={(e) =>
+                    handleFileChange(e.target.files, idx, "imageFile")
+                  }
+                />
+              </div>
             </div>
             <CustomFormInput
               label="Title"

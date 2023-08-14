@@ -1,7 +1,9 @@
 "use client";
 
 import { useContext, useRef, useState, useEffect } from "react";
-import { pinFileToIpfs } from "../_actions";
+import Image from "next/image";
+import { Trash } from "@phosphor-icons/react";
+import { pinFileToIpfs } from "../../../_actions";
 import { CreateProposalContext } from "@/context/createProposal.context";
 
 interface OwnProps {
@@ -10,6 +12,7 @@ interface OwnProps {
   name?: string;
   acceptFileType: string;
   existingFileName?: string;
+  existingFile?: File | null;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputRef?: (instance: HTMLInputElement | null) => void;
 }
@@ -20,6 +23,7 @@ const CustomUpload = ({
   name,
   acceptFileType,
   existingFileName = "",
+  existingFile = null,
   onFileChange,
   inputRef,
 }: OwnProps) => {
@@ -43,11 +47,19 @@ const CustomUpload = ({
     }
   };
 
+  const handleFileDelete = () => {
+    setFileName(""); // Clear the file name
+    if (localInputRef.current) {
+      localInputRef.current.value = ""; // Reset the file input
+    }
+  };
+
   return (
     <div className="mb-4">
       <label className="mb-4 block font-space-grotesk text-sm font-semibold text-gray-200">
         {label}
       </label>
+      {!fileName ? (
       <div
         className="flex h-44 w-44 flex-col items-center justify-center rounded-2xl border-[4px] border-dashed border-gray-200 p-4 text-center"
         onClick={() => localInputRef.current?.click()}
@@ -74,7 +86,17 @@ const CustomUpload = ({
         <p className="mt-4 w-full overflow-hidden overflow-ellipsis font-space-grotesk text-sm tracking-wide text-gray-400">
           {fileName || subLabel}
         </p>
+      </div>) : existingFile  &&  (
+      <div>
+        <Image alt="cover image" width={350} height={400} src={URL.createObjectURL(existingFile)} />
+        <div
+          className=""
+        >
+          <Trash className="h-5 w-5" onClick={() => handleFileDelete()}/>
+        </div>
       </div>
+        )
+      }
     </div>
   );
 };

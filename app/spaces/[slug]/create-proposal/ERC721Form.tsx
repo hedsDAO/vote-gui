@@ -107,7 +107,7 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any
 
     const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
 
-    if (isValidJson) {
+    if (isValidJson && !_.isEqual(localJsonData, defaultState)) {
       const newStrategy = {
         name: StrategyName.ERC721,
         network: "1",

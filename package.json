@@ -26,7 +26,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "ethers": "^6.6.5",
-    "hedsvote": "^0.1.89",
+    "hedsvote": "^0.1.90",
     "heroicons": "^2.0.18",
     "lodash": "^4.17.21",
     "lokijs": "^1.5.12",
