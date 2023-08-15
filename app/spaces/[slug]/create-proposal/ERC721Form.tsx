@@ -1,24 +1,23 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import _ from 'lodash';
-import { PlusCircle, CheckCircle, XCircle} from "@phosphor-icons/react";
+import _ from "lodash";
+import { PlusCircle, CheckCircle, XCircle } from "@phosphor-icons/react";
 import { useState, Fragment, useEffect, useContext, useMemo } from "react";
 import { CreateProposalContext } from "@/context/createProposal.context";
 import { StrategyName } from "hedsvote";
 
 const defaultState = `{
-    "symbol": "HED",
-    "tokens": [
-        "0x00000000000000000000",
-        "0x00000000000000000000"
-    ],
-    "weights": [
-        10, 
-        8
-    ]
-}
-`;
+  "symbol": "HED",
+  "tokens": [
+      "0x0000000000000000000000000000000000000000",
+      "0x0000000000000000000000000000000000000000"
+  ],
+  "weights": [
+      10, 
+      8
+  ]
+}`;
 
 const validateJson = (json: string) => {
   try {
@@ -34,20 +33,24 @@ const ERC721Form = () => {
   const [jsonData, setJsonData] = useState<any>("");
   const { state } = useContext(CreateProposalContext);
   const defaultStateObject = JSON.parse(defaultState);
-  const [currentStrategies, setCurrentStrategies] = useState(defaultStateObject);
+  const [currentStrategies, setCurrentStrategies] =
+    useState(defaultStateObject);
 
   useEffect(() => {
-    const strategy = state.strategy.find((strategy) => strategy.name === StrategyName.ERC721) || defaultStateObject;
+    const strategy =
+      state.strategy.find(
+        (strategy) => strategy.name === StrategyName.ERC721
+      ) || defaultStateObject;
     setCurrentStrategies(strategy.params);
-    setJsonData(strategy.params)
+    setJsonData(strategy.params);
   }, [state.strategy]);
-  
-  
-  
+
   const isDefaultStrategy = useMemo(() => {
-    return _.isEqual(currentStrategies, defaultStateObject) && !_.isEqual(jsonData, defaultStateObject);
+    return (
+      _.isEqual(currentStrategies, defaultStateObject) &&
+      !_.isEqual(jsonData, defaultStateObject)
+    );
   }, [currentStrategies, jsonData]);
-  
 
   // Callback function to handle updates from the child component
   const handleJsonDataUpdate = (updatedJsonData: any) => {
@@ -57,50 +60,77 @@ const ERC721Form = () => {
     <div
       onClick={() => setOpen(true)}
       role="button"
-      className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[70%]"
+      className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[75%]"
     >
-      <ERC721Modal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} currentStrategies={currentStrategies} />
-      <div className="flex w-full items-center justify-between">
+      <ERC721Modal
+        open={open}
+        setOpen={setOpen}
+        onJsonDataUpdate={handleJsonDataUpdate}
+        currentStrategies={currentStrategies}
+      />
+      <div className="flex w-full items-start justify-between">
         <h4 className="font-space-grotesk font-medium text-black">ERC 721</h4>
         <div className="flex flex-col items-end justify-between">
           <PlusCircle className="h-5 w-5 text-black" />
-          {!isDefaultStrategy && jsonData && !_.isEqual(jsonData, defaultStateObject) ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
+          {!isDefaultStrategy &&
+          jsonData &&
+          !_.isEqual(jsonData, defaultStateObject) ? (
+            <div className="inline-flex rounded-full border-transparent bg-green-700">
+              <CheckCircle className="h-5 w-5 text-white" />
+            </div>
+          ) : (
+            <XCircle className="h-5 w-5 text-red-800" />
+          )}
         </div>
       </div>
-      <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black">
+      <p className="max-w-[28ch] whitespace-pre-wrap pb-1 font-space-grotesk text-sm text-black">
         Choose a set of contracts to base your voting power.
       </p>
     </div>
   );
 };
 
-const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any) => {
+const ERC721Modal = ({
+  open,
+  setOpen,
+  onJsonDataUpdate,
+  currentStrategies,
+}: any) => {
   const { state, dispatch } = useContext(CreateProposalContext);
   // const currentStrategies = state.strategy.length > 0 ? JSON.stringify(state.strategy[state.strategy.length - 1]) : defaultState;
 
   const [localJsonData, setLocalJsonData] = useState<any>(currentStrategies);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
   useEffect(() => {
     setLocalJsonData(formatStrategyToJson(currentStrategies));
   }, [currentStrategies]);
 
   const formatStrategyToJson = (strategy: any) => {
-    if (!strategy) return defaultState; 
-    const parsedStrategy = typeof strategy === 'string' ? JSON.parse(strategy) : strategy;
+    if (!strategy) return defaultState;
+    const parsedStrategy =
+      typeof strategy === "string" ? JSON.parse(strategy) : strategy;
 
-    return JSON.stringify({
-      symbol: parsedStrategy.symbol || "HED",
-      tokens: parsedStrategy.tokens || ["0x00000000000000000000", "0x00000000000000000000"],
-      weights: parsedStrategy.weights || [10, 8],
-    }, null, 2); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
+    return JSON.stringify(
+      {
+        symbol: parsedStrategy.symbol || "HED",
+        tokens: parsedStrategy.tokens || [
+          "0x00000000000000000000",
+          "0x00000000000000000000",
+        ],
+        weights: parsedStrategy.weights || [10, 8],
+      },
+      null,
+      2
+    ); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
   };
 
   const handleDoneClick = () => {
     const isValidJson = validateJson(localJsonData);
     if (!isValidJson) {
-      setErrorMessage('Invalid JSON data. Please check your input and try again.');
+      setErrorMessage(
+        "Invalid JSON data. Please check your input and try again."
+      );
       return; // Exit the function early if the JSON is invalid
     }
     setErrorMessage(null);
@@ -111,14 +141,17 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any
       const newStrategy = {
         name: StrategyName.ERC721,
         network: "1",
-        params: parsedData
-      }
-      dispatch({ type: 'ADD_STRATEGY', payload: newStrategy }); // Update the context
+        params: parsedData,
+      };
+      dispatch({ type: "ADD_STRATEGY", payload: newStrategy }); // Update the context
     }
     onJsonDataUpdate(parsedData);
     setOpen(false);
   };
-  
+
+  const handleResetClick = () => {
+    setLocalJsonData(defaultState);
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -136,7 +169,7 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full w-full min-w-full items-center justify-center p-0 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -146,9 +179,11 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <div>
-                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+              <Dialog.Panel className="relative w-[90%] transform overflow-hidden rounded-lg bg-white  px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:max-w-lg sm:p-6">
+                <div className="mb-2">
+                  {errorMessage && (
+                    <p className="text-red-500">{errorMessage}</p>
+                  )}
                   <textarea
                     id="jsonEditor"
                     value={localJsonData}
@@ -168,13 +203,22 @@ const ERC721Modal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any
                     placeholder="Enter your JSON data here..."
                   />
                 </div>
-                <button
-                  type="button"
-                  className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                  onClick={handleDoneClick}
-                >
-                  Done
-                </button>
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    className="inline-flex justify-start rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={handleResetClick}
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                    onClick={handleDoneClick}
+                  >
+                    Done
+                  </button>
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

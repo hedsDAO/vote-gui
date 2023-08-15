@@ -1,12 +1,12 @@
 "use client";
 
 import React, { Dispatch, createContext, useReducer } from "react";
-import {Strategy} from "hedsvote"
+import { Strategy } from "hedsvote";
 
 interface TapeDetails {
   title: string;
   description: string;
-};
+}
 
 export interface ChoiceOption {
   title: string;
@@ -21,32 +21,40 @@ interface StateType {
   voteStart: Date;
   voteDuration: string;
   strategy: Strategy[];
-};
+}
 
 type ActionType =
-  | { type: 'ADD_COVER_FILE'; payload: File }
-  | { type: 'ADD_OPTION'; payload: ChoiceOption }
-  | { type: 'UPDATE_OPTION'; payload: { idx: number, option: ChoiceOption } }
-  | { type: 'SET_DETAILS'; payload: TapeDetails }
-  | { type: 'SET_VOTE_START'; payload: Date }
-  | { type: 'SET_VOTE_DURATION'; payload: string }
-  | { type: 'ADD_STRATEGY'; payload: Strategy }
-  | { type: 'REMOVE_STRATEGY'; payload: number };
+  | { type: "ADD_COVER_FILE"; payload: File | null }
+  | { type: "ADD_OPTION"; payload: ChoiceOption }
+  | { type: "UPDATE_OPTION"; payload: { idx: number; option: ChoiceOption } }
+  | { type: "DELETE_OPTION"; payload: number }
+  | { type: "SET_DETAILS"; payload: TapeDetails }
+  | { type: "SET_VOTE_START"; payload: Date }
+  | { type: "SET_VOTE_DURATION"; payload: string }
+  | { type: "ADD_STRATEGY"; payload: Strategy }
+  | { type: "REMOVE_STRATEGY"; payload: number };
 
 const initialState: StateType = {
   coverFile: null,
-  choiceOptions: [{
-    title: "",
-    imageFile: null,
-    audioFile: null
-  }],
+  choiceOptions: [
+    {
+      title: "",
+      imageFile: null,
+      audioFile: null,
+    },
+    {
+      title: "",
+      imageFile: null,
+      audioFile: null,
+    },
+  ],
   tapeDetails: {
     title: "",
-    description: ""
+    description: "",
   },
   voteStart: new Date(),
   voteDuration: "86400000",
-  strategy: []
+  strategy: [],
 };
 
 const reducer = (state: StateType, action: ActionType) => {
@@ -54,37 +62,44 @@ const reducer = (state: StateType, action: ActionType) => {
     case "ADD_COVER_FILE":
       return {
         ...state,
-        coverFile: action.payload
-       };
+        coverFile: action.payload,
+      };
     case "ADD_OPTION":
       return {
         ...state,
-        choiceOptions: [...state.choiceOptions, action.payload]
+        choiceOptions: [...state.choiceOptions, action.payload],
       };
     case "UPDATE_OPTION":
       const updatedOptions = [...state.choiceOptions];
       updatedOptions[action.payload.idx] = action.payload.option;
       return {
         ...state,
-        choiceOptions: updatedOptions
+        choiceOptions: updatedOptions,
+      };
+    case "DELETE_OPTION":
+      return {
+        ...state,
+        choiceOptions: state.choiceOptions.filter(
+          (_, idx) => idx !== action.payload
+        ),
       };
     case "SET_DETAILS":
       return {
         ...state,
         tapeDetails: {
-          ...action.payload
-        }
+          ...action.payload,
+        },
       };
     case "SET_VOTE_START":
       return { ...state, voteStart: action.payload };
     case "SET_VOTE_DURATION":
       return { ...state, voteDuration: action.payload };
-    case 'ADD_STRATEGY':
-    return {
-      ...state,
-      strategy: [...state.strategy, action.payload],
-    };
-    case 'REMOVE_STRATEGY':
+    case "ADD_STRATEGY":
+      return {
+        ...state,
+        strategy: [...state.strategy, action.payload],
+      };
+    case "REMOVE_STRATEGY":
       return {
         ...state,
         strategy: state.strategy.filter((_, idx) => idx !== action.payload),

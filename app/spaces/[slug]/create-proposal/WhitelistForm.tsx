@@ -7,15 +7,13 @@ import { useState, Fragment, useEffect, useContext, useMemo } from "react";
 import { CreateProposalContext } from "@/context/createProposal.context";
 import { StrategyName } from "hedsvote";
 
-const defaultState = `
-   {
+const defaultState = `{
     "symbol": "WL",
     "addresses": {
-        "0x00000000000000000000": 1,
-        "0x00000000000000000001": 1
+        "0x0000000000000000000000000000000000000000": 1,
+        "0x0000000000000000000000000000000000000001": 1
       }
-   }
-`;
+}`;
 
 const validateJson = (json: string) => {
   try {
@@ -54,17 +52,17 @@ const WhitelistForm = () => {
     <div
       onClick={() => setOpen(true)}
       role="button"
-      className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[70%]"
+      className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[75%]"
     >
       <WhitelistModal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} currentStrategies={currentStrategies} />
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full items-start justify-between">
         <h4 className="font-space-grotesk font-medium text-black">WHITELIST</h4>
         <div className="flex flex-col items-end justify-between">
           <PlusCircle className="h-5 w-5 text-black" />
           {!isDefaultStrategy && jsonData && !_.isEqual(jsonData, defaultStateObject) ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
         </div>
       </div>
-      <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black">
+      <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black pb-1">
         Choose a set of contracts to base your voting power.
       </p>
     </div>
@@ -117,6 +115,9 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
     setOpen(false);
   };
   
+  const handleResetClick = () => {
+    setLocalJsonData(defaultState);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -144,8 +145,8 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <div>
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-[90%] sm:max-w-lg sm:p-6">
+                <div className="mb-2">
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                   <textarea
                     id="jsonEditor"
@@ -166,13 +167,22 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
                     placeholder="Enter your JSON data here..."
                   />
                 </div>
-                <button
-                  type="button"
-                  className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                  onClick={handleDoneClick}
-                >
-                  Done
-                </button>
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    className="inline-flex justify-start rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={handleResetClick}
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex justify-start rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                    onClick={handleDoneClick}
+                  >
+                    Done
+                  </button>
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
