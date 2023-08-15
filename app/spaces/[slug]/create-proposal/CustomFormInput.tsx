@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 interface OwnProps {
   label: string;
@@ -11,6 +11,8 @@ interface OwnProps {
     idx?: number
   ) => void;
   name?: string;
+  maxChars: number;
+  regex: RegExp;
   inputType?: string;
   formType?: string;
   options?: Array<Record<string, string>>;
@@ -22,11 +24,32 @@ const CustomFormInput = ({
   placeholder,
   value,
   onChange,
+  maxChars,
+  regex,
   inputType = "text",
   formType = "text",
   options,
 }: OwnProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textAreaError, setTextAreaError] = useState<string>("");
+  const [selectError, setSelectError] = useState<string>("");
+  const [inputError, setInputError] = useState<string>("");
+
+  useEffect(() => {
+    return () => {
+      setTextAreaError("");
+      setSelectError("");
+      setInputError("");
+    };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTextAreaError("");
+      setSelectError("");
+      setInputError("");
+    }, 3000);
+  }, [textAreaError, selectError, inputError]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -34,21 +57,41 @@ const CustomFormInput = ({
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [value]);
+
   const renderInput = (formType: string) => {
     switch (formType) {
       case "textarea":
         return (
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            className={`block w-full resize border-b-2 border-gray-400 
+          <>
+            <textarea
+              ref={textareaRef}
+              rows={1}
+              className={`block w-full resize border-b-2 border-gray-400 
             bg-transparent pb-2 font-space-grotesk
-            text-gray-200 placeholder-gray-500 focus:outline-none`}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            name={name}
-          />
+            text-gray-200 placeholder-gray-500 transition-colors
+            duration-500
+            ease-in-out
+            focus:outline-none
+            disabled:text-sm disabled:text-red-500 disabled:opacity-75`}
+              placeholder={placeholder}
+              value={textAreaError?.length ? textAreaError : value}
+              disabled={textAreaError.length > 0}
+              onChange={(e) => {
+                if (!regex.test(e.target.value))
+                  return setTextAreaError(
+                    `Invalid input, text blocks can only contain valid characters (a-z, A-Z, 0-9, !, ?, ., ,)`
+                  );
+                if (e.target.value.length > maxChars)
+                  return setTextAreaError("Max characters reached");
+                else {
+                  setTextAreaError("");
+                  onChange(e);
+                  return;
+                }
+              }}
+              name={name}
+            />
+          </>
         );
       case "select":
         return (
@@ -80,17 +123,36 @@ const CustomFormInput = ({
         );
       default:
         return (
-          <input
-            placeholder={placeholder}
-            className={`block w-full rounded-none border-x-0 border-b-2 border-t-0 
+          <>
+            <input
+              placeholder={placeholder}
+              className={`block w-full rounded-none border-x-0 border-b-2 border-t-0 
             border-gray-400 bg-transparent px-0 font-space-grotesk text-gray-200 placeholder-gray-500 
+            transition-colors
+            duration-500
+            ease-in-out
             focus:shadow-none
-            focus:outline-none`}
-            value={value}
-            onChange={onChange}
-            type={inputType}
-            name={name}
-          />
+            focus:outline-none disabled:text-sm disabled:text-red-500
+            disabled:opacity-75`}
+              value={inputError?.length ? inputError : value}
+              disabled={inputError.length > 0}
+              onChange={(e) => {
+                if (!regex.test(e.target.value))
+                  return setInputError(
+                    `Invalid input, text can only contain valid characters (a-z, A-Z, 0-9, !, ?, ., ,)`
+                  );
+                if (e.target.value.length > maxChars)
+                  return setInputError("Max characters reached");
+                else {
+                  setInputError("");
+                  onChange(e);
+                  return;
+                }
+              }}
+              type={inputType}
+              name={name}
+            />
+          </>
         );
     }
   };

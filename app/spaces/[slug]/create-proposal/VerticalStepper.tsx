@@ -35,7 +35,9 @@ const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
         return (
           <div className="lg:flex lg:flex-col flex flex-row lg:items-start items-center" key={step + i}>
             <button
-              onClick={() => canNavigateToStep(i) && setActiveStep(i)}
+              onClick={() => 
+                // canNavigateToStep(i) && 
+                setActiveStep(i)}
               className={
                 `${
                   i === activeStep ? "bg-white" : ""

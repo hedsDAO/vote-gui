@@ -6,6 +6,7 @@ import { CreateProposalContext } from "@/context/createProposal.context";
 import CustomUpload from "./CustomUpload";
 import CustomFormInput from "./CustomFormInput";
 import NextStepButton from "./NextStepButton";
+import { regex } from "@/app/utils/validation";
 
 interface OwnProps {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
@@ -45,6 +46,11 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
     return false;
   };
 
+  const handleFileDelete = () => {
+    dispatch({ type: "ADD_COVER_FILE", payload: null });
+    setFile(null);
+  };
+
   return (
     <div className="w-full">
       <div className="space-y-5 lg:pl-12">
@@ -54,31 +60,28 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
           acceptFileType="image/*"
           existingFileName={fileName}
           onFileChange={handleFileChange}
+          onFileDelete={() => handleFileDelete()}
           existingFile={state.coverFile}
         />
-        <CustomFormInput
-          label="Title"
-          placeholder="what's the title?"
-          value={newTitle}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <CustomFormInput
-          label="Description"
-          placeholder="write a description..."
-          value={newDescription}
-          onChange={(e) => setDescription(e.target.value)}
-          formType="textarea"
-        />
-        {/* <CustomFormInput
-          label="Type of Tape"
-          value={tapeType}
-          onChange={(e) => setTapeType(e.target.value)}
-          formType="select"
-          options={[
-            { value: "hedstape", label: "hedsTAPE" },
-            { value: "collabtape", label: "collabTAPE" },
-          ]}
-        /> */}
+        <div className="pt-5 flex flex-col gap-2">
+          <CustomFormInput
+            regex={regex}
+            maxChars={24}
+            label="Title"
+            placeholder="what's the title?"
+            value={newTitle}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <CustomFormInput
+            regex={regex}
+            maxChars={6000}
+            label="Description"
+            placeholder="write a description..."
+            value={newDescription}
+            onChange={(e) => setDescription(e.target.value)}
+            formType="textarea"
+          />
+        </div>
         <div className="mt-12 flex justify-end">
           <NextStepButton
             onClick={handleClick}
