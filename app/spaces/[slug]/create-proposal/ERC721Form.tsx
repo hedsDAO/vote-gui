@@ -71,7 +71,6 @@ const ERC721Form = () => {
       <div className="flex w-full items-start justify-between">
         <h4 className="font-space-grotesk font-medium text-black">ERC 721</h4>
         <div className="flex flex-col items-end justify-between">
-          <PlusCircle className="h-5 w-5 text-black" />
           {!isDefaultStrategy &&
           jsonData &&
           !_.isEqual(jsonData, defaultStateObject) ? (
@@ -79,7 +78,7 @@ const ERC721Form = () => {
               <CheckCircle className="h-5 w-5 text-white" />
             </div>
           ) : (
-            <XCircle className="h-5 w-5 text-red-800" />
+            <PlusCircle className="-mr-0.5 h-5 w-5 text-black" />
           )}
         </div>
       </div>

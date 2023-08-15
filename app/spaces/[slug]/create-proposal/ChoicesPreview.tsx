@@ -50,11 +50,11 @@ const ChoicesPreview = ({
                 <div className="flex flex-col gap-4">
                   {state?.choiceOptions?.map((option, idx) => {
                     return (
-                      <div
-                        key={option.title + idx}
-                        className="flex flex-row">
+                      <div key={option.title + idx} className="flex flex-row">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-white/50 min-w-[10px] max-w-[10px]">{idx + 1}</span>
+                          <span className="min-w-[10px] max-w-[10px] text-xs text-white/50">
+                            {idx + 1}
+                          </span>
                           <Image
                             className="rounded-sm"
                             alt={`${option.title} image`}
@@ -62,7 +62,9 @@ const ChoicesPreview = ({
                             width={35}
                             height={35}
                           />
-                          <p className="font-space-grotesk text-sm mb-0.5 text-white/80">{option.title}</p>
+                          <p className="mb-0.5 font-space-grotesk text-sm text-white/80">
+                            {option.title}
+                          </p>
                         </div>
                       </div>
                     );
