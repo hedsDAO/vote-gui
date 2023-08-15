@@ -3,7 +3,6 @@
 import Link from "next/link";
 import ProposalCard from "@/components/ProposalCard";
 import SpaceCard from "@/components/SpaceCard";
-import { Web3Button } from "@web3modal/react";
 
 import { useAccount } from "wagmi";
 import { getuserData } from "./_actions";
@@ -58,7 +57,6 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-[#2d2934]">
       <div className="w-2/3 p-12">
-        <Web3Button />
         <div className="flex flex-row items-center justify-between">
           <p className="text-8xl font-bold">VOTING FOR</p>
           <Link href="/create-proposal">
@@ -95,7 +93,7 @@ export default function Home() {
               <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
             </svg>
           </Link>
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between gap-x-2 overflow-x-scroll">
             {mockProposals &&
               mockProposals.map((proposal) => (
                 <SpaceCard
