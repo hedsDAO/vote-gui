@@ -32,6 +32,7 @@ type ActionType =
   | { type: "SET_VOTE_START"; payload: Date }
   | { type: "SET_VOTE_DURATION"; payload: string }
   | { type: "ADD_STRATEGY"; payload: Strategy }
+  | { type: "UPDATE_STRATEGY"; payload: { idx: number; strategy: Strategy } }
   | { type: "REMOVE_STRATEGY"; payload: number };
 
 const initialState: StateType = {
@@ -99,6 +100,13 @@ const reducer = (state: StateType, action: ActionType) => {
         ...state,
         strategy: [...state.strategy, action.payload],
       };
+    case "UPDATE_STRATEGY":
+      const updatedStrategies = [...state.strategy];
+      updatedStrategies[action.payload.idx] = action.payload.strategy;
+      return {
+        ...state,
+        strategy: updatedStrategies
+      };      
     case "REMOVE_STRATEGY":
       return {
         ...state,

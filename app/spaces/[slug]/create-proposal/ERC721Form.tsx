@@ -138,19 +138,37 @@ const ERC721Modal = ({
     const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
 
     if (isValidJson && !_.isEqual(localJsonData, defaultState)) {
+      const strategyName = StrategyName.ERC721;
       const newStrategy = {
-        name: StrategyName.ERC721,
+        name: strategyName,
         network: "1",
         params: parsedData,
       };
-      dispatch({ type: "ADD_STRATEGY", payload: newStrategy }); // Update the context
+
+      const strategyIndex = state.strategy.findIndex(
+        (strategy) => strategy.name === strategyName
+      );
+  
+      if (strategyIndex !== -1) {
+        // Replace the existing strategy
+        dispatch({ type: "UPDATE_STRATEGY", payload: { idx: strategyIndex, strategy: newStrategy } });
+      } else {
+        // Add the new strategy
+        dispatch({ type: "ADD_STRATEGY", payload: newStrategy });
+      }
     }
     onJsonDataUpdate(parsedData);
     setOpen(false);
+    return;
   };
 
   const handleResetClick = () => {
+    const strategyIndex = state.strategy.findIndex(
+      (strategy) => strategy.name === StrategyName.ERC721
+    );
     setLocalJsonData(defaultState);
+    dispatch({ type: "REMOVE_STRATEGY", payload: strategyIndex });
+    return;
   };
 
   return (
