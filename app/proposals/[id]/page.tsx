@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getTapeByProposalId } from "../../utils/prismaUtils";
 import { DateTime } from "luxon";
 import Link from "next/link";
-import Image from "next/image";
 import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
 import FinalSelection from "./FinalSelection";

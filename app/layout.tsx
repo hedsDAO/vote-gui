@@ -3,7 +3,6 @@ import RootProvider from "./providers";
 import Navbar from "@/navigation/Navbar";
 import Footer from "@/navigation/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
 import "@fontsource/space-mono";
 import "@fontsource-variable/space-grotesk";
 import "./globals.css";
@@ -20,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <RootProvider>
           <Navbar />
           {children}
