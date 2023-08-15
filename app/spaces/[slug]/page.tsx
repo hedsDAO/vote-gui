@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="h-screen text-[#2D2934]">
+    <div className="h-full text-[#2D2934]">
       <div className="h-44 border bg-red-500"></div>
       <div className="mx-auto flex w-3/4 flex-col gap-y-6 p-12">
         <Link href={"/spaces"}>
@@ -123,7 +123,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <h1 className="text-4xl font-semibold">PROPOSALS</h1>
           <p>+ create</p>
         </div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex h-fit flex-wrap justify-between">
           {mockProposals.map((proposal) => (
             <ProposalCard
               link={`/proposals/${proposal.ipfs}`}

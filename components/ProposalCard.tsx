@@ -21,11 +21,11 @@ export default function ProposalCard({
   return (
     <Link key={id} href={link}>
       <div
-        className={`w-56 rounded-xl border-2 ${
+        className={`w-52 rounded-xl border-2 ${
           $light ? "border-white" : "border-black"
         } p-4`}>
         <div
-          className={`w-fit self-start rounded-2xl border-2 px-3 text-center ${
+          className={`mb-2 w-fit self-start rounded-2xl border-2 px-3 text-center text-xs ${
             $light ? "border-white text-white" : "border-black text-black"
           }`}>
           {timeline}

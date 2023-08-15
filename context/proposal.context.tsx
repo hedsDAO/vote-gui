@@ -4,6 +4,7 @@ import React, { Dispatch, createContext, useReducer } from "react";
 
 type StateType = {
   likes: { [key: number]: number };
+  vp: number;
 };
 
 type ActionType = {
@@ -13,6 +14,7 @@ type ActionType = {
 
 const initialState: StateType = {
   likes: {},
+  vp: 0,
 };
 
 const reducer = (state: StateType, action: ActionType) => {
