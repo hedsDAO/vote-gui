@@ -148,10 +148,13 @@ const ERC721Modal = ({
       const strategyIndex = state.strategy.findIndex(
         (strategy) => strategy.name === strategyName
       );
-  
+
       if (strategyIndex !== -1) {
         // Replace the existing strategy
-        dispatch({ type: "UPDATE_STRATEGY", payload: { idx: strategyIndex, strategy: newStrategy } });
+        dispatch({
+          type: "UPDATE_STRATEGY",
+          payload: { idx: strategyIndex, strategy: newStrategy },
+        });
       } else {
         // Add the new strategy
         dispatch({ type: "ADD_STRATEGY", payload: newStrategy });
@@ -173,7 +176,12 @@ const ERC721Modal = ({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => setOpen(false)}>
+      <Dialog
+        open={open}
+        as="div"
+        className="relative z-10"
+        onClose={() => setOpen(false)}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

@@ -141,7 +141,7 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => setOpen(false)}>
+      <Dialog open={open} as="div" className="relative z-10" onClose={() => setOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
