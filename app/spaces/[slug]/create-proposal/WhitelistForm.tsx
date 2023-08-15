@@ -96,27 +96,47 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
   const handleDoneClick = () => {
     const isValidJson = validateJson(localJsonData);
     if (!isValidJson) {
-      setErrorMessage('Invalid JSON data. Please check your input and try again.');
+      setErrorMessage(
+        "Invalid JSON data. Please check your input and try again."
+      );
       return; // Exit the function early if the JSON is invalid
     }
     setErrorMessage(null);
 
     const parsedData = isValidJson ? JSON.parse(localJsonData) : "";
 
-    if (isValidJson) {
+    if (isValidJson && !_.isEqual(localJsonData, defaultState)) {
+      const strategyName = StrategyName.WHITELIST;
       const newStrategy = {
-        name: StrategyName.WHITELIST,
+        name: strategyName,
         network: "1",
-        params: parsedData
+        params: parsedData,
+      };
+
+      const strategyIndex = state.strategy.findIndex(
+        (strategy) => strategy.name === strategyName
+      );
+  
+      if (strategyIndex !== -1) {
+        // Replace the existing strategy
+        dispatch({ type: "UPDATE_STRATEGY", payload: { idx: strategyIndex, strategy: newStrategy } });
+      } else {
+        // Add the new strategy
+        dispatch({ type: "ADD_STRATEGY", payload: newStrategy });
       }
-      dispatch({ type: 'ADD_STRATEGY', payload: newStrategy }); // Update the context
     }
     onJsonDataUpdate(parsedData);
     setOpen(false);
+    return;
   };
   
   const handleResetClick = () => {
+    const strategyIndex = state.strategy.findIndex(
+      (strategy) => strategy.name === StrategyName.WHITELIST
+    );
     setLocalJsonData(defaultState);
+    dispatch({ type: "REMOVE_STRATEGY", payload: strategyIndex });
+    return;
   }
 
   return (
