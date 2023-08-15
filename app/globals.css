@@ -24,6 +24,6 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
-  background-color: #2d2934;
-  /* background-color: #FAFAFA; */
+  /* background-color: #2d2934; */
+  background-color: #fafafa;
 }

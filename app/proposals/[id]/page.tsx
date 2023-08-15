@@ -3,8 +3,10 @@ import Image from "next/image";
 import { getTapeByProposalId } from "../../utils/prismaUtils";
 import { DateTime } from "luxon";
 import Link from "next/link";
+import Image from "next/image";
 import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
+import FinalSelection from "./FinalSelection";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -24,18 +26,37 @@ async function getProposal(id: string) {
 // }
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const proposal = await getProposal(params.id);
+  // const proposal = await getProposal(
+  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
+  // );
+
+  const scores = proposal.scores || [];
+
+  const totalScore =
+    scores.reduce((acc: number, score: number) => acc + score, 0) || 0;
   // const proposal = await getProposal(params.id);
   const proposalResult = await getProposal(
     "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
   );
-  
-  const tapeDataResult = getTapeByProposalId("bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e");
+
+  const tapeDataResult = getTapeByProposalId(
+    "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
+  );
 
   //Load proposal and tapeData in parallel
- const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
+  //  const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
 
+  const choicesWithScores = proposal.choices.map((choice, idx) => {
+    const scorePercentage = (scores[idx] / totalScore) * 100;
+    const roundedPercentage =
+      Math.round((scorePercentage + Number.EPSILON) * 1000) / 1000;
+    return { ...choice, score: roundedPercentage };
+  });
 
-  console.log("proposal*****", proposal);
+  const sortedChoicesWithScores = choicesWithScores.sort(
+    (a, b) => b.score - a.score
+  );
 
   const formatTime = (time: string) => {
     const dateObj = DateTime.fromISO(time);
@@ -65,8 +86,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         <p className="inline-block">SPACE</p>
       </Link>
 
-      <div className="mx-auto flex w-3/4 flex-row py-12">
-        <div className="flex w-4/5 flex-col gap-y-6">
+      <div className="mx-auto flex w-3/4 flex-col-reverse py-12 lg:flex-row">
+        <div className="flex w-full flex-col gap-y-6 lg:w-4/5">
           <p className="text-3xl font-light tracking-widest">
             {proposal.title}
           </p>
@@ -105,23 +126,30 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <div className="w-1/4 border">
-          <p>image</p>
+        <div className="w-full lg:w-1/4">
+          <Image
+            className="rounded-full border-4 border-red-300 drop-shadow-lg"
+            src="https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT"
+            alt="Picture of the author"
+            width={200}
+            height={200}
+          />
         </div>
       </div>
 
-      <div className="mx-auto flex w-3/4 flex-row">
-        <div className="h-full w-2/3">
+      <div className="mx-auto flex w-3/4 flex-col-reverse lg:flex-row">
+        <div className="h-full w-full md:w-full lg:w-2/3">
           <p className="pb-4 text-xs font-medium">OPTIONS</p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-1 md:gap-2 lg:grid-cols-2 lg:gap-3">
             {proposal.choices &&
               proposal.choices.map((choice) => (
                 <OptionCard key={choice.id} choice={choice} />
               ))}
           </div>
         </div>
-        <div className="mx-auto h-full w-1/4">
-          <LikedSubmissions />
+        <div className="mx-auto w-full lg:w-1/4">
+          {/* <LikedSubmissions id={params.id} proposal={proposal} /> */}
+          <FinalSelection choices={sortedChoicesWithScores} />
         </div>
       </div>
     </div>

@@ -1,9 +1,12 @@
-
 import type { Metadata } from "next";
 import RootProvider from "./providers";
-import '@fontsource/space-mono';
-import '@fontsource-variable/space-grotesk';
-import "./globals.css"; 
+import Navbar from "@/navigation/Navbar";
+import Footer from "@/navigation/Footer";
+
+const inter = Inter({ subsets: ["latin"] });
+import "@fontsource/space-mono";
+import "@fontsource-variable/space-grotesk";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "hedsVOTE",
@@ -17,8 +20,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <RootProvider>{children}</RootProvider>
+      <body className={inter.className}>
+        <RootProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </RootProvider>
       </body>
     </html>
   );
