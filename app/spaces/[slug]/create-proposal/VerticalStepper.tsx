@@ -1,4 +1,6 @@
 "use client";
+import { useContext } from "react";
+import { CreateProposalContext } from "@/context/createProposal.context";
 
 const steps = ["DETAILS", "OPTIONS", "TIMELINE", "STRATEGY", "CONFIRM"];
 
@@ -8,13 +10,34 @@ interface OwnProps {
 }
 
 const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
+  const { state, } = useContext(CreateProposalContext);
+  const {coverFile, tapeDetails, choiceOptions, strategy,voteDuration, voteStart} = state;
+  const canNavigateToStep = (step: number) => {
+    if (step === activeStep) return false;
+    switch (step) {
+      case 0:
+        return true;
+      case 1:
+        return coverFile && tapeDetails;
+      case 2:
+        return choiceOptions && activeStep > 1;
+      case 3:
+        return voteDuration && voteStart && activeStep > 2;
+      case 4:
+        return strategy && activeStep > 3;
+      default:
+        return false;
+    }
+  };
   return (
     <div className="flex flex-row lg:flex-col lg:items-start lg:justify-start justify-center lg:mb-0 mb-10">
       {steps?.map((step, i) => {
         return (
           <div className="lg:flex lg:flex-col flex flex-row lg:items-start items-center" key={step + i}>
             <button
-              onClick={() => setActiveStep(i)}
+              onClick={() => 
+                canNavigateToStep(i) && 
+                setActiveStep(i)}
               className={
                 `${
                   i === activeStep ? "bg-white" : ""
