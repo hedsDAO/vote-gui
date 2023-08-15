@@ -14,7 +14,7 @@ export default function SpaceCard({
 }) {
   return (
     <Link key={name} href={`/spaces/${name}`}>
-      <div className="w-56 rounded-xl border-2 border-black p-4">
+      <div className="w-52 rounded-xl border-2 border-black p-4">
         <Image
           className="mx-auto rounded-full border"
           src={image}

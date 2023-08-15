@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
+import FinalSelection from "./FinalSelection";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -23,12 +24,26 @@ async function getTapeById(id: string) {
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
-  // const proposal = await getProposal(params.id);
-  const proposal = await getProposal(
-    "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  );
+  const proposal = await getProposal(params.id);
+  // const proposal = await getProposal(
+  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
+  // );
 
-  console.log("proposal*****", proposal);
+  const scores = proposal.scores || [];
+
+  const totalScore =
+    scores.reduce((acc: number, score: number) => acc + score, 0) || 0;
+
+  const choicesWithScores = proposal.choices.map((choice, idx) => {
+    const scorePercentage = (scores[idx] / totalScore) * 100;
+    const roundedPercentage =
+      Math.round((scorePercentage + Number.EPSILON) * 1000) / 1000;
+    return { ...choice, score: roundedPercentage };
+  });
+
+  const sortedChoicesWithScores = choicesWithScores.sort(
+    (a, b) => b.score - a.score
+  );
 
   const formatTime = (time: string) => {
     const dateObj = DateTime.fromISO(time);
@@ -120,7 +135,8 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="mx-auto w-full lg:w-1/4">
-          <LikedSubmissions />
+          {/* <LikedSubmissions id={params.id} proposal={proposal} /> */}
+          <FinalSelection choices={sortedChoicesWithScores} />
         </div>
       </div>
     </div>

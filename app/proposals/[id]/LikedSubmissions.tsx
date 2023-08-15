@@ -2,58 +2,53 @@
 import { ProposalContext } from "@/context/proposal.context";
 import { useAccount, useWalletClient } from "wagmi";
 import { useContext, useEffect, useState } from "react";
-import { calculateUserVotingPower } from "hedsvote";
+import { calculateUserVotingPower, Proposal } from "hedsvote";
 import { Web3Button } from "@web3modal/react";
 import { castVote, getProposalById } from "@/app/_actions";
 
-const LikedSubmissions = ({ params }: { params: { id: string } }) => {
+const LikedSubmissions = ({
+  proposal,
+  id,
+}: {
+  proposal: Proposal;
+  id: string;
+}) => {
   const [vp, setVp] = useState(0);
   const { state, dispatch } = useContext(ProposalContext);
   const { data: walletClient, isError, isLoading } = useWalletClient();
   const { address, isConnected } = useAccount();
+  const { strategies } = proposal;
 
-  const handleVote = async () => {
-    try {
-      const proposal = await getProposalById(params.id);
-      const vp = calculateUserVotingPower(address, proposal.strategies);
-      const { id } = params;
-      const vote = {
-        proposalId: id,
-        signature: "",
-        vp,
-        voter: "",
-        voteChoices: state.likes,
-      };
-      console.log("vote", vote);
-      // castVote({ vote, walletClient });
-    } catch (error) {
-      console.error(error);
-    }
+  const handleVote = () => {
+    const vote = {
+      proposalId: id,
+      signature: "",
+      vp,
+      voter: address,
+      voteChoices: state.likes,
+    };
+    console.log("vote", vote);
+    // castVote({ vote, walletClient });
   };
-
-  console.log("address", address);
 
   useEffect(() => {
     async function getVp() {
       if (address) {
-        const proposal = await getProposalById(params.id);
         const newAddress = address.toLowerCase();
-        const vp = await calculateUserVotingPower(
-          newAddress,
-          proposal.strategies
-        );
+        const vp = await calculateUserVotingPower(newAddress, strategies);
         console.log("vp", vp);
         setVp(vp);
       }
     }
     getVp();
-  }, []);
+  }, [address, id, strategies]);
 
   return (
     <div className="flex h-72 w-72 flex-col justify-items-center gap-y-1.5 overflow-y-scroll rounded-md border bg-[#EAEAEA] px-4 py-6 drop-shadow-lg">
       <div className="mx-auto">
         {isConnected ? "connected" : <Web3Button />}
       </div>
+      <p>{`${vp} points available`}</p>
       {state.likes &&
         Object.entries(state.likes).map(([id, score]) => (
           <div
