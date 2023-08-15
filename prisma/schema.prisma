@@ -92,7 +92,7 @@ model tapes {
   merkle_root         String?               @db.VarChar
   description         String?               @db.VarChar
   image               String?               @db.VarChar
-  proposal_id         String?               @db.VarChar
+  proposal_id         String?               @db.VarChar @unique
   video               String?               @db.VarChar
   bpm                 Int?
   timeline            Json?
