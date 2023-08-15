@@ -1,12 +1,13 @@
 "use client";
 import { ProposalContext } from "@/context/proposal.context";
 import { useAccount, useWalletClient } from "wagmi";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { calculateUserVotingPower } from "hedsvote";
 import { Web3Button } from "@web3modal/react";
 import { castVote, getProposalById } from "@/app/_actions";
 
 const LikedSubmissions = ({ params }: { params: { id: string } }) => {
+  const [vp, setVp] = useState(0);
   const { state, dispatch } = useContext(ProposalContext);
   const { data: walletClient, isError, isLoading } = useWalletClient();
   const { address, isConnected } = useAccount();
@@ -23,11 +24,30 @@ const LikedSubmissions = ({ params }: { params: { id: string } }) => {
         voter: "",
         voteChoices: state.likes,
       };
-      castVote({ vote, walletClient });
+      console.log("vote", vote);
+      // castVote({ vote, walletClient });
     } catch (error) {
       console.error(error);
     }
   };
+
+  console.log("address", address);
+
+  useEffect(() => {
+    async function getVp() {
+      if (address) {
+        const proposal = await getProposalById(params.id);
+        const newAddress = address.toLowerCase();
+        const vp = await calculateUserVotingPower(
+          newAddress,
+          proposal.strategies
+        );
+        console.log("vp", vp);
+        setVp(vp);
+      }
+    }
+    getVp();
+  }, []);
 
   return (
     <div className="flex h-72 w-72 flex-col justify-items-center gap-y-1.5 overflow-y-scroll rounded-md border bg-[#EAEAEA] px-4 py-6 drop-shadow-lg">
