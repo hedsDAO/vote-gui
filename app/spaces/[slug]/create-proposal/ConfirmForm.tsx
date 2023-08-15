@@ -18,6 +18,18 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   const blockNumber = useBlockNumber().data;
   const {address} = useAccount();
   const {slug} = useParams();
+
+  const formattedDate = state.voteStart.toLocaleString('en-US', {
+    month: 'long', // or 'numeric' for numeric representation
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  const formattedTimeDuration = Number(state.voteDuration) / (1000 * 60 * 60 * 24);
+
+
   const formValidation = () => {
     // if (!state.voteDuration || !state.voteStart) {
     //   return true;
@@ -154,10 +166,18 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
             </label>
             <NotePencil cursor="pointer" type="button" onClick={() => setActiveStep(2)} className="h-5 w-5 text-white cursor-pointer"/>
           </div>
-          <label className="font-mono text-sm font-semibold tracking-tight text-gray-200">
+          <label className="font-mono text-sm font-semibold tracking-tight mb-1 text-gray-200">
               Vote Start
           </label>
-            {/* Insert date timepicker */}
+          <div className="text-black max-h-[32px] w-fit bg-white rounded-lg font-space-grotesk px-5 border-transparent">
+            {formattedDate}
+          </div>
+          <label className="font-mono text-sm font-semibold tracking-tight mb-1 text-gray-200">
+              Vote Duration
+          </label>
+          <div className="text-black max-h-[32px] w-fit bg-white rounded-lg font-space-grotesk px-5 border-transparent">
+            {formattedTimeDuration === 1 ? `${formattedTimeDuration} Day` : `${formattedTimeDuration} Days`}
+          </div>
           <div className="flex justify-between items-center pt-3 ">
             <label className="font-mono text-lg font-semibold tracking-tight text-gray-200 ">
               Strategy
