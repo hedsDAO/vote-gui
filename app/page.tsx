@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!address) return;
-    getuserData(address).then((result) => {
+    getuserData(address).then((result: any) => {
       setUserData(result);
     });
   }, [address]);

@@ -1,11 +1,12 @@
-import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import RootProvider from "./providers";
 import Navbar from "@/navigation/Navbar";
 import Footer from "@/navigation/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
+import "@fontsource/space-mono";
+import "@fontsource-variable/space-grotesk";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "hedsVOTE",

@@ -13,7 +13,7 @@ async function getProposals() {
 
 export default async function Page() {
   const proposals = await getProposals();
-  console.log("proposals", proposals);
+  // console.log("proposals", proposals);
   return (
     <div className="flex flex-wrap p-12">
       {proposals &&
