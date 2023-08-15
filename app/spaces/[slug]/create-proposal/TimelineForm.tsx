@@ -29,6 +29,7 @@ const TimelineForm = ({ setActiveStep }: OwnProps) => {
             </label>
             <div className='flex items-center'>
               <DateTimePicker
+                // disabled={true}
                 startDate={state.voteStart}
                 setStartDate={(date) =>
                   dispatch({ type: "SET_VOTE_START", payload: date })

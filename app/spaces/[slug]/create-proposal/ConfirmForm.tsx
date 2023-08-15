@@ -2,7 +2,7 @@
 import { useContext } from "react";
 import NextStepButton from "./NextStepButton";
 import Image from "next/image";
-import { NotePencil } from "@phosphor-icons/react";
+import { CheckCircle, NotePencil } from "@phosphor-icons/react";
 import { ChoiceOption, CreateProposalContext } from "@/context/createProposal.context";
 import { pinFileToIpfs } from "../../../_actions";
 import { Choice, Proposal } from "hedsvote";
@@ -86,6 +86,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   }
   const submitCreateProposal = async () => {
     console.log("options", await formatChoices(state.choiceOptions))
+    if (Array.isArray(slug)) return;
     const startTime =  new Date(state.voteStart);
     const proposal: Proposal = {
       author: address as string,
@@ -166,11 +167,17 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
           <div className="flex flex-col justify-between">
             {state.strategy.map((strategy, idx) => {
                return (
-               <div>
-                <h4 key={idx} className="font-mono text-md tracking-tight font-light" >
-                {strategy.name}
-                </h4>
-               </div>
+                <div className="flex flex-col items-start mt-2 gap-2 rounded-lg bg-white px-4 py-3 lg:w-full">
+                  <div key={idx} className="flex w-full items-start justify-between">
+                    <h4 className="font-space-grotesk font-medium text-black pr-4">{strategy.name}</h4>
+                    <div className="inline-flex rounded-full border-transparent bg-green-700">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                  </div>
+                  <p className="max-w-[28ch] whitespace-pre-wrap pb-1 font-space-grotesk text-sm text-black">
+                    Choose a set of contracts to base your voting power.
+                  </p>
+              </div>
                )
             })}
           </div>
