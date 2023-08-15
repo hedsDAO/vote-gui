@@ -1,34 +1,42 @@
-"use client"
-import { useContext } from "react";
+"use client";
+import { useContext, useState } from "react";
 import NextStepButton from "./NextStepButton";
 import Image from "next/image";
 import { CheckCircle, NotePencil } from "@phosphor-icons/react";
-import { ChoiceOption, CreateProposalContext } from "@/context/createProposal.context";
+import {
+  ChoiceOption,
+  CreateProposalContext,
+} from "@/context/createProposal.context";
 import { pinFileToIpfs } from "../../../_actions";
 import { Choice, Proposal } from "hedsvote";
 import { useBlockNumber, useAccount } from "wagmi";
-import { useParams } from 'next/navigation';
+import { useParams } from "next/navigation";
+import ChoicesPreview from "./ChoicesPreview";
 
 interface OwnProps {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ConfirmForm = ({ setActiveStep }: OwnProps) => {
+  const [isShowingFullDescription, setIsShowingFullDescription] =
+    useState<boolean>(false);
+  const [isShowingChoicesPreview, setIsShowingChoicesPreview] =
+    useState<boolean>(false);
   const { state, dispatch } = useContext(CreateProposalContext);
   const blockNumber = useBlockNumber().data;
-  const {address} = useAccount();
-  const {slug} = useParams();
+  const { address } = useAccount();
+  const { slug } = useParams();
 
-  const formattedDate = state.voteStart.toLocaleString('en-US', {
-    month: 'long', // or 'numeric' for numeric representation
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  const formattedDate = state.voteStart.toLocaleString("en-US", {
+    month: "long", // or 'numeric' for numeric representation
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
-  const formattedTimeDuration = Number(state.voteDuration) / (1000 * 60 * 60 * 24);
-
+  const formattedTimeDuration =
+    Number(state.voteDuration) / (1000 * 60 * 60 * 24);
 
   const formValidation = () => {
     // if (!state.voteDuration || !state.voteStart) {
@@ -36,15 +44,15 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     // }
     return false;
   };
-  console.log(state)
+  console.log(state);
 
   const formatChoices = async (choiceOptions: ChoiceOption[]) => {
-    const formattedChoices = choiceOptions.map( async (choice, idx) => {
-      const {title, imageFile} = choice;
-      const formattedChoice: Choice = {id: idx, image: '', name: title}
+    const formattedChoices = choiceOptions.map(async (choice, idx) => {
+      const { title, imageFile } = choice;
+      const formattedChoice: Choice = { id: idx, image: "", name: title };
       if (imageFile) {
         const data = new FormData();
-    
+
         // Metadata for pinata can be customized as needed
         const pinataMetadata = {
           name: `${title} image`,
@@ -52,54 +60,55 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
             fieldName: `${title} image`,
           },
         };
-      
-        data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-        data.append('file', imageFile);
+
+        data.append("pinataMetadata", JSON.stringify(pinataMetadata));
+        data.append("file", imageFile);
         try {
           const imageRes = await pinFileToIpfs(data);
-          formattedChoice.image = "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
-          console.log(formattedChoice.image)
-          } catch (e) {
-            console.log(e)
-          }
+          formattedChoice.image =
+            "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
+          console.log(formattedChoice.image);
+        } catch (e) {
+          console.log(e);
         }
+      }
 
       // if (audioFile) {
       //     const audioRes = await pinFileToIpfs(audioFile, `${title} audio`);
       //     const audioLink = audioRes.data.IpfsHash;
       //     formattedChoice.media = audioLink;
       //   }
-        return formattedChoice;
-      })
-      return Promise.all(formattedChoices)
-    }
+      return formattedChoice;
+    });
+    return Promise.all(formattedChoices);
+  };
   const getCoverLink = async (coverFile: File | null) => {
     if (!coverFile) return "";
     const data = new FormData();
-    
-        // Metadata for pinata can be customized as needed
-        const pinataMetadata = {
-          name: `${coverFile.name} cover`,
-          keyvalues: {
-            fieldName: coverFile.name,
-          },
-        };
-      
-        data.append('pinataMetadata', JSON.stringify(pinataMetadata));
-        data.append('file', coverFile);
-        try {
-          const imageRes = await pinFileToIpfs(data);
-          const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
-          console.log(coverLink)
-          return coverLink;
-          } catch (e) {
-            console.log(e)
-          }
-  }
+
+    // Metadata for pinata can be customized as needed
+    const pinataMetadata = {
+      name: `${coverFile.name} cover`,
+      keyvalues: {
+        fieldName: coverFile.name,
+      },
+    };
+
+    data.append("pinataMetadata", JSON.stringify(pinataMetadata));
+    data.append("file", coverFile);
+    try {
+      const imageRes = await pinFileToIpfs(data);
+      const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
+      console.log(coverLink);
+      return coverLink;
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const submitCreateProposal = async () => {
-    console.log("options", await formatChoices(state.choiceOptions))
+    console.log("options", await formatChoices(state.choiceOptions));
     if (Array.isArray(slug)) return;
-    const startTime =  new Date(state.voteStart);
+    const startTime = new Date(state.voteStart);
     const proposal: Proposal = {
       author: address as string,
       block: Number(blockNumber),
@@ -111,103 +120,222 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       spaceName: slug,
       title: state.tapeDetails.title,
       strategies: state.strategy,
-      method: 1
+      method: 1,
     };
-   console.log(proposal)
+    console.log(proposal);
     //Use hedsvote createProposal via server actions
-  }
-
+  };
 
   return (
-    <div className="w-full">
-      <div className="space-y-5 pl-12">
-        <div className="flex w-fit flex-col">
-          <div className="flex justify-between items-center pt-2 ">
-            <label className="font-mono text-lg font-semibold tracking-tight text-gray-200 ">
-              Cover + Details
-            </label>
-            <NotePencil type="button" onClick={() => setActiveStep(0)} className="h-5 w-5 text-white cursor-pointer"/>
-          </div>
-          {state.coverFile && <Image alt='cover image' width={350} height={400} src={ URL.createObjectURL(state.coverFile)}></Image>}
-          <label className="font-mono text-lg font-bold tracking-tight text-gray-100 pt-4">
-            Title
+    <div className="w-full lg:pl-12">
+      <p className="font-space-grotesk text-2xl">Preview and Submit</p>
+      <div className="mt-2 flex flex-col">
+        <div className="flex items-baseline justify-between py-1">
+          <label className="mb-2 font-space-grotesk text-lg font-light text-white/80">
+            Cover & Details
           </label>
-          <h4 className="font-mono tracking-tight font-light" >
-            {state.tapeDetails.title}
-          </h4>
-          <hr className="mb-1 h-[0.5px] border-t-0 bg-white opacity-100" />
-          <label className="font-mono text-lg font-bold tracking-tight text-gray-100 pt-4">
-            Description
-          </label>
-          <p className="font-mono tracking-tight font-light">
-            {state.tapeDetails.description}
-          </p>
-          <div className="flex justify-between items-center pt-3 ">
-            <label className="font-mono text-lg font-semibold tracking-tight text-gray-200 ">
-              Choice Options
-            </label>
-            <NotePencil cursor="pointer" type="button" onClick={() => setActiveStep(1)} className="h-5 w-5 text-white cursor-pointer"/>
+          <NotePencil
+            type="button"
+            onClick={() => setActiveStep(0)}
+            className="h-4 w-4 cursor-pointer text-white"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="flex h-44 w-44 flex-col items-center justify-center rounded-2xl border-[4px] border-dashed border-gray-200 p-4 text-center">
+            {state.coverFile && (
+              <Image
+                alt="cover image"
+                width={176}
+                height={176}
+                className="min-h-[176px] min-w-[176px] rounded-2xl object-cover p-1.5"
+                src={URL.createObjectURL(state.coverFile)}
+              ></Image>
+            )}
           </div>
-          <div className="flex flex-col justify-between">
-            {state.choiceOptions.map((choice, idx) => {
-               return (
-               <div key={idx}>
-                <h4  className="font-mono tracking-tight font-light" >
-                {choice.title}
+          <div className="flex flex-col justify-start gap-1">
+            <div>
+              <label className="font-space-grotesk text-sm text-gray-100/50">
+                title
+              </label>
+              <h4 className="pointer-events-none font-space-grotesk font-light">
+                {state.tapeDetails.title}
+              </h4>
+            </div>
+            <div>
+              <label className="font-space-grotesk text-sm text-gray-100/50">
+                description
+              </label>
+              {isShowingFullDescription ? (
+                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light">
+                  {state.tapeDetails.description}
+                  <span
+                    role="button"
+                    className="pointer-events-auto ml-2 text-sm text-white/50"
+                    onClick={() => setIsShowingFullDescription(false)}
+                  >
+                    show less
+                  </span>
                 </h4>
-                <hr className="mb-1 h-[0.5px] border-t-0 bg-white opacity-100" />
-               </div>
-               )
-            })}
-          </div>
-          <div className="flex justify-between items-center pt-3 ">
-            <label className="font-mono text-lg font-semibold tracking-tight text-gray-200 ">
-              Proposal Timeline
-            </label>
-            <NotePencil cursor="pointer" type="button" onClick={() => setActiveStep(2)} className="h-5 w-5 text-white cursor-pointer"/>
-          </div>
-          <label className="font-mono text-sm font-semibold tracking-tight mb-1 text-gray-200">
-              Vote Start
-          </label>
-          <div className="text-black max-h-[32px] w-fit bg-white rounded-lg font-space-grotesk px-5 border-transparent">
-            {formattedDate}
-          </div>
-          <label className="font-mono text-sm font-semibold tracking-tight mb-1 text-gray-200">
-              Vote Duration
-          </label>
-          <div className="text-black max-h-[32px] w-fit bg-white rounded-lg font-space-grotesk px-5 border-transparent">
-            {formattedTimeDuration === 1 ? `${formattedTimeDuration} Day` : `${formattedTimeDuration} Days`}
-          </div>
-          <div className="flex justify-between items-center pt-3 ">
-            <label className="font-mono text-lg font-semibold tracking-tight text-gray-200 ">
-              Strategy
-            </label>
-            <NotePencil cursor="pointer" type="button" onClick={() => setActiveStep(3)} className="h-5 w-5 text-white cursor-pointer"/>
-          </div>
-          <div className="flex flex-col justify-between">
-            {state.strategy.map((strategy, idx) => {
-               return (
-                <div className="flex flex-col items-start mt-2 gap-2 rounded-lg bg-white px-4 py-3 lg:w-full">
-                  <div key={idx} className="flex w-full items-start justify-between">
-                    <h4 className="font-space-grotesk font-medium text-black pr-4">{strategy.name}</h4>
-                    <div className="inline-flex rounded-full border-transparent bg-green-700">
-                      <CheckCircle className="h-5 w-5 text-white" />
-                    </div>
-                  </div>
-                  <p className="max-w-[28ch] whitespace-pre-wrap pb-1 font-space-grotesk text-sm text-black">
-                    Choose a set of contracts to base your voting power.
-                  </p>
-              </div>
-               )
-            })}
+              ) : (
+                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light">
+                  {state.tapeDetails.description?.length > 200
+                    ? state.tapeDetails.description.slice(0, 200)
+                    : state.tapeDetails.description}
+                  {state.tapeDetails.description?.length > 200 && (
+                    <span
+                      role="button"
+                      className="pointer-events-auto ml-2 text-sm text-white/50"
+                      onClick={() => setIsShowingFullDescription(true)}
+                    >
+                      ...
+                    </span>
+                  )}
+                </h4>
+              )}
+            </div>
           </div>
         </div>
-        <NextStepButton
+        <hr className="mt-4 border-white/50" />
+        <div className="flex items-center justify-between pt-3">
+          <label className="mb-3 font-space-grotesk text-lg font-light text-white/80">
+            Choices
+          </label>
+          <NotePencil
+            cursor="pointer"
+            type="button"
+            onClick={() => setActiveStep(1)}
+            className="h-4 w-4 cursor-pointer text-white"
+          />
+        </div>
+        {/* desktop choices */}
+        <div className="flex flex-row gap-2 lg:hidden">
+          {state.choiceOptions.slice(0, 2).map((choice, idx) => {
+            return (
+              <div className="rounded-[17px] border border-white/50">
+                <Image
+                  alt="cover image"
+                  width={80}
+                  height={80}
+                  className="max-h-[80px] min-h-[80px] min-w-[80px] max-w-[80px] rounded-2xl object-cover"
+                  src={URL.createObjectURL(choice.imageFile as File)}
+                ></Image>
+              </div>
+            );
+          })}
+          <div className="flex max-h-[80px] min-h-[80px] min-w-[80px] max-w-[80px] flex-col items-center justify-center rounded-[17px] border border-white/50 text-xs">
+            <span
+              onClick={() => setIsShowingChoicesPreview(true)}
+              role="button"
+              className="pointer-events-auto -mt-1 font-space-grotesk text-[0.65rem] text-white/75"
+            >
+              view all
+            </span>
+          </div>
+          {isShowingChoicesPreview && (
+            <ChoicesPreview
+              onClose={() => setIsShowingChoicesPreview(false)}
+              isOpen={isShowingChoicesPreview}
+            />
+          )}
+        </div>
+        {/* mobile choices */}
+        <div className="lg:flex flex-row gap-2 hidden">
+          {state.choiceOptions.slice(0, 3).map((choice, idx) => {
+            return (
+              <div className="rounded-[17px] border border-white/50">
+                <Image
+                  alt="cover image"
+                  width={80}
+                  height={80}
+                  className="max-h-[80px] min-h-[80px] min-w-[80px] max-w-[80px] rounded-2xl object-cover"
+                  src={URL.createObjectURL(choice.imageFile as File)}
+                ></Image>
+              </div>
+            );
+          })}
+          <div className="flex max-h-[80px] min-h-[80px] min-w-[80px] max-w-[80px] flex-col items-center justify-center rounded-[17px] border border-white/50 text-xs">
+            <span
+              onClick={() => setIsShowingChoicesPreview(true)}
+              role="button"
+              className="pointer-events-auto -mt-1 font-space-grotesk text-[0.65rem] text-white/75"
+            >
+              view all
+            </span>
+          </div>
+          {isShowingChoicesPreview && (
+            <ChoicesPreview
+              onClose={() => setIsShowingChoicesPreview(false)}
+              isOpen={isShowingChoicesPreview}
+            />
+          )}
+        </div>
+        <hr className="mt-7 border-white/50" />
+        <div className="flex items-center justify-between pt-5">
+          <label className="mb-3 font-space-grotesk text-lg font-light text-white/80">
+            Proposal Timeline
+          </label>
+          <NotePencil
+            cursor="pointer"
+            type="button"
+            onClick={() => setActiveStep(2)}
+            className="h-4 w-4 cursor-pointer text-white"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline gap-2">
+            <label className="font-space-grotesk text-sm text-gray-100/50">
+              Vote Start:
+            </label>
+            <div className="font-space-grotesk text-sm">{formattedDate}</div>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <label className="font-space-grotesk text-sm text-gray-100/50">
+              Vote Duration:
+            </label>
+            <div className="font-space-grotesk text-sm">
+              {formattedTimeDuration === 1
+                ? `${formattedTimeDuration} Day`
+                : `${formattedTimeDuration} Days`}
+            </div>
+          </div>
+        </div>
+        <hr className="mt-7 border-white/50" />
+        <div className="flex items-center justify-between pt-4">
+          <label className="mb-3 font-space-grotesk text-lg font-light text-white/80">
+            Strategies
+          </label>
+          <NotePencil
+            cursor="pointer"
+            type="button"
+            onClick={() => setActiveStep(3)}
+            className="h-4 w-4 cursor-pointer text-white"
+          />
+        </div>
+        <div className="mt-2 flex flex-col gap-2">
+          {state.strategy.map((strategy, idx) => {
+            return (
+              <div
+                key={idx}
+                className="flex items-center justify-between gap-4 rounded-lg bg-transparent px-2 py-1.5 border border-white/80 text-sm transition-all lg:w-[50%]"
+              >
+                <h4 className="font-space-grotesk text-xs text-white">
+                  {strategy.name}
+                </h4>
+                <div className="rounded-full bg-green-700">
+                  <CheckCircle className="h-4 w-4 text-white" />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-10 flex justify-end">
+          <NextStepButton
             onClick={() => submitCreateProposal()}
             disabled={formValidation()}
             text="Submit"
             includeIcon
           />
+        </div>
       </div>
     </div>
   );

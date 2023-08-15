@@ -107,7 +107,7 @@ const OptionsForm = ({ setActiveStep }: OwnProps) => {
       <div className="space-y-4 lg:pl-12">
         {state.choiceOptions.map((option, idx) => (
           <>
-            <Disclosure as="div" defaultOpen={activeTab === 0}>
+            <Disclosure as="div" defaultOpen={idx === 0}>
               {({ open }) => (
                 <>
                   <div className="flex">

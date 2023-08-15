@@ -36,7 +36,7 @@ const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
           <div className="lg:flex lg:flex-col flex flex-row lg:items-start items-center" key={step + i}>
             <button
               onClick={() => 
-                // canNavigateToStep(i) && 
+                canNavigateToStep(i) && 
                 setActiveStep(i)}
               className={
                 `${
