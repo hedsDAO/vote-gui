@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import ProposalCard from "@/components/ProposalCard";
+import SpaceCard from "@/components/SpaceCard";
 import { Web3Button } from "@web3modal/react";
 
 import { useAccount } from "wagmi";
@@ -12,8 +13,6 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [userData, setUserData] = useState();
 
-  console.log("isConnected", isConnected);
-  console.log("user data", userData);
   useEffect(() => {
     if (!address) return;
     getuserData(address).then((result) => {
@@ -83,65 +82,47 @@ export default function Home() {
       </div>
       <div className="flex w-full flex-col items-center bg-zinc-50">
         <div className="w-2/3 p-12">
-          <Link href="/spaces">
-            <p className="text-4xl text-[#2D2934]">VIEW ALL SPACES</p>
+          <Link href="/spaces" className="flex flex-row items-center py-4">
+            <p className="text-center text-3xl text-[#2D2934]">
+              VIEW ALL SPACES
+            </p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#000000"
+              viewBox="0 0 256 256">
+              <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"></path>
+            </svg>
           </Link>
           <div className="flex flex-row justify-between">
             {mockProposals &&
               mockProposals.map((proposal) => (
-                // <div className="border-2 rounded-md" key={proposal.ipfs_hash}>
-                //   <Link href={`/proposals/${proposal.ipfs_hash}`}>
-                //     <p>{proposal.title}</p>
-                //   </Link>
-                // </div>
-                <div
-                  className="mt-8 box-border flex w-56 flex-col items-center justify-between rounded-2xl border-4 border-black p-4"
-                  key={proposal.id}>
-                  <div className="fit-content self-start rounded-2xl border-2	border-black px-3 text-center text-black">
-                    {proposal.timeline}
-                  </div>
-                  <Image
-                    className="rounded-full border-2 border-black"
-                    alt="Proposal cover image"
-                    src={proposal.image}
-                    width={75}
-                    height={75}
-                  />
-                  <p className="font-mono text-black">{proposal.name}</p>
-                  <p className="text-black">CREATED BY</p>
-                  <p className="text-black">{proposal.created_by}</p>
-                </div>
+                <SpaceCard
+                  key={proposal.id}
+                  name={proposal.name}
+                  image={proposal.image}
+                  author={proposal.created_by}
+                />
               ))}
           </div>
         </div>
       </div>
       <div className="w-2/3 p-12">
-        <p className="text-4xl text-white">YOU VOTED ON</p>
+        <p className="py-4 text-3xl text-white">YOU VOTED ON</p>
         <div className="flex flex-row justify-between">
           {mockProposals &&
             mockProposals.map((proposal) => (
-              // <div className="border-2 rounded-md" key={proposal.ipfs_hash}>
-              //   <Link href={`/proposals/${proposal.ipfs_hash}`}>
-              //     <p>{proposal.title}</p>
-              //   </Link>
-              // </div>
-              <div
-                className="mt-8 box-border flex w-56 flex-col items-center justify-between rounded-2xl border-2 border-white p-4"
-                key={proposal.id}>
-                <div className="fit-content self-start rounded-2xl border-2	border-white px-3 text-center text-white">
-                  {proposal.timeline}
-                </div>
-                <Image
-                  className="rounded-full border-2 border-white"
-                  alt="Proposal cover image"
-                  src={proposal.image}
-                  width={75}
-                  height={75}
-                />
-                <p className="font-mono text-white">{proposal.name}</p>
-                <p className="text-white">CREATED BY</p>
-                <p className="text-white">{proposal.created_by}</p>
-              </div>
+              <ProposalCard
+                link={`/proposals/${proposal.ipfs}`}
+                key={proposal.id}
+                id={proposal.id}
+                name={proposal.name}
+                image={proposal.image}
+                author={proposal.created_by}
+                timeline={proposal.timeline}
+                $light
+              />
             ))}
         </div>
       </div>
