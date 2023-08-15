@@ -1,8 +1,8 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import _ from 'lodash';
-import { PlusCircle, CheckCircle, XCircle} from "@phosphor-icons/react";
+import _ from "lodash";
+import { PlusCircle, CheckCircle, XCircle } from "@phosphor-icons/react";
 import { useState, Fragment, useEffect, useContext, useMemo } from "react";
 import { CreateProposalContext } from "@/context/createProposal.context";
 import { StrategyName } from "hedsvote";
@@ -29,20 +29,24 @@ const WhitelistForm = () => {
   const [jsonData, setJsonData] = useState<any>("");
   const { state } = useContext(CreateProposalContext);
   const defaultStateObject = JSON.parse(defaultState);
-  const [currentStrategies, setCurrentStrategies] = useState(defaultStateObject);
+  const [currentStrategies, setCurrentStrategies] =
+    useState(defaultStateObject);
 
   useEffect(() => {
-    const strategy = state.strategy.find((strategy) => strategy.name === StrategyName.WHITELIST) || defaultStateObject;
+    const strategy =
+      state.strategy.find(
+        (strategy) => strategy.name === StrategyName.WHITELIST
+      ) || defaultStateObject;
     setCurrentStrategies(strategy.params);
-    setJsonData(strategy.params)
+    setJsonData(strategy.params);
   }, [state.strategy]);
-  
-  
-  
+
   const isDefaultStrategy = useMemo(() => {
-    return _.isEqual(currentStrategies, defaultStateObject) && !_.isEqual(jsonData, defaultStateObject);
+    return (
+      _.isEqual(currentStrategies, defaultStateObject) &&
+      !_.isEqual(jsonData, defaultStateObject)
+    );
   }, [currentStrategies, jsonData]);
-  
 
   // Callback function to handle updates from the child component
   const handleJsonDataUpdate = (updatedJsonData: any) => {
@@ -54,43 +58,63 @@ const WhitelistForm = () => {
       role="button"
       className="flex cursor-pointer flex-col items-start gap-2 rounded-lg bg-white px-4 py-3 transition-all hover:bg-white/80 lg:w-[75%]"
     >
-      <WhitelistModal open={open} setOpen={setOpen} onJsonDataUpdate={handleJsonDataUpdate} currentStrategies={currentStrategies} />
+      <WhitelistModal
+        open={open}
+        setOpen={setOpen}
+        onJsonDataUpdate={handleJsonDataUpdate}
+        currentStrategies={currentStrategies}
+      />
       <div className="flex w-full items-start justify-between">
         <h4 className="font-space-grotesk font-medium text-black">WHITELIST</h4>
         <div className="flex flex-col items-end justify-between">
-          <PlusCircle className="h-5 w-5 text-black" />
-          {!isDefaultStrategy && jsonData && !_.isEqual(jsonData, defaultStateObject) ? <div className="bg-green-700 rounded-full inline-flex border-transparent"><CheckCircle className="h-5 w-5 text-white" /></div> : <XCircle className="h-5 w-5 text-red-800"/>}
+          {!isDefaultStrategy &&
+          jsonData &&
+          !_.isEqual(jsonData, defaultStateObject) ? (
+            <div className="inline-flex rounded-full border-transparent bg-green-700">
+              <CheckCircle className="h-5 w-5 text-white" />
+            </div>
+          ) : (
+            <PlusCircle className="-mr-0.5 h-5 w-5 text-black" />
+          )}
         </div>
       </div>
-      <p className="max-w-[28ch] whitespace-pre-wrap font-space-grotesk text-sm text-black pb-1">
+      <p className="max-w-[28ch] whitespace-pre-wrap pb-1 font-space-grotesk text-sm text-black">
         Choose a set of contracts to base your voting power.
       </p>
     </div>
   );
 };
 
-const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: any) => {
+const WhitelistModal = ({
+  open,
+  setOpen,
+  onJsonDataUpdate,
+  currentStrategies,
+}: any) => {
   const { state, dispatch } = useContext(CreateProposalContext);
   const [localJsonData, setLocalJsonData] = useState<any>(currentStrategies);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
   useEffect(() => {
     setLocalJsonData(formatStrategyToJson(currentStrategies));
-
   }, [currentStrategies]);
 
   const formatStrategyToJson = (strategy: any) => {
     if (!strategy) return defaultState;
-    const parsedStrategy = typeof strategy === 'string' ? JSON.parse(strategy) : strategy;
+    const parsedStrategy =
+      typeof strategy === "string" ? JSON.parse(strategy) : strategy;
 
-    return JSON.stringify({
-      symbol: parsedStrategy.symbol || "WL",
-      addresses: parsedStrategy.addresses || {
-      ["0x00000000000000000000"]: 1,
-      ["0x00000000000000000001"]: 1
+    return JSON.stringify(
+      {
+        symbol: parsedStrategy.symbol || "WL",
+        addresses: parsedStrategy.addresses || {
+          ["0x00000000000000000000"]: 1,
+          ["0x00000000000000000001"]: 1,
+        },
       },
-    }, null, 2); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
+      null,
+      2
+    ); // The third argument (2) is for pretty-printing the JSON with 2-space indentation
   };
 
   const handleDoneClick = () => {
@@ -116,10 +140,13 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
       const strategyIndex = state.strategy.findIndex(
         (strategy) => strategy.name === strategyName
       );
-  
+
       if (strategyIndex !== -1) {
         // Replace the existing strategy
-        dispatch({ type: "UPDATE_STRATEGY", payload: { idx: strategyIndex, strategy: newStrategy } });
+        dispatch({
+          type: "UPDATE_STRATEGY",
+          payload: { idx: strategyIndex, strategy: newStrategy },
+        });
       } else {
         // Add the new strategy
         dispatch({ type: "ADD_STRATEGY", payload: newStrategy });
@@ -129,7 +156,7 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
     setOpen(false);
     return;
   };
-  
+
   const handleResetClick = () => {
     const strategyIndex = state.strategy.findIndex(
       (strategy) => strategy.name === StrategyName.WHITELIST
@@ -137,11 +164,16 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
     setLocalJsonData(defaultState);
     dispatch({ type: "REMOVE_STRATEGY", payload: strategyIndex });
     return;
-  }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog open={open} as="div" className="relative z-10" onClose={() => setOpen(false)}>
+      <Dialog
+        open={open}
+        as="div"
+        className="relative z-10"
+        onClose={() => setOpen(false)}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -155,7 +187,7 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex lg:min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-1">
+          <div className="flex items-end justify-center p-4 text-center sm:items-center sm:p-1 lg:min-h-full">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -165,9 +197,11 @@ const WhitelistModal = ({ open, setOpen, onJsonDataUpdate, currentStrategies }: 
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 w-[90%] sm:max-w-lg sm:p-6">
+              <Dialog.Panel className="relative w-[90%] transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:max-w-lg sm:p-6">
                 <div className="mb-2">
-                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                  {errorMessage && (
+                    <p className="text-red-500">{errorMessage}</p>
+                  )}
                   <textarea
                     id="jsonEditor"
                     value={localJsonData}
