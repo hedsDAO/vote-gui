@@ -36,7 +36,7 @@ async function getDisplayNameForAuthors(proposals: Proposal[]) {
         }
       });
       if (authorRecord && authorRecord.display_name) {
-        displayNames[author] = authorRecord.display_name; // Corrected line
+        displayNames[author] = authorRecord.display_name;
       }
     } catch (e) {
       console.error(e);
