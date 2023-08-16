@@ -49,7 +49,7 @@ const TimelineForm = ({ setActiveStep }: OwnProps) => {
             </div>
           </div>
           <div>
-            <CustomFormInput
+            {/* <CustomFormInput
               label="Vote Duration"
               value={state.voteDuration}
               onChange={(e) =>
@@ -65,7 +65,7 @@ const TimelineForm = ({ setActiveStep }: OwnProps) => {
                 { label: "6 DAYS", value: "518400000" },
                 { label: "1 WEEK", value: "604800000" },
               ]}
-            />
+            /> */}
           </div>
         </div>
         <div className="flex justify-end">

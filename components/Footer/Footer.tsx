@@ -4,7 +4,7 @@ import * as constants from "@/components/Footer/constants";
 
 const Footer = () => {
   return (
-    <div className="flex w-full  max-h-[10vh] min-h-[10vh] items-center justify-between bg-heds-bg px-6 py-2 lg:w-[100vw] lg:px-10">
+    <div className="flex max-h-[12vh]  min-h-[12vh] w-full items-center justify-between bg-heds-bg px-6 py-2 lg:w-[100vw] lg:px-10">
       <div className="-ml-3 flex flex-row items-center lg:-ml-2">
         <Image
           className="invert"
@@ -19,18 +19,42 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="flex gap-3.5">
+        <div className="flex gap-3.5 items-center">
           <Link href={constants.TWITTER_LINK} target="_blank">
-            <i className="fa-brands fa-x-twitter lg:text-lg"></i>
+            <Image
+              className="invert"
+              alt={"twitter"}
+              src={"/icons/x-twitter.svg"}
+              width={18}
+              height={18}
+            />
           </Link>
           <Link href={constants.DISCORD_LINK} target="_blank">
-            <i className="fa-brands fa-discord lg:text-lg"></i>
+            <Image
+              className="invert"
+              alt={"discord"}
+              src={"/icons/discord.svg"}
+              width={18}
+              height={18}
+            />
           </Link>
           <Link href={constants.INSTAGRAM_LINK} target="_blank">
-            <i className="fa-brands fa-instagram lg:text-lg"></i>
+            <Image
+              className="invert"
+              alt={"instagram"}
+              src={"/icons/instagram.svg"}
+              width={18}
+              height={18}
+            />
           </Link>
           <Link href={constants.SOUNDCLOUD_LINK} target="_blank">
-            <i className="fa-brands fa-soundcloud lg:text-lg"></i>
+            <Image
+              className="invert"
+              alt={"soundcloud"}
+              src={"/icons/soundcloud.svg"}
+              width={18}
+              height={18}
+            />
           </Link>
         </div>
       </div>

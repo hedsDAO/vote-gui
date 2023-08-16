@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import RootProvider from "./providers";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
@@ -20,12 +19,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <Script
-          src={"https://kit.fontawesome.com/df4fc895e4.js"}
-          crossOrigin="anonymous"
-        />
-      </head>
       <body>
         <RootProvider>
           <Navbar />

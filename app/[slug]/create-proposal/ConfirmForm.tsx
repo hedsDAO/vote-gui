@@ -213,6 +213,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
             return (
               <div key={choice.title} className="rounded-[17px] border border-white/50">
                 <Image
+                  key={choice.title}
                   alt="cover image"
                   width={80}
                   height={80}
@@ -242,7 +243,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
         <div className="lg:flex flex-row gap-2 hidden">
           {state.choiceOptions.slice(0, 3).map((choice, idx) => {
             return (
-              <div className="rounded-[17px] border border-white/50">
+              <div key={choice.title} className="rounded-[17px] border border-white/50">
                 <Image
                   alt="cover image"
                   width={80}
