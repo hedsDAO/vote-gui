@@ -7,7 +7,7 @@ import {
   ChoiceOption,
   CreateProposalContext,
 } from "@/context/createProposal.context";
-import { pinFileToIpfs } from "../../../_actions";
+import { pinFileToIpfs } from "../../_actions";
 import { Choice, Proposal } from "hedsvote";
 import { useBlockNumber, useAccount } from "wagmi";
 import { useParams } from "next/navigation";

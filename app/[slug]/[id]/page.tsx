@@ -1,4 +1,4 @@
-import { createClient } from "hedsvote";
+import { createClient, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { getTapeByProposalId } from "../../utils/prismaUtils";
 import { DateTime } from "luxon";
@@ -6,6 +6,7 @@ import Link from "next/link";
 import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
 import FinalSelection from "./FinalSelection";
+import { PrismaClient } from "@prisma/client";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -14,6 +15,58 @@ async function getProposal(id: string) {
     throw new Error("no proposal");
   }
   return proposal.data;
+}
+
+const prisma = new PrismaClient();
+
+async function getVoteParticipantData(votes: QuadraticVote[] | SingleChoiceVote[] | undefined) {
+  const voterUserData: {[voter:string]: {displayName: string, profilePicture: string}} = {};
+  if (!votes) return;
+  for (const vote of votes) {
+    const voter = vote.voter;
+    try {
+      const voterRecord = await prisma.users.findUnique({
+        where: {
+          wallet: voter.toLowerCase(),
+        },
+        select: {
+          display_name: true,
+          profile_picture: true
+        }
+      });
+      if (voterRecord && voterRecord.display_name && voterRecord.profile_picture) {
+        voterUserData[voter] = {displayName: voterRecord.display_name, profilePicture: voterRecord.profile_picture};
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+  return voterUserData;
+}
+
+async function getDisplayNameForAuthor(wallet: string) {
+    try {
+      const displayNameRecord = await prisma.users.findUnique({
+        where: {
+          wallet: wallet.toLowerCase(),
+        },
+        select: {
+          display_name: true
+        }
+      });
+      if (displayNameRecord && displayNameRecord.display_name) {
+        return displayNameRecord.display_name;
+
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
 }
 
 // async function getTapeById(id: string) {
@@ -29,19 +82,22 @@ export default async function Page({ params }: { params: { id: string } }) {
   // const proposal = await getProposal(
   //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
   // );
+  const authorDisplayName = await getDisplayNameForAuthor(proposal.author);
+  const participantsUserData = await getVoteParticipantData(proposal.votes);
+  console.log({authorDisplayName, participantsUserData})
 
   const scores = proposal.scores || [];
 
   const totalScore =
     scores.reduce((acc: number, score: number) => acc + score, 0) || 0;
   // const proposal = await getProposal(params.id);
-  const proposalResult = await getProposal(
-    "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  );
+  // const proposalResult = await getProposal(
+  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
+  // );
 
-  const tapeDataResult = getTapeByProposalId(
-    "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  );
+  // const tapeDataResult = getTapeByProposalId(
+  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
+  // );
 
   //Load proposal and tapeData in parallel
   //  const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
