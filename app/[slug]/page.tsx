@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { createClient } from "hedsvote";
+import { PrismaClient } from "@prisma/client";
+import { createClient, Proposal } from "hedsvote";
 import ProposalCard from "@/components/ProposalCard";
 
 const { getAllProposalsInSpace, getAllSpaces } = createClient();
+
+const prisma = new PrismaClient();
 
 async function getProposals(space: string) {
   const proposals = await getAllProposalsInSpace(space);
@@ -19,11 +22,38 @@ async function getSpaceData(spaceName: string) {
   return space || null;
 }
 
+async function getDisplayNameForAuthors(proposals: Proposal[]) {
+  const displayNames: {[author:string]: string} = {};
+  for (const proposal of proposals) {
+    const author = proposal.author;
+    try {
+      const authorRecord = await prisma.users.findUnique({
+        where: {
+          wallet: author.toLowerCase(),
+        },
+        select: {
+          display_name: true
+        }
+      });
+      if (authorRecord && authorRecord.display_name) {
+        displayNames[author] = authorRecord.display_name; // Corrected line
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+  return displayNames;
+}
+
+
 export default async function Page({ params }: { params: { slug: string } }) {
   const {slug} = params;
   const proposals = await getProposals(slug);
   const space = await getSpaceData(slug);
-  console.log(space)
+  const displayNames = await getDisplayNameForAuthors(proposals);
 
   return (
     <div className="h-full text-[#2D2934]">
@@ -91,7 +121,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               id={proposal.ipfs_hash}
               name={proposal.title}
               image={proposal.cover || ""}
-              author={proposal.author}
+              author={displayNames[proposal.author]}
               timeline={""}
             />
           ))}
