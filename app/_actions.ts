@@ -1,6 +1,5 @@
 "use server";
 
-import axios from "axios";
 import { PrismaClient } from "@prisma/client";
 import { createClient, Vote } from "hedsvote";
 import { WalletClient } from "viem";
