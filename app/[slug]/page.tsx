@@ -3,8 +3,9 @@ import Link from "next/link";
 import { createClient } from "hedsvote";
 import ProposalCard from "@/components/ProposalCard";
 
+const { getAllProposalsInSpace, getAllSpaces } = createClient();
+
 async function getProposals(space: string) {
-  const { getAllProposalsInSpace } = createClient();
   const proposals = await getAllProposalsInSpace(space);
   if (!proposals) {
     throw new Error("no proposals");
@@ -12,18 +13,23 @@ async function getProposals(space: string) {
   return proposals.data;
 }
 
+async function getSpaceData(spaceName: string) {
+  const spaces = await getAllSpaces();
+  const space = spaces.data.find(space => space.name === spaceName);
+  return space || null;
+}
+
 export default async function Page({ params }: { params: { slug: string } }) {
   const {slug} = params;
   const proposals = await getProposals(slug);
-  // console.log(params.slug)
-  console.log("proposals****", proposals);
-  // console.log("tapes", tapes);
+  const space = await getSpaceData(slug);
+  console.log(space)
 
   return (
     <div className="h-full text-[#2D2934]">
       <div className="h-44 border bg-red-500"></div>
       <div className="mx-auto flex w-3/4 flex-col gap-y-6 p-12">
-        <Link href={"/spaces"}>
+        <Link href={"/"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -33,12 +39,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
             className="inline-block">
             <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
           </svg>
-          <p className="inline-block">SPACE</p>
+          <p className="inline-block">Back</p>
         </Link>
         <div className="right-64 top-32 lg:absolute">
           <Image
             className="rounded-full border-4 border-blue-400"
-            src="https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT"
+            src={space?.image || ""}
             alt="Picture of the author"
             width={200}
             height={200}
