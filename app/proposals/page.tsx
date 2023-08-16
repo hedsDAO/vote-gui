@@ -17,7 +17,7 @@ export default async function Page() {
   return (
     <div className="flex flex-wrap p-12">
       {proposals &&
-        proposals.map((proposal) => (
+        proposals.map((proposal: any) => (
           <Link
             className="p-0.5"
             href={`/proposals/${proposal.ipfs_hash}`}

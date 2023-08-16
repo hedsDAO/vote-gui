@@ -78,7 +78,7 @@ async function getDisplayNameForAuthor(wallet: string) {
 // }
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const proposal = await getProposal(params.id);
+  const proposal= await getProposal(params.id);
   // const proposal = await getProposal(
   //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
   // );
@@ -167,7 +167,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex flex-row gap-x-10">
-            <div>
+            {/* <div>
               <p className="text-xs font-medium">START TIME</p>
               <p className="text-sm font-light tracking-wide">
                 {formatTime(proposal.start_time)}
@@ -178,7 +178,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className="text-sm font-light tracking-wide">
                 {formatTime(proposal.end_time)}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="w-full lg:w-1/4">

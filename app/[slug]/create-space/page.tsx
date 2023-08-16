@@ -8,45 +8,45 @@ import { WalletClient } from "viem";
 import { create } from "domain";
 
 async function createSpaceHandler(walletClient: WalletClient) {
-  const { createSpace } = createClient();
-  const space = await createSpace(walletClient, {
-    name: "nicole's space",
-    authors: ["0x55C59AE5b124261d021421f07C6cad699C993b3d"],
-  });
-  return space;
+  // const { createSpace } = createClient();
+  // const space = await createSpace(walletClient, {
+  //   name: "nicole's space",
+  //   authors: ["0x55C59AE5b124261d021421f07C6cad699C993b3d"],
+  // });
+  // return space;
 }
 
 function Page() {
-  const [space, setSpace] = useState("");
-  const [createdSpace, setCreatedSpace] =
-    useState<Awaited<ReturnType<typeof createSpaceHandler>>>();
-  const { data: walletClient, isError, isLoading } = useWalletClient();
+  // const [space, setSpace] = useState("");
+  // const [createdSpace, setCreatedSpace] =
+  //   useState<Awaited<ReturnType<typeof createSpaceHandler>>>();
+  // const { data: walletClient, isError, isLoading } = useWalletClient();
 
-  async function onClick() {
-    if (!walletClient) {
-      return;
-    }
+  // async function onClick() {
+  //   if (!walletClient) {
+  //     return;
+  //   }
 
-    const newSpace = await createSpaceHandler(walletClient);
+  //   const newSpace = await createSpaceHandler(walletClient);
 
-    // some point in the future, might be a different render
-    setCreatedSpace(newSpace);
-  }
-
-  console.log("walletClient", walletClient, isLoading);
-
-  // if (!isLoading) {
-  //   await createSpaceHandler(walletClient);
+  //   // some point in the future, might be a different render
+  //   setCreatedSpace(newSpace);
   // }
+
+  // console.log("walletClient", walletClient, isLoading);
+
+  // // if (!isLoading) {
+  // //   await createSpaceHandler(walletClient);
+  // // }
 
   return (
     <div>
-      <input
+      {/* <input
         className="block w-full border-b-2 border-gray-400 bg-transparent text-gray-200 placeholder-gray-200"
         value={space}
         onChange={(e) => setSpace(e.target.value)}
       />
-      <button onClick={onClick}>Create Space</button>
+      <button onClick={onClick}>Create Space</button> */}
     </div>
   );
 }
