@@ -12,58 +12,12 @@ async function getProposals(space: string) {
   return proposals.data;
 }
 
-async function getAllTapes() {
-  const res = await fetch(
-    "https://us-central1-heds-104d8.cloudfunctions.net/api/tapes"
-  );
-  const data = await res.json();
-  return data;
-}
-
 export default async function Page({ params }: { params: { slug: string } }) {
-  const proposals = await getProposals(params.slug);
-
+  const {slug} = params;
+  const proposals = await getProposals(slug);
+  // console.log(params.slug)
   console.log("proposals****", proposals);
   // console.log("tapes", tapes);
-
-  const mockProposals = [
-    {
-      id: 1,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "hedstape 16",
-      created_by: "heds",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 2,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "reflections",
-      created_by: "daniel allen",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 3,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "high frequency",
-      created_by: "noise",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 4,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "heds solo",
-      created_by: "heds",
-      timeline: "CLOSED",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-  ];
 
   return (
     <div className="h-full text-[#2D2934]">
@@ -124,15 +78,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <p>+ create</p>
         </div>
         <div className="flex h-fit flex-wrap justify-between">
-          {mockProposals.map((proposal) => (
+          {proposals.map((proposal) => (
             <ProposalCard
-              link={`/proposals/${proposal.ipfs}`}
-              key={proposal.id}
-              id={proposal.id}
-              name={proposal.name}
-              image={proposal.image}
-              author={proposal.created_by}
-              timeline={proposal.timeline}
+              link={`/${slug}/${proposal.ipfs_hash}`}
+              key={proposal.ipfs_hash}
+              id={proposal.ipfs_hash}
+              name={proposal.title}
+              image={proposal.cover || ""}
+              author={proposal.author}
+              timeline={""}
             />
           ))}
         </div>
