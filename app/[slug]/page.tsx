@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { createClient } from "hedsvote";
+import { PrismaClient } from "@prisma/client";
+import { createClient, Proposal } from "hedsvote";
 import ProposalCard from "@/components/ProposalCard";
 
+const { getAllProposalsInSpace, getAllSpaces } = createClient();
+
+const prisma = new PrismaClient();
+
 async function getProposals(space: string) {
-  const { getAllProposalsInSpace } = createClient();
   const proposals = await getAllProposalsInSpace(space);
   if (!proposals) {
     throw new Error("no proposals");
@@ -12,64 +16,50 @@ async function getProposals(space: string) {
   return proposals.data;
 }
 
-async function getAllTapes() {
-  const res = await fetch(
-    "https://us-central1-heds-104d8.cloudfunctions.net/api/tapes"
-  );
-  const data = await res.json();
-  return data;
+async function getSpaceData(spaceName: string) {
+  const spaces = await getAllSpaces();
+  const space = spaces.data.find(space => space.name === spaceName);
+  return space || null;
 }
 
+async function getDisplayNameForAuthors(proposals: Proposal[]) {
+  const displayNames: {[author:string]: string} = {};
+  for (const proposal of proposals) {
+    const author = proposal.author;
+    try {
+      const authorRecord = await prisma.users.findUnique({
+        where: {
+          wallet: author.toLowerCase(),
+        },
+        select: {
+          display_name: true
+        }
+      });
+      if (authorRecord && authorRecord.display_name) {
+        displayNames[author] = authorRecord.display_name;
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+  return displayNames;
+}
+
+
 export default async function Page({ params }: { params: { slug: string } }) {
-  const proposals = await getProposals(params.slug);
-
-  console.log("proposals****", proposals);
-  // console.log("tapes", tapes);
-
-  const mockProposals = [
-    {
-      id: 1,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "hedstape 16",
-      created_by: "heds",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 2,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "reflections",
-      created_by: "daniel allen",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 3,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "high frequency",
-      created_by: "noise",
-      timeline: "OPEN",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-    {
-      id: 4,
-      image:
-        "https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT",
-      name: "heds solo",
-      created_by: "heds",
-      timeline: "CLOSED",
-      ipfs: "bafkreiaju7q7vzpug6dlwl3k475jr5hqytgzmpoeqjw3jqnugrbdzacxlq",
-    },
-  ];
+  const {slug} = params;
+  const proposals = await getProposals(slug);
+  const space = await getSpaceData(slug);
+  const displayNames = await getDisplayNameForAuthors(proposals);
 
   return (
     <div className="h-full text-[#2D2934]">
       <div className="h-44 border bg-red-500"></div>
       <div className="mx-auto flex w-3/4 flex-col gap-y-6 p-12">
-        <Link href={"/spaces"}>
+        <Link href={"/"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -79,12 +69,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
             className="inline-block">
             <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
           </svg>
-          <p className="inline-block">SPACE</p>
+          <p className="inline-block">Back</p>
         </Link>
         <div className="right-64 top-32 lg:absolute">
           <Image
             className="rounded-full border-4 border-blue-400"
-            src="https://www.heds.cloud/ipfs/QmceLhYvjioGowYT7EMtofiaWt7aYRrPbE4tLn8HjfZpyT"
+            src={space?.image || ""}
             alt="Picture of the author"
             width={200}
             height={200}
@@ -124,15 +114,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <p>+ create</p>
         </div>
         <div className="flex h-fit flex-wrap justify-between">
-          {mockProposals.map((proposal) => (
+          {proposals.map((proposal) => (
             <ProposalCard
-              link={`/proposals/${proposal.ipfs}`}
-              key={proposal.id}
-              id={proposal.id}
-              name={proposal.name}
-              image={proposal.image}
-              author={proposal.created_by}
-              timeline={proposal.timeline}
+              link={`/${slug}/${proposal.ipfs_hash}`}
+              key={proposal.ipfs_hash}
+              id={proposal.ipfs_hash}
+              name={proposal.title}
+              image={proposal.cover || ""}
+              author={displayNames[proposal.author]}
+              timeline={""}
             />
           ))}
         </div>
