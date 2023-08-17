@@ -12,7 +12,7 @@ const Socials = ({
   discord?: string;
   soundcloud?: string;
 }) => {
-  if (!!twitter || !!instagram || !!discord || !!soundcloud)
+  // if (!!twitter || !!instagram || !!discord || !!soundcloud) return <></>;
     return (
       <div className="mx-auto mt-10 flex max-w-4xl justify-start px-10">
         <div className="flex flex-col gap-2">
