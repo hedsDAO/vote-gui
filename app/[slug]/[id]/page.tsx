@@ -7,6 +7,7 @@ import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
 import FinalSelection from "./FinalSelection";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../prisma/client";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -26,67 +27,65 @@ async function getProposal(id: string) {
 //   return data;
 // }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { slug: string, id: string } }) {
 
 
-// async function getVoteParticipantData(votes: QuadraticVote[] | SingleChoiceVote[] | undefined) {
-//   "use server"
-//   const prisma = new PrismaClient();
-//   const voterUserData: {[voter:string]: {displayName: string, profilePicture: string}} = {};
-//   if (!votes) return;
-//   for (const vote of votes) {
-//     const voter = vote.voter;
-//     try {
-//       const voterRecord = await prisma.users.findUnique({
-//         where: {
-//           wallet: voter.toLowerCase(),
-//         },
-//         select: {
-//           display_name: true,
-//           profile_picture: true
-//         }
-//       });
-//       if (voterRecord && voterRecord.display_name && voterRecord.profile_picture) {
-//         voterUserData[voter] = {displayName: voterRecord.display_name, profilePicture: voterRecord.profile_picture};
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       process.exit(1);
-//     } finally {
-//       await prisma.$disconnect();
-//     }
-//   }
-//   return voterUserData;
-// }
+async function getVoteParticipantData(votes: QuadraticVote[] | SingleChoiceVote[] | undefined) {
+  "use server"
+  const voterUserData: {[voter:string]: {displayName: string, profilePicture: string}} = {};
+  if (!votes) return;
+  for (const vote of votes) {
+    const voter = vote.voter;
+    try {
+      const voterRecord = await prisma.users.findUnique({
+        where: {
+          wallet: voter.toLowerCase(),
+        },
+        select: {
+          display_name: true,
+          profile_picture: true
+        }
+      });
+      if (voterRecord && voterRecord.display_name && voterRecord.profile_picture) {
+        voterUserData[voter] = {displayName: voterRecord.display_name, profilePicture: voterRecord.profile_picture};
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
+  return voterUserData;
+}
 
-// async function getDisplayNameForAuthor(wallet: string) {
-//   "use server"
-//   const prisma = new PrismaClient();
-//     try {
-//       const displayNameRecord = await prisma.users.findUnique({
-//         where: {
-//           wallet: wallet.toLowerCase(),
-//         },
-//         select: {
-//           display_name: true
-//         }
-//       });
-//       if (displayNameRecord && displayNameRecord.display_name) {
-//         return displayNameRecord.display_name;
+async function getDisplayNameForAuthor(wallet: string) {
+  "use server"
+    try {
+      const displayNameRecord = await prisma.users.findUnique({
+        where: {
+          wallet: wallet.toLowerCase(),
+        },
+        select: {
+          display_name: true
+        }
+      });
+      if (displayNameRecord && displayNameRecord.display_name) {
+        return displayNameRecord.display_name;
 
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       process.exit(1);
-//     } finally {
-//       await prisma.$disconnect();
-//     }
-// }
+      }
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    } finally {
+      await prisma.$disconnect();
+    }
+}
 
   const proposal= await getProposal(params.id);
-  // const authorDisplayName = await getDisplayNameForAuthor(proposal.author);
-  // const participantsUserData = await getVoteParticipantData(proposal.votes);
-  // console.log({authorDisplayName, participantsUserData})
+  const authorDisplayName = await getDisplayNameForAuthor(proposal.author);
+  const participantsUserData = await getVoteParticipantData(proposal.votes);
+  console.log({authorDisplayName, participantsUserData})
 
   const scores = proposal.scores || [];
 
@@ -123,7 +122,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="h-full bg-zinc-50 p-12 text-[#2D2934]">
-      <Link href={"/spaces"}>
+      <Link href={`/${params.slug}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -133,7 +132,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           className="inline-block">
           <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
         </svg>
-        <p className="inline-block">SPACE</p>
+        <p className="font-space-grotesk inline-block">back to space</p>
       </Link>
 
       <div className="mx-auto flex w-3/4 flex-col-reverse py-12 lg:flex-row">
