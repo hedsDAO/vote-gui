@@ -1,7 +1,7 @@
-"use client";
+// "use client";
 
 import { createClient, Proposal, SpaceData } from "hedsvote";
-import { getSpaceData, getDisplayNameForAuthors } from "../_actions";
+import { getSpaceData, getDisplayNameForAuthors, getProposals } from "../_actions";
 import { useEffect, useState } from "react";
 import Header from "@/components/Space/Header";
 import ProfilePicture from "@/components/Space/ProfilePicture";
@@ -15,37 +15,40 @@ interface DisplayName {
   [author: string]: string;
 }
 
-const Page = ({ params }: { params: { slug: string } }) => {
+const Page =  async ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
-  const router = useRouter();
-  const [proposals, setProposals] = useState<any[] | null>(null);
-  const [space, setSpace] = useState<SpaceData | null>(null);
-  const [displayNames, setDisplayNames] = useState<DisplayName | null>(null);
-  const { getAllProposalsInSpace, getAllSpaces } = createClient();
+  // const router = useRouter();
+  // const [proposals, setProposals] = useState<any[] | null>(null);
+  // const [space, setSpace] = useState<SpaceData | null>(null);
+  // const [displayNames, setDisplayNames] = useState<DisplayName | null>(null);
 
-  const loadSpaceData = async () => {
-    const space = await getSpaceData(slug);
-    const proposals: Proposal[] | undefined = await getProposals(slug);
-    const displayNames = await getDisplayNameForAuthors(proposals || undefined);
-    console.log(proposals);
-    setProposals(proposals || []);
-    setSpace(space);
-    setDisplayNames(displayNames || {});
-  };
+  const space = await getSpaceData(slug);
+  const proposals: any[] | undefined = await getProposals(slug);
 
-  useEffect(() => {
-    loadSpaceData();
-  }, []);
 
-  const getProposals = async (space: string) => {
-    try {
-      const proposals = await createClient().getAllProposalsInSpace(space);
-      console.log(proposals.data);
-      return proposals.data || undefined;
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const loadSpaceData = async () => {
+  //   const space = await getSpaceData(slug);
+  //   const proposals: Proposal[] | undefined = await getProposals(slug);
+  //   const displayNames = await getDisplayNameForAuthors(proposals || undefined);
+  //   console.log(proposals);
+  //   setProposals(proposals || []);
+  //   setSpace(space);
+  //   setDisplayNames(displayNames || {});
+  // };
+
+  // useEffect(() => {
+  //   loadSpaceData();
+  // }, []);
+
+  // const getProposals = async (space: string) => {
+  //   try {
+  //     const proposals = await createClient().getAllProposalsInSpace(space);
+  //     console.log(proposals.data);
+  //     return proposals.data || undefined;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div className="min-h-[80vh]">
@@ -75,9 +78,9 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 return (
                   <div
                     role="button"
-                    onClick={() => {
-                      router.push(`${slug}/${proposal.ipfs_hash}`);
-                    }}
+                    // onClick={() => {
+                    //   router.push(`${slug}/${proposal.ipfs_hash}`);
+                    // }}
                     key={proposal.author + idx}
                     className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black px-4 py-4 shadow-sm"
                   >
