@@ -8,8 +8,8 @@ import {
   CreateProposalContext,
 } from "@/context/createProposal.context";
 import { pinFileToIpfs } from "../../_actions";
-import { Choice, Proposal } from "hedsvote";
-import { useBlockNumber, useAccount } from "wagmi";
+import { Choice, Proposal, createClient } from "hedsvote";
+import { useBlockNumber, useAccount, useWalletClient } from "wagmi";
 import { useParams } from "next/navigation";
 import ChoicesPreview from "./ChoicesPreview";
 
@@ -25,6 +25,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   const { state, dispatch } = useContext(CreateProposalContext);
   const blockNumber = useBlockNumber().data;
   const { address } = useAccount();
+  const { data } = useWalletClient();
   const { slug } = useParams();
 
   const formattedDate = state.voteStart.toLocaleString("en-US", {
@@ -124,6 +125,10 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     };
     console.log(proposal);
     //Use hedsvote createProposal via server actions
+    const { createProposal } = createClient();
+    if (!data) return;
+    const createdProposal = await createProposal(data,proposal);
+    console.log(createdProposal)
   };
 
   return (
