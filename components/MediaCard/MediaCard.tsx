@@ -9,7 +9,7 @@ interface MediaCardProps {
   image: string;
 }
 
-const MediaCard = ({ title, author, image }: MediaCardProps) => {
+const MediaCard = ({ title, image }: MediaCardProps) => {
   const router = useRouter();
   return (
     <div
