@@ -7,6 +7,7 @@ import OptionCard from "./OptionCard";
 import LikedSubmissions from "./LikedSubmissions";
 import FinalSelection from "./FinalSelection";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../prisma/client";
 
 async function getProposal(id: string) {
   const { getProposal } = createClient();
@@ -17,9 +18,20 @@ async function getProposal(id: string) {
   return proposal.data;
 }
 
-const prisma = new PrismaClient();
+
+// async function getTapeById(id: string) {
+//   const res = await fetch(
+//     `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
+//   );
+//   const data = await res.json();
+//   return data;
+// }
+
+export default async function Page({ params }: { params: { slug: string, id: string } }) {
+
 
 async function getVoteParticipantData(votes: QuadraticVote[] | SingleChoiceVote[] | undefined) {
+  "use server"
   const voterUserData: {[voter:string]: {displayName: string, profilePicture: string}} = {};
   if (!votes) return;
   for (const vote of votes) {
@@ -48,6 +60,7 @@ async function getVoteParticipantData(votes: QuadraticVote[] | SingleChoiceVote[
 }
 
 async function getDisplayNameForAuthor(wallet: string) {
+  "use server"
     try {
       const displayNameRecord = await prisma.users.findUnique({
         where: {
@@ -69,19 +82,7 @@ async function getDisplayNameForAuthor(wallet: string) {
     }
 }
 
-// async function getTapeById(id: string) {
-//   const res = await fetch(
-//     `https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${id}`
-//   );
-//   const data = await res.json();
-//   return data;
-// }
-
-export default async function Page({ params }: { params: { id: string } }) {
   const proposal= await getProposal(params.id);
-  // const proposal = await getProposal(
-  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  // );
   const authorDisplayName = await getDisplayNameForAuthor(proposal.author);
   const participantsUserData = await getVoteParticipantData(proposal.votes);
   console.log({authorDisplayName, participantsUserData})
@@ -91,13 +92,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   const totalScore =
     scores.reduce((acc: number, score: number) => acc + score, 0) || 0;
   // const proposal = await getProposal(params.id);
-  // const proposalResult = await getProposal(
-  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  // );
-
-  // const tapeDataResult = getTapeByProposalId(
-  //   "bafkreib2bcrtnfdfaraavbulu2truljn5qrzyi4r3prth2zxf4mjw3z76e"
-  // );
 
   //Load proposal and tapeData in parallel
   //  const [proposal, tapeData] = await Promise.all([proposalResult, tapeDataResult]);
@@ -128,7 +122,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="h-full bg-zinc-50 p-12 text-[#2D2934]">
-      <Link href={"/spaces"}>
+      <Link href={`/${params.slug}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -138,7 +132,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           className="inline-block">
           <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
         </svg>
-        <p className="inline-block">SPACE</p>
+        <p className="font-space-grotesk inline-block">back to space</p>
       </Link>
 
       <div className="mx-auto flex w-3/4 flex-col-reverse py-12 lg:flex-row">

@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import Header from "@/components/Landing/Header";
 import Spaces from "@/components/Landing/Spaces";
