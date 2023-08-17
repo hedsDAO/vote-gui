@@ -78,13 +78,12 @@ const Page =  async ({ params }: { params: { slug: string } }) => {
                   proposal?.end_time
                 );
                 return (
-                  <Link href={`${slug}/${proposal.ipfs_hash}`}>
+                  <Link href={`${slug}/${proposal.ipfs_hash}` } key={proposal.author + idx}>
                     <div
                       role="button"
                       // onClick={() => {
                       //   router.push(`${slug}/${proposal.ipfs_hash}`);
                       // }}
-                      key={proposal.author + idx}
                       className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black px-4 py-4 shadow-sm"
                     >
                       <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black p-0.5">
