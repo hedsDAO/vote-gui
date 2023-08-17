@@ -9,7 +9,9 @@ import Details from "@/components/Space/Details";
 import Socials from "@/components/Space/Socials";
 import { getVotingStatus } from "../utils/getVotingStatus";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import Link from 'next/link'
+
 
 interface DisplayName {
   [author: string]: string;
@@ -76,57 +78,59 @@ const Page =  async ({ params }: { params: { slug: string } }) => {
                   proposal?.end_time
                 );
                 return (
-                  <div
-                    role="button"
-                    // onClick={() => {
-                    //   router.push(`${slug}/${proposal.ipfs_hash}`);
-                    // }}
-                    key={proposal.author + idx}
-                    className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black px-4 py-4 shadow-sm"
-                  >
-                    <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black p-0.5">
-                      <div
-                        className={
-                          `${
-                            votingStatus === "open"
-                              ? "bg-green-500"
-                              : votingStatus === "closed"
-                              ? "bg-red-500"
-                              : "bg-black"
-                          } ` +
-                          "relative -ml-[0.75px] max-h-[20px] min-h-[20px] min-w-[20px] max-w-[20px] rounded-full border border-black"
-                        }
+                  <Link href={`${slug}/${proposal.ipfs_hash}`}>
+                    <div
+                      role="button"
+                      // onClick={() => {
+                      //   router.push(`${slug}/${proposal.ipfs_hash}`);
+                      // }}
+                      key={proposal.author + idx}
+                      className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black px-4 py-4 shadow-sm"
+                    >
+                      <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black p-0.5">
+                        <div
+                          className={
+                            `${
+                              votingStatus === "open"
+                                ? "bg-green-500"
+                                : votingStatus === "closed"
+                                ? "bg-red-500"
+                                : "bg-black"
+                            } ` +
+                            "relative -ml-[0.75px] max-h-[20px] min-h-[20px] min-w-[20px] max-w-[20px] rounded-full border border-black"
+                          }
+                        />
+                        <div className="max-h-[20px] rounded-full pl-1.5 pr-3 font-space-grotesk text-xs text-black">
+                          {votingStatus}
+                        </div>
+                      </div>
+                      <Image
+                        alt={"test"}
+                        src={proposal.cover || ""}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="rounded-full border border-black"
+                        style={{
+                          width: "50%",
+                          height: "auto",
+                          objectFit: "cover",
+                        }}
                       />
-                      <div className="max-h-[20px] rounded-full pl-1.5 pr-3 font-space-grotesk text-xs text-black">
-                        {votingStatus}
+                      <div className="mt-2 flex flex-col items-center">
+                        <h4 className="text-sm font-bold text-black">
+                          {votingStatus === "open"
+                            ? "ENDS"
+                            : votingStatus === "closed"
+                            ? "ENDED"
+                            : "OPENS"}
+                        </h4>
+                        <p className="font-space-grotesk text-sm text-black">
+                          {new Date(proposal?.end_time).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
-                    <Image
-                      alt={"test"}
-                      src={proposal.cover || ""}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="rounded-full border border-black"
-                      style={{
-                        width: "50%",
-                        height: "auto",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <div className="mt-2 flex flex-col items-center">
-                      <h4 className="text-sm font-bold text-black">
-                        {votingStatus === "open"
-                          ? "ENDS"
-                          : votingStatus === "closed"
-                          ? "ENDED"
-                          : "OPENS"}
-                      </h4>
-                      <p className="font-space-grotesk text-sm text-black">
-                        {new Date(proposal?.end_time).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
