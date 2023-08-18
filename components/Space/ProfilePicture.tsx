@@ -10,7 +10,7 @@ const ProfilePicture = ({ src }: { src?: string }) => {
           width={0}
           height={0}
           sizes="100vw"
-          className="shadow-md shadow-black/30 max-h-[120px] min-h-[120px] min-w-[120px] max-w-[120px] border-2 border-black rounded-full lg:max-h-[200px] lg:min-h-[200px] lg:min-w-[200px] lg:max-w-[200px]"
+          className="max-h-[120px] min-h-[120px] min-w-[120px] max-w-[120px] rounded-full border-2 border-black shadow-md shadow-black/30 lg:max-h-[200px] lg:min-h-[200px] lg:min-w-[200px] lg:max-w-[200px]"
           style={{ width: "100%", height: "100%", objectFit: "cover" }} // optional
         />
       </div>

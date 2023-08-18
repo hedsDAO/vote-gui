@@ -5,6 +5,7 @@ import ChoiceCards from "./ChoiceCards";
 import Link from "next/link";
 import { QuadraticVote, SingleChoiceVote } from "hedsvote";
 import axios from "axios";
+import Ballot from "@/app/[slug]/[id]/Ballot";
 // import { useContext } from "react";
 // import { ProposalContext } from "@/context/proposal.context";
 
@@ -58,8 +59,6 @@ export default async function Page({ params }: ProposalProps) {
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
   const voterUserData = await getParticipantsUserData(proposal?.votes);
 
-  console.log(voterUserData, "authorDisplayName");
-
   return (
     <div className="flex min-h-[82vh] max-w-5xl flex-col px-4 lg:mx-auto">
       <div className="flex justify-between lg:mt-10">
@@ -109,17 +108,13 @@ export default async function Page({ params }: ProposalProps) {
           />
         </div>
       </div>
-      <div className="mt-10 flex flex-col lg:max-w-4xl lg:items-start">
-            {/* {state?.likes && Object.values(state?.likes)?.map((like) => {
-              return (
-                <div></div>
-              )
-            })} */}
-      </div>
-      <div className="mt-10 flex flex-col lg:max-w-4xl lg:items-start">
-        <p className="my-4 font-inter text-xs font-semibold tracking-wide text-black/80">
-          CHOICES
-        </p>
+      <div className="mt-8 flex flex-col lg:max-w-4xl lg:items-start">
+        <div className="flex justify-between items-center w-full pb-3">
+          <p className="font-inter text-base font-semibold tracking-wide text-black/80">
+            CHOICES
+          </p>
+          <Ballot choices={proposal?.choices} strategies={proposal?.strategies} />
+        </div>
         <div className="mb-4 grid w-full grid-cols-1 gap-4 lg:w-[100%] lg:grid-cols-2">
           <ChoiceCards choices={proposal?.choices} />
         </div>
