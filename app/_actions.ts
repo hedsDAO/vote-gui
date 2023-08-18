@@ -100,7 +100,7 @@ export const getProposalById = async (id: string) => {
 export async function getProposals(space: string) {
   try {
     const proposals = await createClient().getAllProposalsInSpace(space);
-    console.log(proposals.data)
+    // console.log(proposals.data)
   return proposals.data || undefined;
   } catch (e) {
     console.log(e)

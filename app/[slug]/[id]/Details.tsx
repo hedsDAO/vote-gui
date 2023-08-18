@@ -14,19 +14,11 @@ const formatTime = (time: string) => {
   return date;
 };
 
-const TEST_DESCRIPTION = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-aliquip ex ea commodo consequat. Duis aute irure dolor in
-reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.`;
-
 const Details = ({
   proposal,
   displayName,
   voterUserData,
-  description
+  description,
 }: {
   proposal: any;
   displayName: string;
@@ -62,15 +54,14 @@ const Details = ({
           {`Participants in this vote must hold at least one token from the following contracts. Click here to check eligibility.`}
         </p>
       </div>
-      <div className="flex -space-x-8 my-3">
+      <div className="my-3 flex -space-x-8">
         {voterUserData
           ? Object.values(voterUserData)
               ?.slice(0, 7)
-              ?.map((user: any) => {
-                console.log(user);
+              ?.map((user: any, idx) => {
                 return (
                   <div
-                    key={user?.displayName}
+                    key={user?.displayName + idx + "voterData"}
                     className="aspect-square max-h-[50px] min-h-[50px] min-w-[50px] max-w-[50px] rounded-full border-4 border-white lg:max-h-[75px]  lg:min-h-[75px] lg:min-w-[75px] lg:max-w-[75px]"
                   >
                     <Image

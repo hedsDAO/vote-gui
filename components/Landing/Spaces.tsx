@@ -27,8 +27,8 @@ const Spaces = async () => {
           spaceData.map((space) => {
             const { name, image } = space;
             return (
-              <Link href={`/${name}`}>
-                <MediaCard key={name} title={name} image={image} />
+              <Link key={name} href={`/${name}`}>
+                <MediaCard title={name} image={image} />
               </Link>
             );
           })}

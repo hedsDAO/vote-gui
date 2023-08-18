@@ -122,6 +122,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       title: state.tapeDetails.title,
       strategies: state.strategy,
       method: 1,
+      choiceType: 'image'
     };
     console.log(proposal);
     //Use hedsvote createProposal via server actions
