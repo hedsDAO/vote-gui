@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const TEST_DESCRIPTION = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -20,15 +21,17 @@ const Details = ({
   return (
     <div className="mx-auto flex max-w-4xl justify-start px-10">
       <div className="-mt-4 flex flex-col gap-4 lg:-mt-28 lg:gap-8">
-        <div className="flex items-center gap-4 lg:-ml-8">
-          <Image
-            alt="back"
-            src={"/icons/arrow-left.svg"}
-            width={15}
-            height={15}
-          />
-          <p className="font-space-grotesk text-black">back</p>
-        </div>
+        <Link href="/">
+          <div className="flex items-center gap-4 lg:-ml-8">
+            <Image
+              alt="back"
+              src={"/icons/arrow-left.svg"}
+              width={15}
+              height={15}
+            />
+            <p className="font-space-grotesk text-black">back</p>
+          </div>
+        </Link>
         <h4 className="font-space-grotesk text-4xl text-black">
           {title || TEST_TITLE}
         </h4>

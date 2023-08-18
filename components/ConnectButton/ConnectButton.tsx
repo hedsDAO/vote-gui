@@ -8,7 +8,7 @@ const ConnectButton = () => {
       {({ isConnected, isConnecting, show, hide, address, ensName, chain }) => {
         return (
           <button
-            className="font-space-grotesk lg:text-lg text-white/90 hover:text-white/100 transition-all"
+            className="font-space-grotesk lg:text-sm text-white/80 hover:text-white/100 transition-all"
             onClick={show}
           >
             {isConnected ? <p className="text-sm">{address?.slice(0, 5) + '...'}</p> : <>connect</>}

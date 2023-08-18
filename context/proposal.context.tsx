@@ -36,7 +36,7 @@ const reducer = (state: StateType, action: ActionType) => {
         ...state,
         likes: {
           ...state.likes,
-          [action.payload]: state.likes[action.payload] + 1,
+          [action.payload]: state.likes?.[action.payload] ? state.likes[action.payload] += 1 : state.likes[action.payload] = 1,
         },
       };
     case "DECREASE_SCORE":
@@ -52,7 +52,7 @@ const reducer = (state: StateType, action: ActionType) => {
           ...state,
           likes: {
             ...state.likes,
-            [action.payload]: state.likes[action.payload] - 1,
+            [action.payload]: state.likes[action.payload] -= 1,
           },
         };
       }

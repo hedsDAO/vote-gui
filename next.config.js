@@ -7,6 +7,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "storage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com", 
+      },
+      {
+        protocol: "https",
         hostname: "www.heds.cloud",
         port: "",
         pathname: "/ipfs/**",
