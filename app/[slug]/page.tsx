@@ -1,56 +1,16 @@
-// "use client";
-
-import { createClient, Proposal, SpaceData } from "hedsvote";
-import { getSpaceData, getDisplayNameForAuthors, getProposals } from "../_actions";
-import { useEffect, useState } from "react";
+import { getSpaceData, getProposals } from "../_actions";
 import Header from "@/components/Space/Header";
 import ProfilePicture from "@/components/Space/ProfilePicture";
 import Details from "@/components/Space/Details";
 import Socials from "@/components/Space/Socials";
 import { getVotingStatus } from "../utils/getVotingStatus";
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
-import Link from 'next/link'
+import Link from "next/link";
 
-
-interface DisplayName {
-  [author: string]: string;
-}
-
-const Page =  async ({ params }: { params: { slug: string } }) => {
+const Page = async ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
-  // const router = useRouter();
-  // const [proposals, setProposals] = useState<any[] | null>(null);
-  // const [space, setSpace] = useState<SpaceData | null>(null);
-  // const [displayNames, setDisplayNames] = useState<DisplayName | null>(null);
-
   const space = await getSpaceData(slug);
   const proposals: any[] | undefined = await getProposals(slug);
-
-
-  // const loadSpaceData = async () => {
-  //   const space = await getSpaceData(slug);
-  //   const proposals: Proposal[] | undefined = await getProposals(slug);
-  //   const displayNames = await getDisplayNameForAuthors(proposals || undefined);
-  //   console.log(proposals);
-  //   setProposals(proposals || []);
-  //   setSpace(space);
-  //   setDisplayNames(displayNames || {});
-  // };
-
-  // useEffect(() => {
-  //   loadSpaceData();
-  // }, []);
-
-  // const getProposals = async (space: string) => {
-  //   try {
-  //     const proposals = await createClient().getAllProposalsInSpace(space);
-  //     console.log(proposals.data);
-  //     return proposals.data || undefined;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   return (
     <div className="min-h-[80vh]">
@@ -78,7 +38,10 @@ const Page =  async ({ params }: { params: { slug: string } }) => {
                   proposal?.end_time
                 );
                 return (
-                  <Link href={`${slug}/${proposal.ipfs_hash}` } key={proposal.author + idx}>
+                  <Link
+                    href={`${slug}/${proposal.ipfs_hash}`}
+                    key={proposal.author + idx}
+                  >
                     <div
                       role="button"
                       // onClick={() => {
@@ -105,7 +68,7 @@ const Page =  async ({ params }: { params: { slug: string } }) => {
                       </div>
                       <Image
                         alt={"test"}
-                        src={proposal.cover || ""}
+                        src={proposal.cover}
                         width={0}
                         height={0}
                         sizes="100vw"

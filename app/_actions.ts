@@ -90,7 +90,7 @@ export const getProposalById = async (id: string) => {
   const { getProposal } = createClient();
   try {
     const proposal = await getProposal(id);
-    return proposal;
+    return proposal.data || undefined;
   } catch (error) {
     console.log(error);
   }

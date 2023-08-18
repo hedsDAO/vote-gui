@@ -21,7 +21,10 @@ module.exports = {
       },
       colors: {
         ...colors,
-        'heds-bg': '#2D2934'
+        'heds-bg': '#2D2934',
+        'heds-bg-dark': '#28242D',
+        'heds-bg-light': "#3C3644",
+        'heds-bg-red': `#D56767`
       }
     },
   },

@@ -7,7 +7,7 @@ import YourVotes from "@/components/Landing/YourVotes";
 
 export default function Home() {
   return (
-    <div className="flex w-full min-h-[80vh] flex-col">
+    <div className="flex w-full min-h-[82vh] flex-col">
       <Header />
       <Spaces />
       <YourVotes />
