@@ -50,7 +50,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   const formatChoices = async (choiceOptions: ChoiceOption[]) => {
     const formattedChoices = choiceOptions.map(async (choice, idx) => {
       const { title, imageFile } = choice;
-      const formattedChoice: Choice = { id: idx, image: "", name: title };
+      const formattedChoice: Choice = { id: idx + 1, image: "", name: title };
       if (imageFile) {
         const data = new FormData();
 
@@ -122,7 +122,8 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       title: state.tapeDetails.title,
       strategies: state.strategy,
       method: 1,
-      choiceType: 'image'
+      choiceType: state.tapeDetails.choiceType,
+      showResults: state.tapeDetails.showResults
     };
     console.log(proposal);
     //Use hedsvote createProposal via server actions

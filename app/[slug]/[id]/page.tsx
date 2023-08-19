@@ -6,6 +6,7 @@ import Link from "next/link";
 import { QuadraticVote, SingleChoiceVote } from "hedsvote";
 import axios from "axios";
 import Ballot from "@/app/[slug]/[id]/Ballot";
+import { getVotingStatus } from "@/utils/getVotingStatus";
 // import { useContext } from "react";
 // import { ProposalContext } from "@/context/proposal.context";
 
@@ -58,6 +59,26 @@ export default async function Page({ params }: ProposalProps) {
   const proposal: any | undefined = await getProposalById(id);
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
   const voterUserData = await getParticipantsUserData(proposal?.votes);
+  const votingStatus = getVotingStatus(
+    proposal?.start_time,
+    proposal?.end_time
+  );
+
+  const scores = proposal.scores || [];
+  const totalScore =
+    scores.reduce((acc: number, score: number) => acc + score, 0) || 0;
+  const choicesWithScores = proposal.choices.map((choice: any, idx: any) => {
+    const scorePercentage = (scores[idx] / totalScore) * 100;
+    const roundedPercentage =
+      Math.round((scorePercentage + Number.EPSILON) * 1000) / 1000;
+    return { ...choice, score: roundedPercentage };
+  });
+
+  const sortedChoicesWithScores = choicesWithScores.sort(
+    (a: any, b: any) => b.score - a.score
+  );
+
+  console.log(totalScore, "sorted");
 
   return (
     <div className="flex min-h-[82vh] max-w-5xl flex-col px-4 lg:mx-auto">
@@ -108,15 +129,29 @@ export default async function Page({ params }: ProposalProps) {
           />
         </div>
       </div>
-      <div className="mt-8 flex flex-col lg:max-w-4xl lg:items-start">
-        <div className="flex justify-between items-center w-full pb-3">
+      <div className="my-8 flex flex-col lg:max-w-4xl lg:items-start">
+        <div className="flex w-full items-center justify-between pb-3">
           <p className="font-inter text-base font-semibold tracking-wide text-black/80">
             CHOICES
           </p>
-          <Ballot choices={proposal?.choices} strategies={proposal?.strategies} />
+          {votingStatus === "open" ? (
+            <Ballot
+              choices={proposal?.choices}
+              strategies={proposal?.strategies}
+              proposalId={proposal?.ipfs_hash}
+            />
+          ) : (
+            <></>
+          )}
         </div>
         <div className="mb-4 grid w-full grid-cols-1 gap-4 lg:w-[100%] lg:grid-cols-2">
-          <ChoiceCards choices={proposal?.choices} />
+          <ChoiceCards
+            totalScore={totalScore}
+            sortedChoicesWithScores={sortedChoicesWithScores}
+            votingStatus={votingStatus}
+            type={proposal.choiceType}
+            choices={proposal?.choices}
+          />
         </div>
       </div>
     </div>

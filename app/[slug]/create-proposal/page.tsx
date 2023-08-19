@@ -14,7 +14,8 @@ export default function Page() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="mx-auto my-8 max-w-[80%] lg:my-20 lg:max-w-3xl">
+    <div className="bg-heds-bg py-8 min-h-[82vh]">
+    <div className="mx-auto max-w-[80%]  lg:max-w-3xl ">
       <div className="">
         <Link href={"/"}>
           <div className="flex flex-row items-center gap-2 py-2">
@@ -56,6 +57,7 @@ export default function Page() {
         {activeStep === 4 && <ConfirmForm setActiveStep={setActiveStep} />}
         </div>
       </div>
+    </div>
     </div>
   );
 }

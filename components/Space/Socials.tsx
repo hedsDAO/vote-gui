@@ -14,7 +14,7 @@ const Socials = ({
 }) => {
   // if (!!twitter || !!instagram || !!discord || !!soundcloud) return <></>;
     return (
-      <div className="mx-auto mt-10 flex max-w-4xl justify-start px-10">
+      <div className="mx-auto mt-10 flex max-w-4xl justify-start px-5 lg:px-10">
         <div className="flex flex-col gap-2">
           <p className="font-inter text-sm font-semibold tracking-wide text-black/60">
             SOCIALS

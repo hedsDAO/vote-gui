@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const ProfilePicture = ({ src }: { src?: string }) => {
   return (
-    <div className="mx-auto -mt-10 flex max-w-5xl justify-end px-8 lg:px-0">
+    <div className="mx-auto -mt-10 lg:-mb-0 -mb-10 flex max-w-5xl justify-end px-8 lg:px-0">
       <div className="max-h-[120px] rounded-full lg:max-h-[200px]">
         <Image
           alt={"test"}

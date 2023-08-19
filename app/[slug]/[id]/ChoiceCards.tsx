@@ -14,7 +14,19 @@ export interface CurrentSongProps {
   isPlaying: boolean;
 }
 
-const ChoiceCards = ({ choices }: { choices: any[] }) => {
+const ChoiceCards = ({
+  choices,
+  type,
+  votingStatus,
+  sortedChoicesWithScores,
+  totalScore,
+}: {
+  choices: any[];
+  type: string;
+  votingStatus: string;
+  sortedChoicesWithScores?: any[];
+  totalScore?: number;
+}) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSong, setCurrentSong] = useState<{
     media: string;
@@ -154,12 +166,21 @@ const ChoiceCards = ({ choices }: { choices: any[] }) => {
   return (
     <>
       {choices?.map((choice) => {
-        if (choice?.media === null) {
-          return <ImageChoiceCard key={choice?.id} choice={choice} />;
-        } else
+        if (type === "image") {
+          return (
+            <ImageChoiceCard
+              sortedChoicesWithScores={sortedChoicesWithScores}
+              votingStatus={votingStatus}
+              key={choice?.id}
+              choice={choice}
+            />
+          );
+        } else if (type === "audio") {
           return (
             <AudioChoiceCard
+              sortedChoicesWithScores={sortedChoicesWithScores}
               key={choice?.id}
+              votingStatus={votingStatus}
               togglePlayPause={togglePlayPause}
               currentSong={currentSong}
               handleBarClick={handleBarClick}
@@ -168,6 +189,7 @@ const ChoiceCards = ({ choices }: { choices: any[] }) => {
               choice={choice}
             />
           );
+        }
       })}
     </>
   );

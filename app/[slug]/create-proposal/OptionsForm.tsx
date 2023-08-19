@@ -6,7 +6,7 @@ import CustomFormInput from "./CustomFormInput";
 import CustomUpload from "./CustomUpload";
 import NextStepButton from "./NextStepButton";
 import { CaretCircleUp, Trash } from "@phosphor-icons/react";
-import { regex } from "@/app/utils/validation";
+import { regex } from "@/utils/validation";
 
 interface OwnProps {
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
