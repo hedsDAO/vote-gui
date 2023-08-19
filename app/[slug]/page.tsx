@@ -3,7 +3,7 @@ import Header from "@/components/Space/Header";
 import ProfilePicture from "@/components/Space/ProfilePicture";
 import Details from "@/components/Space/Details";
 import Socials from "@/components/Space/Socials";
-import { getVotingStatus } from "../utils/getVotingStatus";
+import { getVotingStatus } from "../../utils/getVotingStatus";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,14 +23,25 @@ const Page = async ({ params }: { params: { slug: string } }) => {
         discord={space?.discord}
         soundcloud={space?.soundcloud}
       />
-      <div className="mx-auto mt-10 flex max-w-4xl justify-start px-10">
+      <div className="mx-auto mt-10 flex max-w-4xl justify-start px-5 lg:px-10">
         <div className="flex flex-col">
           <div className="flex justify-between">
             <p className="font-inter text-2xl font-bold text-black">
               PROPOSALS
             </p>
+            <Link href={`/${slug}/create-proposal`}>
+            <button className="px-4 flex gap-2 items-center">
+              <Image
+                alt="add proposal"
+                src={"/icons/plus.svg"}
+                width={10}
+                height={10}
+              />
+              <p className="text-black text-sm font-space-grotesk">create</p>
+            </button>
+            </Link>
           </div>
-          <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-4">
+          <div className="my-5 grid min-w-[90vw] grid-cols-1 gap-4 pb-5 lg:min-w-full lg:grid-cols-3">
             {proposals?.length &&
               proposals.map((proposal, idx) => {
                 const votingStatus = getVotingStatus(
@@ -42,14 +53,8 @@ const Page = async ({ params }: { params: { slug: string } }) => {
                     href={`${slug}/${proposal.ipfs_hash}`}
                     key={proposal.author + idx}
                   >
-                    <div
-                      role="button"
-                      // onClick={() => {
-                      //   router.push(`${slug}/${proposal.ipfs_hash}`);
-                      // }}
-                      className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black px-4 py-4 shadow-sm"
-                    >
-                      <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black p-0.5">
+                    <div className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black bg-black/10 px-4 py-4 shadow-sm transition-all ease-in-out hover:bg-white">
+                      <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black bg-white px-[3px] py-0.5">
                         <div
                           className={
                             `${
@@ -72,14 +77,16 @@ const Page = async ({ params }: { params: { slug: string } }) => {
                         width={0}
                         height={0}
                         sizes="100vw"
-                        className="rounded-full border border-black"
+                        className="w-[30%] rounded-full border border-black lg:w-[50%]"
                         style={{
-                          width: "50%",
                           height: "auto",
                           objectFit: "cover",
                         }}
                       />
                       <div className="mt-2 flex flex-col items-center">
+                        <p className="-mt-4 mb-4 font-space-grotesk text-xs text-black">
+                          {proposal?.title}
+                        </p>
                         <h4 className="text-sm font-bold text-black">
                           {votingStatus === "open"
                             ? "ENDS"

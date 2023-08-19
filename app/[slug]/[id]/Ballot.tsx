@@ -10,12 +10,16 @@ import BallotModal from "./BallotModal";
 const Ballot = ({
   choices,
   strategies,
+  proposalId,
 }: {
   choices: Choice[];
   strategies: Strategy[];
+  proposalId: string;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [showConnectButton, setShowConnectButton] = useState<boolean>();
+  const [userVp, setUserVp] = useState<number>(0);
   const { isConnected, address } = useAccount();
   const getVp = async () => {
     console.log(address, strategies);
@@ -25,7 +29,8 @@ const Ballot = ({
         strategies
       );
       console.log(vp, "###################################");
-      return vp;
+      setUserVp(vp);
+      return;
     } catch (e) {
       console.log(e);
     }
@@ -35,27 +40,34 @@ const Ballot = ({
     console.log("here");
     if (address && strategies) getVp();
   }, [address, strategies]);
-  if (!isConnected) {
-    return (
-      <ConnectKitButton.Custom>
-        {({ isConnected, show, address }) => {
-          return (
-            <button
-              className="rounded-full bg-heds-bg px-4 py-2"
-              onClick={show}
-            >
-              <p className="font-space-grotesk text-[0.8rem] text-white transition-all">
-                connect
-              </p>
-            </button>
-          );
-        }}
-      </ConnectKitButton.Custom>
-    );
-  } else
-    return (
-      <>
-        <div className="flex gap-1">
+
+  useEffect(() => {
+    if (isConnected && address) {
+      setShowConnectButton(false);
+    } else {
+      setShowConnectButton(true);
+    }
+  }, [isConnected]);
+
+  return (
+    <>
+      <div className="flex gap-1">
+        {showConnectButton ? (
+          <ConnectKitButton.Custom>
+            {({ isConnected, show, address }) => {
+              return (
+                <button
+                  className="rounded-full bg-heds-bg px-4 py-2"
+                  onClick={show}
+                >
+                  <p className="font-space-grotesk text-[0.8rem] text-white transition-all">
+                    connect
+                  </p>
+                </button>
+              );
+            }}
+          </ConnectKitButton.Custom>
+        ) : (
           <button
             onClick={() => setIsOpen(true)}
             disabled={
@@ -70,7 +82,7 @@ const Ballot = ({
             }
           >
             <p className="font-inter text-xs text-white">
-              BALLOT{" "}
+              CAST VOTE{" "}
               <span
                 className={
                   `${
@@ -84,12 +96,23 @@ const Ballot = ({
               </span>
             </p>
           </button>
-          {/* here */}
-          {/* <p className="text-black">{userVp}</p> */}
-        </div>
-        <BallotModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      </>
-    );
+        )}
+        {/* here */}
+        {/* <p className="text-black">{userVp}</p> */}
+      </div>
+      {address && (
+        <BallotModal
+          choices={choices}
+          userVotes={state?.likes}
+          proposalId={proposalId}
+          vp={userVp}
+          voter={address}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
+    </>
+  );
 };
 
 export default Ballot;

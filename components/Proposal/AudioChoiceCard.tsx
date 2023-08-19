@@ -24,6 +24,8 @@ const AudioChoiceCard = ({
   togglePlayPause,
   handleBarClick,
   playSound,
+  votingStatus,
+  sortedChoicesWithScores,
 }: {
   choice: AudioChoice;
   currentSong: CurrentSongProps | null;
@@ -31,9 +33,11 @@ const AudioChoiceCard = ({
   togglePlayPause: () => void;
   handleBarClick: (idx: number, media: string) => void;
   playSound: (audioSrc: string) => void;
+  votingStatus: string;
+  sortedChoicesWithScores?: any[];
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
-
+  
   return (
     <div
       className={
@@ -82,7 +86,7 @@ const AudioChoiceCard = ({
           })}
         </div>
       </div>
-      <div className="mx-auto flex items-center justify-center gap-4">
+      <div className={`${votingStatus === 'open' ? "mx-auto" : "ml-auto pr-5"} ` + "flex items-center justify-center gap-4"}>
         {currentSong?.isLoading && choice.media === currentSong.media ? (
           <Image
             alt="loading"
@@ -112,7 +116,7 @@ const AudioChoiceCard = ({
           </button>
         )}
       </div>
-      <div className="flex gap-2 pr-2 ">
+      {votingStatus === 'open' && <div className="flex gap-2 pr-2 ">
         <div className="flex items-center">
           <div className="rounded-sm bg-heds-bg-light px-2 py-2.5">
             <h1 className="-mt-[3px] min-w-[1.75ch] max-w-[1.75ch] text-center text-xl text-white">
@@ -151,7 +155,7 @@ const AudioChoiceCard = ({
             />
           </button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

@@ -19,8 +19,8 @@ const Details = ({
   description?: string;
 }) => {
   return (
-    <div className="mx-auto flex max-w-4xl justify-start px-10">
-      <div className="-mt-4 flex flex-col gap-4 lg:-mt-28 lg:gap-8">
+    <div className="mx-auto flex max-w-4xl justify-start px-5 lg:px-10">
+      <div className="-mt-5 flex flex-col gap-4 lg:-mt-28 lg:gap-8">
         <Link href="/">
           <div className="flex items-center gap-4 lg:-ml-8">
             <Image

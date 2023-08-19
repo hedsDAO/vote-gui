@@ -6,6 +6,8 @@ import { Strategy } from "hedsvote";
 interface TapeDetails {
   title: string;
   description: string;
+  choiceType: string;
+  showResults: boolean;
 }
 
 export interface ChoiceOption {
@@ -52,6 +54,8 @@ const initialState: StateType = {
   tapeDetails: {
     title: "",
     description: "",
+    choiceType: "audio",
+    showResults: true
   },
   voteStart: new Date(),
   voteDuration: "86400000",
