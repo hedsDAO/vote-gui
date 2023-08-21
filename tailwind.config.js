@@ -24,7 +24,17 @@ module.exports = {
         'heds-bg': '#2D2934',
         'heds-bg-dark': '#28242D',
         'heds-bg-light': "#3C3644",
-        'heds-bg-red': `#D56767`
+        'heds-bg-red': `#D56767`,
+        // test colors
+        'h-black-900': '#000000ff',
+        'h-black-800': '#101019ff',
+        'h-black-700': '#2d2934ff',
+        'h-red-dark': '#8c2c34ff',
+        'h-red-light': '#ca535dff',
+        'h-yellow-dark': '#ffb41fff',
+        'h-yellow-light': '#ffc95cff',
+        'h-blue-dark': '#37718eff',
+        'h-blue-light': '#6995aaff',
       }
     },
   },
