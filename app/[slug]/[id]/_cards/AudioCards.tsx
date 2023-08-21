@@ -1,31 +1,19 @@
 "use client";
-
+import { SortedChoice } from "@/common/types";
+import { Proposal } from "hedsvote";
+import { useRef, useState, useEffect } from "react";
 import { Howl } from "howler";
-import { useEffect, useState, useRef } from "react";
+import ClosedAudioCard from "./ClosedAudioCard";
+import OpenAudioCard from "./OpenAudioCard";
 
-import ImageChoiceCard from "@/components/Proposal/ImageChoiceCard";
-import AudioChoiceCard from "@/components/Proposal/AudioChoiceCard";
-
-export interface CurrentSongProps {
-  media: string;
-  sound: Howl | null;
-  percentage: number;
-  isLoading: boolean;
-  isPlaying: boolean;
-}
-
-const ChoiceCards = ({
-  choices,
-  type,
-  votingStatus,
+const AudioCards = ({
+  proposal,
   sortedChoicesWithScores,
-  totalScore,
+  votingStatus,
 }: {
-  choices: any[];
-  type: string;
+  proposal: Proposal;
+  sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
-  sortedChoicesWithScores?: any[];
-  totalScore?: number;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSong, setCurrentSong] = useState<{
@@ -35,7 +23,6 @@ const ChoiceCards = ({
     isLoading: boolean;
     isPlaying: boolean;
   } | null>(null);
-
   const playSound = (audioSrc: string) => {
     if (currentSong && currentSong.media === audioSrc) {
       togglePlayPause();
@@ -162,37 +149,39 @@ const ChoiceCards = ({
   }, []);
 
   const filledBars = currentSong ? Math.floor(50 * currentSong.percentage) : 0;
-
-  return (
-    <>
-      {choices?.map((choice) => {
-        if (type === "image") {
+  if (votingStatus === "closed") {
+    return (
+      <>
+        {sortedChoicesWithScores?.map((choice) => (
+          <ClosedAudioCard
+            currentSong={currentSong}
+            togglePlayPause={togglePlayPause}
+            filledBars={filledBars}
+            handleBarClick={handleBarClick}
+            playSound={playSound}
+            choice={choice}
+          />
+        ))}
+      </>
+    );
+  } else if (votingStatus === "open") {
+    return (
+      <>
+        {proposal?.choices?.map((choice) => {
           return (
-            <ImageChoiceCard
-              sortedChoicesWithScores={sortedChoicesWithScores}
-              votingStatus={votingStatus}
-              key={choice?.id}
-              choice={choice}
-            />
-          );
-        } else if (type === "audio") {
-          return (
-            <AudioChoiceCard
-              sortedChoicesWithScores={sortedChoicesWithScores}
-              key={choice?.id}
-              votingStatus={votingStatus}
-              togglePlayPause={togglePlayPause}
+            <OpenAudioCard
               currentSong={currentSong}
+              togglePlayPause={togglePlayPause}
+              filledBars={filledBars}
               handleBarClick={handleBarClick}
               playSound={playSound}
-              filledBars={filledBars}
               choice={choice}
             />
           );
-        }
-      })}
-    </>
-  );
+        })}
+      </>
+    );
+  }
 };
 
-export default ChoiceCards;
+export default AudioCards;

@@ -10,7 +10,7 @@ import {
 import { pinFileToIpfs } from "../../_actions";
 import { Choice, Proposal, createClient } from "hedsvote";
 import { useBlockNumber, useAccount, useWalletClient } from "wagmi";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ChoicesPreview from "./ChoicesPreview";
 
 interface OwnProps {
@@ -18,6 +18,7 @@ interface OwnProps {
 }
 
 const ConfirmForm = ({ setActiveStep }: OwnProps) => {
+  const router = useRouter();
   const [isShowingFullDescription, setIsShowingFullDescription] =
     useState<boolean>(false);
   const [isShowingChoicesPreview, setIsShowingChoicesPreview] =
@@ -110,6 +111,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     console.log("options", await formatChoices(state.choiceOptions));
     if (Array.isArray(slug)) return;
     const startTime = new Date(state.voteStart);
+    try {
     const proposal: Proposal = {
       author: address as string,
       block: Number(blockNumber),
@@ -131,6 +133,12 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     if (!data) return;
     const createdProposal = await createProposal(data,proposal);
     console.log(createdProposal)
+    router.push(`${slug}`);
+    return;
+   } catch (e) {
+    console.error(e);
+    return
+   }
   };
 
   return (

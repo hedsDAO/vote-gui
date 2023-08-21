@@ -19,10 +19,12 @@ const ImageChoiceCard = ({
   choice,
   votingStatus,
   sortedChoicesWithScores,
+  proposal,
 }: {
   choice: ImageChoice;
   votingStatus: string;
   sortedChoicesWithScores?: any[];
+  proposal?: any | undefined;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
   return (

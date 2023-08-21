@@ -1,0 +1,109 @@
+"use client";
+
+import { Proposal } from "hedsvote";
+import { useState } from "react";
+import Ballot from "./Ballot";
+import { SortedChoice, VoterUserData } from "@/common/types";
+import AudioCards from "./_cards/AudioCards";
+import ImageCards from "./_cards/ImageCards";
+import Results from "./Results";
+
+const VotingNavbar = ({
+  proposal,
+  votingStatus,
+  sortedChoicesWithScores,
+  voterUserData,
+}: {
+  proposal: Proposal;
+  votingStatus: string;
+  sortedChoicesWithScores?: SortedChoice[];
+  voterUserData: VoterUserData | undefined;
+}) => {
+  const [currentTab, setCurrentTab] = useState<number>(0);
+  return (
+    <>
+      {votingStatus === "open" ? (
+        <div className="mt-10 flex items-end justify-between">
+          <p className="font-inter text-base font-semibold tracking-wide text-black">
+            CHOICES
+          </p>
+          {proposal?.ipfsHash && (
+            <Ballot
+              strategies={proposal?.strategies}
+              proposalId={proposal?.ipfsHash}
+              choices={proposal?.choices}
+            />
+          )}
+        </div>
+      ) : (
+        <div className="mt-10 flex items-end gap-2">
+          <p
+            role="button"
+            onClick={() => setCurrentTab(0)}
+            className={
+              `${
+                currentTab === 0
+                  ? "text-black"
+                  : "text-black/40 hover:text-black"
+              } ` +
+              "font-inter text-base font-semibold tracking-wide transition-all ease-in-out"
+            }
+          >
+            CHOICES
+          </p>
+          <p
+            role="button"
+            onClick={() => setCurrentTab(1)}
+            className={
+              `${
+                currentTab === 1
+                  ? "text-black"
+                  : "text-black/40 hover:text-black"
+              } ` +
+              "font-inter text-base font-semibold tracking-wide transition-all ease-in-out"
+            }
+          >
+            RESULTS
+          </p>
+        </div>
+      )}
+      {currentTab === 0 ? (
+        <div className="flex max-w-5xl text-black">
+          <div className="mt-5 flex w-full flex-col gap-5">
+            {proposal?.choiceType === "audio" ? (
+              <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
+                <AudioCards
+                  votingStatus={votingStatus}
+                  sortedChoicesWithScores={sortedChoicesWithScores}
+                  proposal={proposal}
+                />
+              </div>
+            ) : proposal?.choiceType === "image" ? (
+              <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
+                <ImageCards
+                  votingStatus={votingStatus}
+                  sortedChoicesWithScores={sortedChoicesWithScores}
+                  proposal={proposal}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          {sortedChoicesWithScores && (
+            <Results
+              sortedChoicesWithScores={sortedChoicesWithScores}
+              voterUserData={voterUserData}
+              proposal={proposal}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+export default VotingNavbar;
