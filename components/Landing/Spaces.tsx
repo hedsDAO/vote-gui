@@ -1,6 +1,7 @@
 import { createClient } from "hedsvote";
 import MediaCard from "@/components/MediaCard/MediaCard";
 import Link from "next/link";
+import EmptyMediaCard from "../MediaCard/EmptyMediaCard";
 
 async function getSpaceData() {
   try {
@@ -16,13 +17,13 @@ const Spaces = async () => {
   const spaceData = await getSpaceData();
 
   return (
-    <div className="px-10 py-6 lg:px-[15vw]">
-      <div className="my-4 pb-2 flex items-center">
-        <p className="font-inter text-xl font-semibold tracking-tight text-heds-bg">
+    <div className="">
+      <div className="mx-auto my-2 flex max-w-4xl items-center pb-2">
+        <p className="ml-5 rounded-md px-2 font-inter text-xl font-bold tracking-wide text-white/80 lg:ml-2">
           SPACES
         </p>
       </div>
-      <div className="flex gap-3 lg:gap-4">
+      <div className="flex justify-center gap-3 bg-gradient-to-r from-heds-bg to-heds-bg-dark py-6 lg:gap-4">
         {spaceData?.length &&
           spaceData.map((space) => {
             const { name, image } = space;
@@ -32,6 +33,11 @@ const Spaces = async () => {
               </Link>
             );
           })}
+        <div className="hidden gap-4 lg:flex">
+          {new Array(2).fill(0).map((_, i) => (
+            <EmptyMediaCard key={"space" + i} />
+          ))}
+        </div>
       </div>
     </div>
   );

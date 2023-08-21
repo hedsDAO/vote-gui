@@ -1,13 +1,12 @@
 "use client";
 import Link from "next/link";
-
 import ConnectButton from "@/components/ConnectButton/ConnectButton";
 
 const Navbar = () => {
   return (
-    <div className="flex max-h-[7vh] min-h-[7vh] w-full items-center justify-between bg-heds-bg px-5 py-4 lg:px-8">
+    <div className="flex w-full items-center justify-between bg-heds-bg px-5 py-5 lg:px-7 max-h-[7vh] min-h-[7vh]">
       <Link href="/">
-        <h1 className="font-space-grotesk hover:text-white text-white/80 tracking-widest lg:text-lg">
+        <h1 className="font-space-grotesk text-white hover:text-white/80 pl-2.5 lg:text-lg tracking-wide">
           hedsVOTE
         </h1>
       </Link>

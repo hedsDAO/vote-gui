@@ -14,15 +14,15 @@ const MediaCard = ({ title, image }: MediaCardProps) => {
   return (
     <div
       onClick={() => router.push(`/${title}`)}
-      className="h-40 w-36 rounded-xl border-[3px] border-black bg-white shadow-md shadow-black/40 lg:h-48 lg:w-52"
+      className="h-40 w-44 border-[1px] border-fuchsia-200/40 rounded-2xl bg-heds-bg shadow-sm shadow-black/60 lg:h-48 lg:w-52 hover:bg-heds-bg-light transition-all ease-in-out"
     >
       <div className="flex h-full flex-col items-center justify-center gap-2">
         <Image
-          className="rounded-full border-2 border-black"
+          className="rounded-full"
           src={image}
           alt={title}
-          width={75}
-          height={75}
+          width={50}
+          height={50}
         />
         <p className="font-space-grotesk text-sm text-black">{title}</p>
       </div>
