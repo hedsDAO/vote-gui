@@ -78,7 +78,7 @@ const Ballot = ({
                 state?.likes && Object.values(state?.likes)?.length
                   ? "bg-fuchsia-500"
                   : "bg-fuchsia-200"
-              } ` + "rounded-full px-3 py-2"
+              } ` + "rounded-full px-3 min-h-[30px] max-h-[30px]"
             }
           >
             <p className="font-inter text-xs text-white">

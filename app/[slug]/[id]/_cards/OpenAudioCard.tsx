@@ -1,46 +1,28 @@
 "use client";
 
-import Image from "next/image";
-import { useContext, useState } from "react";
+import { CurrentSongProps, SortedChoice } from "@/common/types";
 import { ProposalContext } from "@/context/proposal.context";
+import { Choice } from "hedsvote";
+import Image from "next/image";
+import { useContext } from "react";
 
-import { CurrentSongProps } from "@/app/[slug]/[id]/ChoiceCards";
-
-interface AudioChoice {
-  id: number;
-  proposal_id: string;
-  image: string;
-  wallet_id: string;
-  artist: string;
-  name: string;
-  location: string;
-  media: string;
-  score?: number;
-}
-
-const AudioChoiceCard = ({
+const OpenAudioCard = ({
   choice,
   currentSong,
   filledBars,
   togglePlayPause,
   handleBarClick,
   playSound,
-  votingStatus,
-  sortedChoicesWithScores,
-  proposal,
 }: {
-  choice: AudioChoice;
+  choice: Choice;
   currentSong: CurrentSongProps | null;
   filledBars: number;
+  playSound: (audioSrc: string) => void;
   togglePlayPause: () => void;
   handleBarClick: (idx: number, media: string) => void;
-  playSound: (audioSrc: string) => void;
-  votingStatus: string;
-  sortedChoicesWithScores?: any[];
-  proposal?: any | undefined;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
-  const [isShowingResultsModal, setIsShowingResultsModal] = useState(false);
+
   return (
     <div
       className={
@@ -83,29 +65,13 @@ const AudioChoiceCard = ({
               <span
                 key={"bar" + idx}
                 className={`h-4 w-[1.5px] lg:w-[2px] ${barColor} cursor-pointer`}
-                onClick={() => handleBarClick(idx, choice.media)}
+                onClick={() => handleBarClick(idx, choice.media || "")}
               />
             );
           })}
         </div>
       </div>
-      {sortedChoicesWithScores?.length && choice?.score && (
-        <div className="mx-auto flex items-center">
-          <div
-            className="rounded-sm bg-heds-bg-light px-3 py-2 lg:-mr-4"
-          >
-            <h1 className="text-center text-sm text-white">
-              {Math.round(choice?.score * 10) / 10 || 0} %
-            </h1>
-          </div>
-        </div>
-      )}
-      <div
-        className={
-          `${votingStatus === "open" ? "mx-auto" : "ml-auto pr-5"} ` +
-          "flex items-center justify-center gap-4"
-        }
-      >
+      <div className={"flex ml-auto items-center justify-center gap-4"}>
         {currentSong?.isLoading && choice.media === currentSong.media ? (
           <Image
             alt="loading"
@@ -124,7 +90,7 @@ const AudioChoiceCard = ({
             />
           </button>
         ) : (
-          <button role="button" onClick={() => playSound(choice.media)}>
+          <button role="button" onClick={() => playSound(choice.media || "")}>
             <Image
               className={choice?.media === currentSong?.media ? "" : "invert"}
               alt="play"
@@ -134,9 +100,7 @@ const AudioChoiceCard = ({
             />
           </button>
         )}
-      </div>
-      {votingStatus === "open" && (
-        <div className="flex gap-2 pr-2 ">
+        <div className="flex gap-2 pl-5 pr-2 ">
           <div className="flex items-center">
             <div className="rounded-sm bg-heds-bg-light px-2 py-2.5">
               <h1 className="-mt-[3px] min-w-[1.75ch] max-w-[1.75ch] text-center text-xl text-white">
@@ -176,9 +140,9 @@ const AudioChoiceCard = ({
             </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default AudioChoiceCard;
+export default OpenAudioCard;

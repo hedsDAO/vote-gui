@@ -51,7 +51,7 @@ const Details = ({
           VOTE REQUIREMENTS
         </p>
         <p className="font-space-grotesk text-sm text-black/80">
-          {`Participants in this vote must hold at least one token from the following contracts. Click here to check eligibility.`}
+          {`Participants in this vote must hold at least one token from whitelisted contracts.`}
         </p>
       </div>
       <div className="my-3 flex -space-x-8">
