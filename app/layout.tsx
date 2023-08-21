@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import RootProvider from "./providers";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import { Analytics } from '@vercel/analytics/react';
 
 import "@fontsource/space-mono";
 import "@fontsource-variable/space-grotesk";
@@ -25,6 +26,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </RootProvider>
+        <Analytics />
       </body>
     </html>
   );
