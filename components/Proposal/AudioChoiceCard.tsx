@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { ProposalContext } from "@/context/proposal.context";
 
-import { CurrentSongProps } from "@/app/[slug]/[id]/ChoiceCards";
+import { CurrentSongProps } from "@/common/types";
 
 interface AudioChoice {
   id: number;
@@ -91,9 +91,7 @@ const AudioChoiceCard = ({
       </div>
       {sortedChoicesWithScores?.length && choice?.score && (
         <div className="mx-auto flex items-center">
-          <div
-            className="rounded-sm bg-heds-bg-light px-3 py-2 lg:-mr-4"
-          >
+          <div className="rounded-sm bg-heds-bg-light px-3 py-2 lg:-mr-4">
             <h1 className="text-center text-sm text-white">
               {Math.round(choice?.score * 10) / 10 || 0} %
             </h1>

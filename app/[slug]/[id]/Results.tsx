@@ -1,6 +1,6 @@
 "use client";
 
-import { SortedChoice, VoterUserData } from "@/common/types";
+import { VoterUserData } from "@/common/types";
 import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { useState } from "react";
