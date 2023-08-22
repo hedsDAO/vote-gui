@@ -22,13 +22,11 @@ const Ballot = ({
   const [userVp, setUserVp] = useState<number>(0);
   const { isConnected, address } = useAccount();
   const getVp = async () => {
-    console.log(address, strategies);
     try {
       const vp = await calculateUserVotingPower(
         address as `0x${string}`,
         strategies
       );
-      console.log(vp, "###################################");
       setUserVp(vp);
       return;
     } catch (e) {
@@ -37,7 +35,6 @@ const Ballot = ({
   };
 
   useEffect(() => {
-    console.log("here");
     if (address && strategies) getVp();
   }, [address, strategies]);
 

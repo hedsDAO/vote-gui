@@ -42,7 +42,6 @@ const BallotModal = ({
         voter,
         voteChoices,
       };
-      console.log("vote", vote);
       const successfulVote = await castVote(data, vote);
       if (successfulVote === "signature rejected") {
         setIsLoading(false);

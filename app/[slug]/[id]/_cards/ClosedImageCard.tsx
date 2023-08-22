@@ -2,7 +2,6 @@
 
 import { SortedChoice } from "@/common/types";
 import { ProposalContext } from "@/context/proposal.context";
-import { QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { useContext } from "react";
 
@@ -10,7 +9,7 @@ const ClosedImageCard = ({
   userVote,
   choice,
 }: {
-  userVote: (SingleChoiceVote | QuadraticVote)[] | [];
+  userVote: any | null;
   choice: SortedChoice;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);

@@ -1,7 +1,6 @@
 "use client";
 import { SortedChoice } from "@/common/types";
-import { Proposal } from "hedsvote";
-import { useAccount } from "wagmi";
+import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import ClosedImageCard from "./ClosedImageCard";
 import OpenImageCard from "./OpenImageCard";
 
@@ -9,17 +8,15 @@ const ImageCards = ({
   proposal,
   sortedChoicesWithScores,
   votingStatus,
+  userVote
 }: {
+  userVote: QuadraticVote | SingleChoiceVote | null;
   proposal: Proposal;
   sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
 }) => {
-  const { address } = useAccount();
-  const userVote = (proposal?.votes || []).filter(
-    (vote) => vote.voter?.toLowerCase() === address?.toLowerCase()
-  );
   if (votingStatus === "closed") {
-    console.log('closed image')
+
     return (
       <>
         {sortedChoicesWithScores?.map((choice) => {

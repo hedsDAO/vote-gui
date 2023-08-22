@@ -1,22 +1,22 @@
 "use client";
 import { SortedChoice } from "@/common/types";
-import { Proposal } from "hedsvote";
+import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import { useRef, useState, useEffect } from "react";
 import { Howl } from "howler";
 import ClosedAudioCard from "./ClosedAudioCard";
 import OpenAudioCard from "./OpenAudioCard";
-import { useAccount } from "wagmi";
 
 const AudioCards = ({
   proposal,
   sortedChoicesWithScores,
   votingStatus,
+  userVote
 }: {
   proposal: Proposal;
   sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
+  userVote: QuadraticVote | SingleChoiceVote | null;
 }) => {
-  const { address } = useAccount();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSong, setCurrentSong] = useState<{
     media: string;
@@ -152,14 +152,11 @@ const AudioCards = ({
 
   const filledBars = currentSong ? Math.floor(50 * currentSong.percentage) : 0;
   if (votingStatus === "closed") {
-    const userVote = (proposal?.votes || []).filter(
-      (vote) => vote.voter?.toLowerCase() === address?.toLowerCase()
-    );
     return (
       <>
         {sortedChoicesWithScores?.map((choice) => (
           <ClosedAudioCard
-            userVote={userVote || []}
+            userVote={userVote}
             currentSong={currentSong}
             togglePlayPause={togglePlayPause}
             filledBars={filledBars}
