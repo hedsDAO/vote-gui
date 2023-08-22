@@ -1,4 +1,4 @@
-import { getSpaceData, getProposals } from "../_actions";
+// import { getSpaceData, getProposals } from "../_actions";
 import Header from "@/components/Space/Header";
 import ProfilePicture from "@/components/Space/ProfilePicture";
 import Details from "@/components/Space/Details";
@@ -6,11 +6,13 @@ import Socials from "@/components/Space/Socials";
 import { getVotingStatus } from "../../utils/getVotingStatus";
 import Image from "next/image";
 import Link from "next/link";
+import { createClient } from "hedsvote";
 
 const Page = async ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
-  const space = await getSpaceData(slug);
-  const proposals: any[] | undefined = await getProposals(slug);
+  const {getAllProposalsInSpace, getAllSpaces} = createClient()
+  const space = await (await getAllSpaces()).data.find(space => space.name === slug);
+  const proposals: any[] | undefined = await (await getAllProposalsInSpace(slug)).data;
 
   return (
     <div className="min-h-[80vh]">
