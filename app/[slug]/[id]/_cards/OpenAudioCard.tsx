@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useContext } from "react";
 
 const OpenAudioCard = ({
+  userVote,
   choice,
   currentSong,
   filledBars,
@@ -14,6 +15,7 @@ const OpenAudioCard = ({
   handleBarClick,
   playSound,
 }: {
+  userVote: any,
   choice: Choice;
   currentSong: CurrentSongProps | null;
   filledBars: number;

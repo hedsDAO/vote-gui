@@ -34,11 +34,11 @@ export default function Page() {
                 d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
               />
             </svg>
-            <p className="font-space-grotesk text-sm">back</p>
+            <p className="font-space-grotesk text-sm text-white">back</p>
           </div>
         </Link>
       </div>
-      <p className="pb-4 pt-8 font-space-grotesk text-3xl font-medium lg:text-4xl">
+      <p className="pb-4 pt-8 font-space-grotesk text-3xl font-medium lg:text-4xl text-white">
         Create Proposal
       </p>
       <hr className="mb-10 mt-4 h-[0.5px] border-t-0 bg-white opacity-100" />

@@ -8,11 +8,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "hedsvote";
 
+const { getAllProposalsInSpace, getAllSpaces } = createClient();
+
+async function getSpaceData(name: string) {
+  const spaces = await getAllSpaces();
+  const spaceData = spaces.data.find((space) => space.name === name);
+  return spaceData;
+}
+
+async function getProposals(name: string) {
+  const proposals = await getAllProposalsInSpace(name);
+  return proposals.data;
+}
+
 const Page = async ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
-  const {getAllProposalsInSpace, getAllSpaces} = createClient()
-  const space = await (await getAllSpaces()).data.find(space => space.name === slug);
-  const proposals: any[] | undefined = await (await getAllProposalsInSpace(slug)).data;
+
+  const space = await getSpaceData(slug);
+  const proposals: any[] | undefined = await getProposals(slug);
 
   return (
     <div className="min-h-[80vh]">
@@ -31,17 +44,17 @@ const Page = async ({ params }: { params: { slug: string } }) => {
             <p className="font-inter text-2xl font-bold text-black">
               PROPOSALS
             </p>
-            <Link href={`/${slug}/create-proposal`}>
-            <button className="px-4 flex gap-2 items-center">
-              <Image
-                alt="add proposal"
-                src={"/icons/plus.svg"}
-                width={10}
-                height={10}
-              />
-              <p className="text-black text-sm font-space-grotesk">create</p>
-            </button>
-            </Link>
+            {/* <Link href={`/${slug}/create-proposal`}>
+              <button className="flex items-center gap-2 px-4">
+                <Image
+                  alt="add proposal"
+                  src={"/icons/plus.svg"}
+                  width={10}
+                  height={10}
+                />
+                <p className="font-space-grotesk text-sm text-black">create</p>
+              </button>
+            </Link> */}
           </div>
           <div className="my-5 grid min-w-[90vw] grid-cols-1 gap-4 pb-5 lg:min-w-full lg:grid-cols-3">
             {proposals?.length &&

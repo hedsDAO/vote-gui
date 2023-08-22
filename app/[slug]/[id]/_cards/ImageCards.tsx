@@ -10,7 +10,7 @@ const ImageCards = ({
   votingStatus,
   userVote
 }: {
-  userVote: QuadraticVote | SingleChoiceVote | null;
+  userVote: any | null;
   proposal: Proposal;
   sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
@@ -20,7 +20,7 @@ const ImageCards = ({
     return (
       <>
         {sortedChoicesWithScores?.map((choice) => {
-          return <ClosedImageCard userVote={userVote} choice={choice} />;
+          return <ClosedImageCard proposal={proposal} key={choice.id} userVote={userVote} choice={choice} />;
         })}
       </>
     );
@@ -28,7 +28,7 @@ const ImageCards = ({
     return (
       <>
         {proposal?.choices?.map((choice) => {
-          return <OpenImageCard key={choice.id} choice={choice} />;
+          return <OpenImageCard userVote={userVote} key={choice.id} choice={choice} />;
         })}
       </>
     );

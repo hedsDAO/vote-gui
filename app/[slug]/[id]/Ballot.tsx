@@ -8,10 +8,12 @@ import { calculateUserVotingPower, Strategy, Choice } from "hedsvote";
 import BallotModal from "./BallotModal";
 
 const Ballot = ({
+  userVote,
   choices,
   strategies,
   proposalId,
 }: {
+  userVote: any;
   choices: Choice[];
   strategies: Strategy[];
   proposalId?: string;
@@ -46,6 +48,17 @@ const Ballot = ({
     }
   }, [isConnected]);
 
+  const prevVote = userVote?.reduce(
+    (obj: any, item: any) => ({
+      ...obj,
+      [item.choice_id]: item.amount,
+    }),
+    {}
+  );
+  console.log(
+    JSON.stringify(state?.likes) === JSON.stringify(prevVote) ||
+      Object?.values(state?.likes)?.length === 0
+  );
   return (
     <>
       <div className="flex gap-1">
@@ -68,14 +81,15 @@ const Ballot = ({
           <button
             onClick={() => setIsOpen(true)}
             disabled={
-              state?.likes && Object.values(state?.likes)?.length ? false : true
+              JSON.stringify(state?.likes) === JSON.stringify(prevVote) ||
+              Object?.values(state?.likes)?.length === 0
             }
             className={
               `${
-                state?.likes && Object.values(state?.likes)?.length
+                Object.values(state?.likes)?.length !== 0 && JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
                   ? "bg-fuchsia-500"
                   : "bg-fuchsia-200"
-              } ` + "rounded-full px-3 min-h-[30px] max-h-[30px]"
+              } ` + "max-h-[30px] min-h-[30px] rounded-full px-3"
             }
           >
             <p className="font-inter text-xs text-white">
@@ -83,7 +97,7 @@ const Ballot = ({
               <span
                 className={
                   `${
-                    state?.likes && Object.values(state?.likes)?.length
+                    Object.values(state?.likes)?.length !== 0 && JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
                       ? "bg-fuchsia-900"
                       : "bg-fuchsia-300"
                   } ` + "ml-1 rounded-full px-1.5 py-0.5 text-white"
@@ -95,7 +109,9 @@ const Ballot = ({
           </button>
         )}
         {/* here */}
-        {/* <p className="text-black">{userVp}</p> */}
+        <div className="flex items-center rounded-full bg-heds-bg px-3">
+          <p className="text-sm text-white">{userVp}</p>
+        </div>
       </div>
       {address && (
         <BallotModal

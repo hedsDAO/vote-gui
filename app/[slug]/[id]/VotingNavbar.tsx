@@ -1,6 +1,6 @@
 "use client";
 
-import { QuadraticVote, SingleChoiceVote, quadratic } from "hedsvote";
+import { quadratic } from "hedsvote";
 import { useState, useEffect } from "react";
 import Ballot from "./Ballot";
 import { SortedChoice, VoterUserData } from "@/common/types";
@@ -8,6 +8,8 @@ import AudioCards from "./_cards/AudioCards";
 import ImageCards from "./_cards/ImageCards";
 import Results from "./Results";
 import { useAccount } from "wagmi";
+import { getUserVotePercentages } from "@/utils/getUserVotePercentages";
+import { getScoreData } from "@/utils/getScoreData";
 
 const VotingNavbar = ({
   proposal,
@@ -22,33 +24,22 @@ const VotingNavbar = ({
 }) => {
   const { address } = useAccount();
   const [currentTab, setCurrentTab] = useState<number>(0);
-  const [scores, setScores] = useState<any>();
+  const [choicesWithScores, setChoicesWithScores] = useState<any>();
+
   useEffect(() => {
     if (votingStatus === "closed" && !proposal?.scores) {
       const { getScores } = quadratic({
         votes: proposal?.votes,
         choices: proposal?.choices,
       });
-      setScores(getScores());
+      const scores = getScores();
+      const newProposal = { ...proposal, scores };
+      const { sortedChoicesWithScores: updatedChoicesWithScores } =
+        getScoreData(newProposal);
+      setChoicesWithScores(updatedChoicesWithScores);
     }
   }, [proposal]);
 
-  const getUserVotePercentages = () => {
-    let userVP;
-    const userVote = proposal?.votes?.filter((vote: any) => {
-      if (vote?.voter?.toLowerCase() === address?.toLowerCase()) {
-        userVP = vote?.vp;
-        return vote?.vote_choices;
-      }
-    });
-    console.log(userVP, userVote[0]);
-  };
-  const userVote =
-    proposal?.votes?.filter(
-      (vote: QuadraticVote | SingleChoiceVote) =>
-        vote?.voter?.toLowerCase() === address?.toLowerCase()
-    ) || null;
-  getUserVotePercentages();
   return (
     <>
       {votingStatus === "open" ? (
@@ -57,12 +48,13 @@ const VotingNavbar = ({
             CHOICES
           </p>
           <Ballot
+           userVote={getUserVotePercentages(proposal, address)}
             strategies={proposal?.strategies}
             proposalId={proposal?.ipfs_hash}
             choices={proposal?.choices}
           />
         </div>
-      ) : proposal?.showResults ? (
+      ) : (
         <div className="mt-10 flex items-end gap-2">
           <p
             role="button"
@@ -78,23 +70,23 @@ const VotingNavbar = ({
           >
             CHOICES
           </p>
-          <p
-            role="button"
-            onClick={() => setCurrentTab(1)}
-            className={
-              `${
-                currentTab === 1
-                  ? "text-black"
-                  : "text-black/40 hover:text-black"
-              } ` +
-              "font-inter text-base font-semibold tracking-wide transition-all ease-in-out"
-            }
-          >
-            RESULTS
-          </p>
+          {proposal?.showResults && (
+            <p
+              role="button"
+              onClick={() => setCurrentTab(1)}
+              className={
+                `${
+                  currentTab === 1
+                    ? "text-black"
+                    : "text-black/40 hover:text-black"
+                } ` +
+                "font-inter text-base font-semibold tracking-wide transition-all ease-in-out"
+              }
+            >
+              RESULTS
+            </p>
+          )}
         </div>
-      ) : (
-        <></>
       )}
       {currentTab === 0 ? (
         <div className="mb-10 flex max-w-5xl text-black">
@@ -102,18 +94,26 @@ const VotingNavbar = ({
             {proposal?.choiceType === "audio" ? (
               <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
                 <AudioCards
-                  userVote={userVote?.[0] || null}
+                  userVote={getUserVotePercentages(proposal, address)}
                   votingStatus={votingStatus}
-                  sortedChoicesWithScores={sortedChoicesWithScores}
+                  sortedChoicesWithScores={
+                    sortedChoicesWithScores?.length
+                      ? sortedChoicesWithScores
+                      : choicesWithScores
+                  }
                   proposal={proposal}
                 />
               </div>
             ) : proposal?.choiceType === "image" ? (
               <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
                 <ImageCards
-                  userVote={userVote?.[0] || null}
+                  userVote={getUserVotePercentages(proposal, address)}
                   votingStatus={votingStatus}
-                  sortedChoicesWithScores={sortedChoicesWithScores}
+                  sortedChoicesWithScores={
+                    sortedChoicesWithScores?.length
+                      ? sortedChoicesWithScores
+                      : choicesWithScores
+                  }
                   proposal={proposal}
                 />
               </div>
@@ -124,13 +124,17 @@ const VotingNavbar = ({
         </div>
       ) : (
         <>
-          {sortedChoicesWithScores && (
+          {
             <Results
-              sortedChoicesWithScores={sortedChoicesWithScores}
+              sortedChoicesWithScores={
+                sortedChoicesWithScores?.length
+                  ? sortedChoicesWithScores
+                  : choicesWithScores
+              }
               voterUserData={voterUserData}
               proposal={proposal}
             />
-          )}
+          }
         </>
       )}
     </>
