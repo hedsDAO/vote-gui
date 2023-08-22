@@ -2,10 +2,17 @@
 
 import { SortedChoice } from "@/common/types";
 import { ProposalContext } from "@/context/proposal.context";
+import { QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { useContext } from "react";
 
-const ClosedImageCard = ({ choice }: { choice: SortedChoice }) => {
+const ClosedImageCard = ({
+  userVote,
+  choice,
+}: {
+  userVote: (SingleChoiceVote | QuadraticVote)[] | [];
+  choice: SortedChoice;
+}) => {
   const { state, dispatch } = useContext(ProposalContext);
   return (
     <div
@@ -33,7 +40,7 @@ const ClosedImageCard = ({ choice }: { choice: SortedChoice }) => {
       </div>
       <div className="ml-auto flex gap-2 pr-2">
         <div className="mx-auto flex items-center">
-          <div className="rounded-sm bg-heds-bg-light px-4 py-2 mr-2">
+          <div className="mr-2 rounded-sm bg-heds-bg-light px-4 py-2">
             <h1 className="text-center text-sm text-white">
               {Math.round(choice?.score * 10) / 10 || 0} %
             </h1>
