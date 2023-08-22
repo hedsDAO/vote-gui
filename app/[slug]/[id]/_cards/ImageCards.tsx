@@ -31,7 +31,7 @@ const ImageCards = ({
     return (
       <>
         {proposal?.choices?.map((choice) => {
-          return <OpenImageCard choice={choice} />;
+          return <OpenImageCard key={choice.id} choice={choice} />;
         })}
       </>
     );

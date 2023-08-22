@@ -29,6 +29,7 @@ const Results = ({
           return (
             <div
               role="button"
+              key={vote.voter}
               onClick={() => {
                 setCurrentVote(vote);
                 setIsResultsModalOpen(true);

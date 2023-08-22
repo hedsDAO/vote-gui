@@ -176,6 +176,7 @@ const AudioCards = ({
         {proposal?.choices?.map((choice) => {
           return (
             <OpenAudioCard
+              key={choice.id}
               currentSong={currentSong}
               togglePlayPause={togglePlayPause}
               filledBars={filledBars}
