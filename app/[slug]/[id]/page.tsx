@@ -1,4 +1,4 @@
-import { getProposalById } from "@/app/_actions";
+// import { getProposalById } from "@/app/_actions";
 import Image from "next/image";
 import Details from "./Details";
 import { getVotingStatus } from "@/utils/getVotingStatus";
@@ -7,10 +7,11 @@ import { getParticipantsUserData } from "@/utils/getParticipantsUserData";
 import { getScoreData } from "@/utils/getScoreData";
 import Header from "./Header";
 import VotingNavbar from "./VotingNavbar";
+import { createClient } from "hedsvote";
 
 export default async function Page({ params }: any) {
   const { slug, id }: { slug: string; id: string } = params;
-  const proposal: any | undefined = await getProposalById(id);
+  const proposal: any | undefined = await (await createClient().getProposal(id)).data;
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
   const voterUserData = await getParticipantsUserData(proposal?.votes);
   const { sortedChoicesWithScores, totalScore } = getScoreData(proposal);
