@@ -17,10 +17,6 @@ const Results = ({
 }) => {
   const [currentVote, setCurrentVote] = useState<any>();
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
-  console.log(
-    proposal.votes?.sort((a, b) => b?.vp - a?.vp),
-    voterUserData
-  );
   return (
     <div className="mb-4 mt-4 flex flex-col gap-1">
       {proposal.votes
