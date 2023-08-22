@@ -1,7 +1,7 @@
 "use client";
 
-import { Proposal } from "hedsvote";
-import { useState } from "react";
+import { quadratic } from "hedsvote";
+import { useState, useEffect } from "react";
 import Ballot from "./Ballot";
 import { SortedChoice, VoterUserData } from "@/common/types";
 import AudioCards from "./_cards/AudioCards";
@@ -14,12 +14,24 @@ const VotingNavbar = ({
   sortedChoicesWithScores,
   voterUserData,
 }: {
-  proposal: Proposal;
+  proposal: any;
   votingStatus: string;
   sortedChoicesWithScores?: SortedChoice[];
   voterUserData: VoterUserData | undefined;
 }) => {
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const [scores, setScores] = useState<any>();
+  useEffect(() => {
+    if (votingStatus === "closed" && !proposal?.scores) {
+      const { getScores } = quadratic({
+        votes: proposal?.votes,
+        choices: proposal?.choices,
+      });
+      setScores(getScores());
+    }
+  }, [proposal]);
+
+
   return (
     <>
       {votingStatus === "open" ? (
@@ -27,15 +39,14 @@ const VotingNavbar = ({
           <p className="font-inter text-base font-semibold tracking-wide text-black">
             CHOICES
           </p>
-          {proposal?.ipfsHash && (
-            <Ballot
-              strategies={proposal?.strategies}
-              proposalId={proposal?.ipfsHash}
-              choices={proposal?.choices}
-            />
-          )}
+
+          <Ballot
+            strategies={proposal?.strategies}
+            proposalId={proposal?.ipfs_hash}
+            choices={proposal?.choices}
+          />
         </div>
-      ) : (
+      ) : proposal?.showResults ? (
         <div className="mt-10 flex items-end gap-2">
           <p
             role="button"
@@ -66,9 +77,11 @@ const VotingNavbar = ({
             RESULTS
           </p>
         </div>
+      ) : (
+        <></>
       )}
       {currentTab === 0 ? (
-        <div className="flex max-w-5xl text-black">
+        <div className="mb-10 flex max-w-5xl text-black">
           <div className="mt-5 flex w-full flex-col gap-5">
             {proposal?.choiceType === "audio" ? (
               <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
