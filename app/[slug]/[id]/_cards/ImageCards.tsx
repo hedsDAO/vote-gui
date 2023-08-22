@@ -16,7 +16,7 @@ const ImageCards = ({
     return (
       <>
         {sortedChoicesWithScores?.map((choice) => {
-          return <ClosedImageCard choice={choice} />;
+          return <ClosedImageCard key={choice.id} choice={choice} />;
         })}
       </>
     );
@@ -24,7 +24,7 @@ const ImageCards = ({
     return (
       <>
         {proposal?.choices?.map((choice) => {
-          return <OpenImageCard choice={choice} />;
+          return <OpenImageCard key={choice.id} choice={choice} />;
         })}
       </>
     );

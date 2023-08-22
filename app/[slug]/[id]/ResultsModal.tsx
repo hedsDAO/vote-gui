@@ -58,7 +58,7 @@ const ResultsModal = ({
                 <div className="flex flex-col gap-3">
                   {vote?.vote_choices?.map((choice: any, idx: number) => {
                     return (
-                      <div className="flex justify-between">
+                      <div className="flex justify-between" key={choice.choice_id}>
                         <div className="flex items-center gap-2">
                           <Image
                             src={
