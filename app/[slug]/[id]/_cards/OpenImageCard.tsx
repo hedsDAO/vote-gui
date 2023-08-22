@@ -3,10 +3,30 @@
 import { ProposalContext } from "@/context/proposal.context";
 import { Choice } from "hedsvote";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
-const OpenImageCard = ({ choice }: { choice: Choice }) => {
+const OpenImageCard = ({
+  choice,
+  userVote,
+}: {
+  choice: Choice;
+  userVote: any;
+}) => {
   const { state, dispatch } = useContext(ProposalContext);
+  useEffect(() => {
+    let likes: { [key: string]: any } = {};
+    if (userVote) {
+      userVote?.map((e: any) => {
+        likes[e?.choice_id] = e?.amount;
+      });
+      console.log(likes);
+      dispatch({
+        type: "SET_VOTES",
+        payload: likes,
+      });
+    }
+  }, [userVote]);
+
   return (
     <div
       className={

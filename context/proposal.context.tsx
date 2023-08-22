@@ -8,9 +8,24 @@ type StateType = {
 };
 
 type ActionType = {
-  type: string;
+  type: "ADD_LIKE";
   payload: number;
-};
+} | 
+{
+  type: "REMOVE_LIKE";
+  payload: number;
+} | 
+{
+  type: "INCREASE_SCORE";
+  payload: number;
+} | {
+  type: "DECREASE_SCORE";
+  payload: number;
+} | {
+  type: "SET_VOTES";
+  payload: {[key: string]: number};
+}
+
 
 const initialState: StateType = {
   likes: {},
@@ -19,6 +34,11 @@ const initialState: StateType = {
 
 const reducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
+    case "SET_VOTES": 
+    return {
+      ...state,
+      likes: {...action.payload}
+    };
     case "ADD_LIKE":
       return {
         ...state,

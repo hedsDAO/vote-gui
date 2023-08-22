@@ -8,6 +8,7 @@ import {
   CreateProposalContext,
 } from "@/context/createProposal.context";
 // import { pinFileToIpfs } from "../../_actions";
+import { pinFileToIpfs } from "@/utils/pinFileToIPFS";
 import { Choice, Proposal, createClient } from "hedsvote";
 import { useBlockNumber, useAccount, useWalletClient } from "wagmi";
 import { useParams, useRouter } from "next/navigation";
@@ -66,9 +67,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
         data.append("pinataMetadata", JSON.stringify(pinataMetadata));
         data.append("file", imageFile);
         try {
-          // const imageRes = await pinFileToIpfs(data);
-          // formattedChoice.image =
-          //   "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
+          const imageRes = await pinFileToIpfs(data);
+          formattedChoice.image =
+            "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
           console.log(formattedChoice.image);
         } catch (e) {
           console.log(e);
@@ -76,9 +77,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       }
 
       // if (audioFile) {
-      //     const audioRes = await pinFileToIpfs(audioFile, `${title} audio`);
-      //     const audioLink = audioRes.data.IpfsHash;
-      //     formattedChoice.media = audioLink;
+          // const audioRes = await pinFileToIpfs(audioFile, `${title} audio`);
+          // const audioLink = audioRes.data.IpfsHash;
+          // formattedChoice.media = audioLink;
       //   }
       return formattedChoice;
     });
@@ -99,10 +100,10 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     data.append("pinataMetadata", JSON.stringify(pinataMetadata));
     data.append("file", coverFile);
     try {
-      // const imageRes = await pinFileToIpfs(data);
-      // const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
-      // console.log(coverLink);
-      // return coverLink;
+      const imageRes = await pinFileToIpfs(data);
+      const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
+      console.log(coverLink);
+      return coverLink;
     } catch (e) {
       console.log(e);
     }

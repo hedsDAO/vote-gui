@@ -1,9 +1,11 @@
 "use client";
 
 import { CurrentSongProps, SortedChoice } from "@/common/types";
+import { Proposal } from "hedsvote";
 import Image from "next/image";
 
 const ClosedAudioCard = ({
+  proposal,
   userVote,
   choice,
   currentSong,
@@ -12,6 +14,7 @@ const ClosedAudioCard = ({
   handleBarClick,
   playSound,
 }: {
+  proposal: Proposal,
   userVote: any;
   choice: SortedChoice;
   currentSong: CurrentSongProps | null;
@@ -20,7 +23,13 @@ const ClosedAudioCard = ({
   togglePlayPause: () => void;
   handleBarClick: (idx: number, media: string) => void;
 }) => {
-  console.log(userVote);
+  const getUserVotePercentage = () => {
+    const votePercentage = userVote?.find(
+      (vote: any) => vote?.choice_id === choice?.id
+    )?.percentage;
+    if (votePercentage) return Math.round(votePercentage * 100);
+    else return 0;
+  };
   return (
     <div
       className={
@@ -69,25 +78,20 @@ const ClosedAudioCard = ({
           })}
         </div>
       </div>
-      <div className="ml-auto flex items-center">
+      {proposal?.showResults && <div className="ml-auto flex items-center">
         <div className="flex flex-col">
           <div className="rounded-sm bg-heds-bg-light px-2 py-1 lg:-mr-4">
-            <h1 className="text-center text-xs text-white">
+            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
               {Math.round(choice?.score * 10) / 10 || 0} %
             </h1>
           </div>
-          <div className="rounded-sm bg-h-red-dark px-2 py-1 lg:-mr-4">
-            <h1 className="text-center text-xs text-white">
-              {/* {userVote?.vote_choices?.map((e: any) => {
-                if (e.choice_id === choice?.id) {
-                  return e?.amount;
-                }
-              })} */}
-              %
+          {userVote && <div className="rounded-sm bg-h-red-dark px-2 py-1 lg:-mr-4">
+            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
+              {getUserVotePercentage()} %
             </h1>
-          </div>
+          </div>}
         </div>
-      </div>
+      </div>}
       <div className={"ml-auto flex items-center justify-center gap-4 pr-5"}>
         {currentSong?.isLoading && choice.media === currentSong.media ? (
           <Image

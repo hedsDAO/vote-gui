@@ -24,5 +24,6 @@ export async function getParticipantsUserData(
     return voterUserData;
   } catch (e: any) {
     throw new Error(e);
+    return;
   }
 }

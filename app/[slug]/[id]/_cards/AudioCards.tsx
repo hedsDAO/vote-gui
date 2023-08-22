@@ -15,7 +15,7 @@ const AudioCards = ({
   proposal: Proposal;
   sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
-  userVote: QuadraticVote | SingleChoiceVote | null;
+  userVote: any | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSong, setCurrentSong] = useState<{
@@ -156,6 +156,8 @@ const AudioCards = ({
       <>
         {sortedChoicesWithScores?.map((choice) => (
           <ClosedAudioCard
+          proposal={proposal}
+            key={choice.id}
             userVote={userVote}
             currentSong={currentSong}
             togglePlayPause={togglePlayPause}
@@ -173,6 +175,7 @@ const AudioCards = ({
         {proposal?.choices?.map((choice) => {
           return (
             <OpenAudioCard
+              userVote={userVote}
               key={choice.id}
               currentSong={currentSong}
               togglePlayPause={togglePlayPause}

@@ -2,17 +2,26 @@
 
 import { SortedChoice } from "@/common/types";
 import { ProposalContext } from "@/context/proposal.context";
+import { Proposal } from "hedsvote";
 import Image from "next/image";
 import { useContext } from "react";
 
 const ClosedImageCard = ({
+  proposal,
   userVote,
   choice,
 }: {
+  proposal: Proposal,
   userVote: any | null;
   choice: SortedChoice;
 }) => {
-  const { state, dispatch } = useContext(ProposalContext);
+  const getUserVotePercentage = () => {
+    const votePercentage = userVote?.find(
+      (vote: any) => vote?.choice_id === choice?.id
+    )?.percentage;
+    if (votePercentage) return Math.round(votePercentage * 100);
+    else return 0;
+  };
   return (
     <div
       className={
@@ -21,7 +30,7 @@ const ClosedImageCard = ({
     >
       <div className="p-2.5">
         <Image
-          className="rounded-lg"
+          className="rounded-lg min-h-[45px] max-h-[45px] min-w-[45px] max-w-[45px]"
           src={choice?.image}
           alt={choice.name}
           width={45}
@@ -37,15 +46,20 @@ const ClosedImageCard = ({
           {choice?.name}
         </p>
       </div>
-      <div className="ml-auto flex gap-2 pr-2">
-        <div className="mx-auto flex items-center">
-          <div className="mr-2 rounded-sm bg-heds-bg-light px-4 py-2">
-            <h1 className="text-center text-sm text-white">
+      {proposal?.showResults && <div className="ml-auto flex gap-2 pr-2.5">
+        <div className="flex flex-col items-center justify-center">
+          <div className="rounded-sm bg-heds-bg-light px-2 py-1">
+            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
               {Math.round(choice?.score * 10) / 10 || 0} %
             </h1>
           </div>
+          {userVote && <div className="rounded-sm bg-h-red-dark px-2 py-1">
+            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
+              {getUserVotePercentage()} %
+            </h1>
+          </div>}
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

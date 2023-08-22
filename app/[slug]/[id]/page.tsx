@@ -9,9 +9,21 @@ import Header from "./Header";
 import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
 
+const { getAllProposalsInSpace, getAllSpaces, getProposal } = createClient();
+
+async function getSpaceData(name: string) {
+  const spaces = await getAllSpaces();
+  const spaceData = spaces.data.find((space) => space.name === name);
+  return spaceData;
+}
+async function getProposalData(id: string) {
+  return (await getProposal(id)).data;
+}
+
 export default async function Page({ params }: any) {
   const { slug, id }: { slug: string; id: string } = params;
-  const proposal: any | undefined = await (await createClient().getProposal(id)).data;
+  const space = await getSpaceData(slug);
+  const proposal: any | undefined = await getProposalData(id);
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
   const voterUserData = await getParticipantsUserData(proposal?.votes);
   const { sortedChoicesWithScores, totalScore } = getScoreData(proposal);
