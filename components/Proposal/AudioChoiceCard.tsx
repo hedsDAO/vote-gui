@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { ProposalContext } from "@/context/proposal.context";
 
-import { CurrentSongProps } from "@/app/[slug]/[id]/ChoiceCards";
+import { CurrentSongProps } from "@/common/types";
 
 interface AudioChoice {
   id: number;
