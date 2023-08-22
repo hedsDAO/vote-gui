@@ -6,9 +6,6 @@ import { getAuthorDisplayName } from "@/utils/getAuthorDisplayName";
 import { getParticipantsUserData } from "@/utils/getParticipantsUserData";
 import { getScoreData } from "@/utils/getScoreData";
 import Header from "./Header";
-import AudioCards from "./_cards/AudioCards";
-import ImageCards from "./_cards/ImageCards";
-import Ballot from "./Ballot";
 import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
 
@@ -25,7 +22,7 @@ export default async function Page({ params }: any) {
 
   return (
     <div className="flex min-h-[82vh] max-w-5xl flex-col  px-4 lg:mx-auto">
-      <div className="mx-auto flex justify-between lg:mt-10">
+      <div className="flex justify-between lg:mt-10">
         <div className="mt-5 flex flex-col gap-5">
           {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
           {authorDisplayName && (
@@ -49,8 +46,12 @@ export default async function Page({ params }: any) {
           />
         </div>
       </div>
-      <VotingNavbar voterUserData={voterUserData} sortedChoicesWithScores={sortedChoicesWithScores} proposal={proposal} votingStatus={votingStatus} />
-
+      <VotingNavbar
+        voterUserData={voterUserData}
+        sortedChoicesWithScores={sortedChoicesWithScores}
+        proposal={proposal}
+        votingStatus={votingStatus}
+      />
     </div>
   );
 }

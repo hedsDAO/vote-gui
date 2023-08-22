@@ -14,7 +14,7 @@ const Ballot = ({
 }: {
   choices: Choice[];
   strategies: Strategy[];
-  proposalId: string;
+  proposalId?: string;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -104,7 +104,7 @@ const Ballot = ({
         <BallotModal
           choices={choices}
           userVotes={state?.likes}
-          proposalId={proposalId}
+          proposalId={proposalId || ""}
           vp={userVp}
           voter={address}
           isOpen={isOpen}
