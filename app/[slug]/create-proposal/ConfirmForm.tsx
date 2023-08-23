@@ -28,9 +28,8 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   const { state, dispatch } = useContext(CreateProposalContext);
   const blockNumber = useBlockNumber().data;
   const { address } = useAccount();
-  const { data } = useWalletClient();
+  const signer = useWalletClient().data;
   const { slug } = useParams();
-  console.log("checked or not",confirmedProposal)
 
   const formattedDate = state.voteStart.toLocaleString("en-US", {
     month: "long", // or 'numeric' for numeric representation
@@ -109,8 +108,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       console.log(e);
     }
   };
+
   const submitCreateProposal = async () => {
-    console.log("options", await formatChoices(state.choiceOptions));
+    // console.log("options", await formatChoices(state.choiceOptions));
     if (Array.isArray(slug)) return;
     const startTime = new Date(state.voteStart);
     try {
@@ -126,16 +126,16 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       title: state.tapeDetails.title,
       strategies: state.strategy,
       method: 1,
-      choiceType: state.tapeDetails.choiceType,
-      showResults: state.tapeDetails.showResults
+      choice_type: state.tapeDetails.choiceType,
+      show_results: state.tapeDetails.showResults
     };
     console.log(proposal);
     //Use hedsvote createProposal via server actions
     const { createProposal } = createClient();
-    if (!data) return;
-    const createdProposal = await createProposal(data,proposal);
+    if (!signer) return;
+    const createdProposal = await createProposal(signer,proposal);
     console.log(createdProposal)
-    router.push(`${slug}`);
+    router.push(`${slug}/${createProposal.ipfs_hash}`);
     return;
    } catch (e) {
     console.error(e);
