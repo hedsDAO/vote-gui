@@ -108,6 +108,7 @@ const VotingPowerModal = ({
                           );
                           return (
                             <div
+                              key={i + "token"}
                               className={
                                 `${
                                   isOwner ? "bg-green-600/70" : "bg-h-black-800"
