@@ -8,6 +8,7 @@ import { getScoreData } from "@/utils/getScoreData";
 import Header from "./Header";
 import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
+import DeleteProposalButton from "./_buttons/DeleteProposalButton";
 
 const { getAllProposalsInSpace, getAllSpaces, getProposal } = createClient();
 
@@ -36,7 +37,10 @@ export default async function Page({ params }: any) {
     <div className="flex min-h-[82vh] max-w-5xl flex-col  px-4 lg:mx-auto">
       <div className="flex justify-between lg:mt-10">
         <div className="mt-5 flex flex-col gap-5">
-          {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
+          <div className="flex mb-5 min-w-full justify-between">
+            {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
+            <DeleteProposalButton proposal={proposal} slug={slug} admins={space?.authors} />
+          </div>
           {authorDisplayName && (
             <Details
               description={proposal.description}
