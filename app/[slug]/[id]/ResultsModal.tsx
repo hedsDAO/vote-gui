@@ -17,7 +17,6 @@ const ResultsModal = ({
   proposal: any;
 }) => {
   const calculateVotePercentage = (currentVote: any) => {
-    console.log(currentVote, "currentVote");
     let totalUserAllotedVotes = 0;
     vote?.vote_choices?.map((vote: any) => {
       totalUserAllotedVotes += vote?.amount;

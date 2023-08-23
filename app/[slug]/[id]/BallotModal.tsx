@@ -46,7 +46,6 @@ const BallotModal = ({
       if (successfulVote === "signature rejected") {
         setIsLoading(false);
       } else {
-        console.log("success", successfulVote);
         setIsLoading(false);
         setIsOpen(false);
       }
@@ -56,7 +55,6 @@ const BallotModal = ({
     }
   };
 
-  console.log(choices, userVotes);
   const chosenIds = Object.keys(userVotes);
   return (
     <Transition.Root show={isOpen} as={Fragment}>

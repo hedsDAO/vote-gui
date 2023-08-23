@@ -19,7 +19,6 @@ const OpenImageCard = ({
       userVote?.map((e: any) => {
         likes[e?.choice_id] = e?.amount;
       });
-      console.log(likes);
       dispatch({
         type: "SET_VOTES",
         payload: likes,
