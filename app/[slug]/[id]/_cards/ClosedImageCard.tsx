@@ -46,7 +46,7 @@ const ClosedImageCard = ({
           {choice?.name}
         </p>
       </div>
-      {proposal?.showResults && <div className="ml-auto flex gap-2 pr-2.5">
+      {proposal?.show_results && <div className="ml-auto flex gap-2 pr-2.5">
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-sm bg-heds-bg-light px-2 py-1">
             <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">

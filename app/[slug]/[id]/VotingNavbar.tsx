@@ -91,7 +91,7 @@ const VotingNavbar = ({
       {currentTab === 0 ? (
         <div className="mb-10 flex max-w-5xl text-black">
           <div className="mt-5 flex w-full flex-col gap-5">
-            {proposal?.choiceType === "audio" ? (
+            {proposal?.choice_type === "audio" ? (
               <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
                 <AudioCards
                   userVote={getUserVotePercentages(proposal, address)}
@@ -104,7 +104,7 @@ const VotingNavbar = ({
                   proposal={proposal}
                 />
               </div>
-            ) : proposal?.choiceType === "image" ? (
+            ) : proposal?.choice_type === "image" ? (
               <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
                 <ImageCards
                   userVote={getUserVotePercentages(proposal, address)}

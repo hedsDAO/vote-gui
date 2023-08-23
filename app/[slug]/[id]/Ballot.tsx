@@ -24,6 +24,7 @@ const Ballot = ({
   const [isShowingVPModal, setIsShowingVPModal] = useState(false);
   const [showConnectButton, setShowConnectButton] = useState<boolean>();
   const [userVp, setUserVp] = useState<number>(0);
+  console.log(state, 'state in ballot')
   const { isConnected, address } = useAccount();
   const getVp = async () => {
     try {
@@ -49,6 +50,15 @@ const Ballot = ({
       setShowConnectButton(true);
     }
   }, [isConnected]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: "SET_VOTES",
+        payload: {},
+      });
+    }
+  }, [])
 
   const prevVote = userVote?.reduce(
     (obj: any, item: any) => ({
@@ -127,7 +137,7 @@ const Ballot = ({
         <BallotModal
           choices={choices}
           userVotes={state?.likes}
-          proposalId={proposal?.proposalId || ""}
+          proposalId={proposal?.ipfs_hash || ""}
           vp={userVp}
           voter={address}
           isOpen={isOpen}
