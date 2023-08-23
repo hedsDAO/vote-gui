@@ -23,6 +23,7 @@ const ResultsModal = ({
     });
     return (currentVote?.amount / totalUserAllotedVotes) * 100;
   };
+  console.log(vote?.vote_choices, 'vote_choices')
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -61,7 +62,7 @@ const ResultsModal = ({
                         <div className="flex items-center gap-2">
                           <Image
                             src={
-                              proposal?.choices?.[choice?.choice_id - 1]?.image
+                              proposal?.choices?.[choice?.choice_id]?.image
                             }
                             alt="cover"
                             height={20}
@@ -69,7 +70,7 @@ const ResultsModal = ({
                             className="rounded-full object-cover min-h-[20px] max-h-[20px] min-w-[20px] max-w-[20px]"
                           />
                           <p className="font-space-grotesk text-white text-sm">
-                            {proposal?.choices?.[choice?.choice_id - 1]?.name}
+                            {proposal?.choices?.[choice?.choice_id]?.name}
                           </p>
                         </div>
                         <div className="flex gap-2">

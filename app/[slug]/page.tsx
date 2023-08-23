@@ -1,4 +1,3 @@
-// import { getSpaceData, getProposals } from "../_actions";
 import Header from "@/components/Space/Header";
 import ProfilePicture from "@/components/Space/ProfilePicture";
 import Details from "@/components/Space/Details";
@@ -56,8 +55,8 @@ const Page = async ({ params }: { params: { slug: string } }) => {
                 );
                 return (
                   <Link
-                    href={`${slug}/${proposal.ipfs_hash}`}
-                    key={proposal.author + idx}
+                    href={`${slug}/${proposal?.ipfs_hash}`}
+                    key={proposal?.author + idx}
                   >
                     <div className="col-span-1 flex w-full flex-col items-center gap-5 rounded-2xl border border-black bg-black/10 px-4 py-4 shadow-sm transition-all ease-in-out hover:bg-white">
                       <div className="mb-2 flex w-fit items-center self-start rounded-full border border-black bg-white px-[3px] py-0.5">
@@ -79,7 +78,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
                       </div>
                       <Image
                         alt={"test"}
-                        src={proposal.cover}
+                        src={proposal?.cover}
                         width={0}
                         height={0}
                         sizes="100vw"

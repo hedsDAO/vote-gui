@@ -25,7 +25,7 @@ const OpenImageCard = ({
       });
     }
   }, [userVote]);
-
+  console.log(choice, 'choice')
   return (
     <div
       className={

@@ -56,6 +56,7 @@ const BallotModal = ({
   };
 
   const chosenIds = Object.keys(userVotes);
+  choices = [null, ...choices];
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -92,7 +93,7 @@ const BallotModal = ({
                   <hr />
                   {userVotes &&
                     Object.keys(userVotes).map((choice, i) => {
-                      return (
+                      if (choice) return (
                         <div
                           className="flex items-center justify-between px-1"
                           key={choice + i}
@@ -100,19 +101,19 @@ const BallotModal = ({
                           <div className="flex items-center">
                             <div className="min-w-[25px] max-w-[25px]">
                               <Image
-                                alt={choices[+choice].name}
-                                src={choices[+choice].image}
+                                alt={choices?.[+choice]?.name}
+                                src={choices?.[+choice]?.image}
                                 width={16}
                                 height={16}
                                 className="rounded-full object-cover"
                               />
                             </div>
                             <p className="-mt-[1px] font-space-grotesk text-sm text-black">
-                              {choices[+choice].name}
+                              {choices?.[+choice]?.name}
                             </p>
                           </div>
                           <p className="font-space-grotesk text-sm text-black">
-                            {userVotes[+choice]}
+                            {userVotes?.[+choice]}
                           </p>
                         </div>
                       );

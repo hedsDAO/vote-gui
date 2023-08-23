@@ -135,6 +135,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     if (!signer) return;
     const createdProposal = await createProposal(signer,proposal);
     console.log(createdProposal)
+    // @ts-ignore
     router.push(`${slug}/${createProposal.ipfs_hash}`);
     return;
    } catch (e) {
