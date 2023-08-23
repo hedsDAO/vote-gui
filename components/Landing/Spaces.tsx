@@ -23,7 +23,7 @@ const Spaces = async () => {
           SPACES
         </p>
       </div>
-      <div className="flex justify-center gap-3 bg-gradient-to-r from-heds-bg to-heds-bg-dark py-6 lg:gap-4">
+      <div className="flex justify-center gap-3  py-6 lg:gap-4">
         {spaceData?.length &&
           spaceData.map((space) => {
             const { name, image } = space;

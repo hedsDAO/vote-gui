@@ -54,7 +54,7 @@ const initialState: StateType = {
   tapeDetails: {
     title: "",
     description: "",
-    choiceType: "audio",
+    choiceType: "image",
     showResults: true
   },
   voteStart: new Date(),

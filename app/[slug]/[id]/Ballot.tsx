@@ -6,20 +6,22 @@ import { useContext, useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { calculateUserVotingPower, Strategy, Choice } from "hedsvote";
 import BallotModal from "./BallotModal";
+import VotingPowerModal from "./VotingPowerModal";
 
 const Ballot = ({
   userVote,
   choices,
   strategies,
-  proposalId,
+  proposal,
 }: {
   userVote: any;
   choices: Choice[];
   strategies: Strategy[];
-  proposalId?: string;
+  proposal?: any;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [isShowingVPModal, setIsShowingVPModal] = useState(false);
   const [showConnectButton, setShowConnectButton] = useState<boolean>();
   const [userVp, setUserVp] = useState<number>(0);
   const { isConnected, address } = useAccount();
@@ -86,7 +88,8 @@ const Ballot = ({
             }
             className={
               `${
-                Object.values(state?.likes)?.length !== 0 && JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
+                Object.values(state?.likes)?.length !== 0 &&
+                JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
                   ? "bg-fuchsia-500"
                   : "bg-fuchsia-200"
               } ` + "max-h-[30px] min-h-[30px] rounded-full px-3"
@@ -97,7 +100,8 @@ const Ballot = ({
               <span
                 className={
                   `${
-                    Object.values(state?.likes)?.length !== 0 && JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
+                    Object.values(state?.likes)?.length !== 0 &&
+                    JSON.stringify(state?.likes) !== JSON.stringify(prevVote)
                       ? "bg-fuchsia-900"
                       : "bg-fuchsia-300"
                   } ` + "ml-1 rounded-full px-1.5 py-0.5 text-white"
@@ -109,15 +113,25 @@ const Ballot = ({
           </button>
         )}
         {/* here */}
-        <div className="flex items-center rounded-full bg-heds-bg px-3">
+        <div
+          role="button"
+          onClick={() => setIsShowingVPModal(true)}
+          className="flex items-center rounded-full bg-heds-bg px-3"
+        >
           <p className="text-sm text-white">{userVp}</p>
         </div>
+        <VotingPowerModal
+          isOpen={isShowingVPModal}
+          setIsOpen={setIsShowingVPModal}
+          strategies={proposal?.strategies}
+          address={address as string}
+        />
       </div>
       {address && (
         <BallotModal
           choices={choices}
           userVotes={state?.likes}
-          proposalId={proposalId || ""}
+          proposalId={proposal?.proposalId || ""}
           vp={userVp}
           voter={address}
           isOpen={isOpen}

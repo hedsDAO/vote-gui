@@ -24,7 +24,8 @@ const VerticalStepper = ({ activeStep, setActiveStep }: OwnProps) => {
       case 3:
         return voteDuration && voteStart && activeStep > 2;
       case 4:
-        return strategy && activeStep > 3;
+        // return strategy && activeStep > 3;
+        return true;
       default:
         return false;
     }

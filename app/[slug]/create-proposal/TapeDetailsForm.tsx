@@ -107,7 +107,7 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
             <p className="font-space-grotesk text-sm font-medium text-white">
               Proposal Type
             </p>
-            <RadioGroup value={newChoiceType} onChange={setNewChoiceType}>
+            <RadioGroup value={newChoiceType}>
               <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
                 {proposalChoiceTypes.map((proposalChoiceType) => (
                   <RadioGroup.Option
@@ -134,7 +134,7 @@ const TapeDetailsForm = ({ setActiveStep }: OwnProps) => {
                                   checked ? "text-black" : "text-gray-300"
                                 }`}
                               >
-                                {proposalChoiceType.name}
+                                {checked ? proposalChoiceType.name : `${proposalChoiceType.name} (In Development)`}
                               </RadioGroup.Label>
                               <RadioGroup.Description
                                 as="span"

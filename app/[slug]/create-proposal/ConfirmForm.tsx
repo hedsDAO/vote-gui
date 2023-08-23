@@ -24,11 +24,13 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     useState<boolean>(false);
   const [isShowingChoicesPreview, setIsShowingChoicesPreview] =
     useState<boolean>(false);
+  const [confirmedProposal, setConfirmedProposal] = useState<boolean>(false)
   const { state, dispatch } = useContext(CreateProposalContext);
   const blockNumber = useBlockNumber().data;
   const { address } = useAccount();
   const { data } = useWalletClient();
   const { slug } = useParams();
+  console.log("checked or not",confirmedProposal)
 
   const formattedDate = state.voteStart.toLocaleString("en-US", {
     month: "long", // or 'numeric' for numeric representation
@@ -42,12 +44,11 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     Number(state.voteDuration) / (1000 * 60 * 60 * 24);
 
   const formValidation = () => {
-    // if (!state.voteDuration || !state.voteStart) {
-    //   return true;
-    // }
+    if (!confirmedProposal) {
+      return true;
+    }
     return false;
   };
-  console.log(state);
 
   const formatChoices = async (choiceOptions: ChoiceOption[]) => {
     const formattedChoices = choiceOptions.map(async (choice, idx) => {
@@ -144,7 +145,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
 
   return (
     <div className="w-full lg:pl-12">
-      <p className="font-space-grotesk text-2xl">Preview and Submit</p>
+      <p className="font-space-grotesk text-2xl text-white">Preview and Submit</p>
       <div className="mt-2 flex flex-col">
         <div className="flex items-baseline justify-between py-1">
           <label className="mb-2 font-space-grotesk text-lg font-light text-white/80">
@@ -173,7 +174,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
               <label className="font-space-grotesk text-sm text-gray-100/50">
                 title
               </label>
-              <h4 className="pointer-events-none font-space-grotesk font-light">
+              <h4 className="pointer-events-none font-space-grotesk font-light text-white">
                 {state.tapeDetails.title}
               </h4>
             </div>
@@ -182,7 +183,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
                 description
               </label>
               {isShowingFullDescription ? (
-                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light">
+                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light text-white">
                   {state.tapeDetails.description}
                   <span
                     role="button"
@@ -193,7 +194,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
                   </span>
                 </h4>
               ) : (
-                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light">
+                <h4 className="pointer-events-none mt-1 font-space-grotesk text-base font-light text-white">
                   {state.tapeDetails.description?.length > 200
                     ? state.tapeDetails.description.slice(0, 200)
                     : state.tapeDetails.description}
@@ -303,13 +304,13 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
             <label className="font-space-grotesk text-sm text-gray-100/50">
               Vote Start:
             </label>
-            <div className="font-space-grotesk text-sm">{formattedDate}</div>
+            <div className="font-space-grotesk text-sm text-white">{formattedDate}</div>
           </div>
           <div className="flex items-baseline gap-2">
             <label className="font-space-grotesk text-sm text-gray-100/50">
               Vote Duration:
             </label>
-            <div className="font-space-grotesk text-sm">
+            <div className="font-space-grotesk text-sm text-white">
               {formattedTimeDuration === 1
                 ? `${formattedTimeDuration} Day`
                 : `${formattedTimeDuration} Days`}
@@ -344,6 +345,12 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
               </div>
             );
           })}
+        </div>
+        <div className="flex justify-flex items-start gap-2 mt-2"> 
+          <input type="checkbox" className="default:ring-2  w-4 h-4 mt-1" onChange={(e) => {
+            setConfirmedProposal(e.target.checked)
+            } }/>
+          <p className="font-space-grotesk text-white"> I understand that Proposals can not be edited. To make changes you must delete and make a new Proposal</p >
         </div>
         <div className="mt-10 flex justify-end">
           <NextStepButton
