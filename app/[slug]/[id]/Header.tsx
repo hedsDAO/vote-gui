@@ -17,7 +17,7 @@ const Header = ({ slug, cover }: { slug: string; cover: string }) => {
           </p>
         </div>
       </Link>
-      <div className="-my-8 mx-auto flex items-center lg:-my-0 lg:hidden">
+      <div className="-mb-4 mt-8 mx-auto flex items-center lg:-my-0 lg:hidden">
         <Image
           alt={"cover"}
           src={cover}
