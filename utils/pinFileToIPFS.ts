@@ -5,8 +5,6 @@ import 'dotenv/config'
 config()
 
 export const pinFileToIpfs = async (formData: FormData) => {
-  console.log("env keys",{ pinata_api_key: process.env.PINATA_API_KEY,
-    pinata_secret_api_key: process.env.PINATA_API_SECRET,})
     const axiosInstance = axios.create();
     axiosRetry(axiosInstance, { retries: 5 });
   return await axiosInstance.post(

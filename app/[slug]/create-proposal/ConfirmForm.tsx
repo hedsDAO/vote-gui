@@ -133,10 +133,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     //Use hedsvote createProposal via server actions
     const { createProposal } = createClient();
     if (!signer) return;
-    const createdProposal = await createProposal(signer,proposal);
+    const createdProposal: any = await createProposal(signer,proposal);
     console.log(createdProposal)
-    // @ts-ignore
-    router.push(`${slug}/${createProposal.ipfs_hash}`);
+    router.push(`/${slug}/${createdProposal.data.ipfsHash}`);
     return;
    } catch (e) {
     console.error(e);
