@@ -28,7 +28,7 @@ const Ballot = ({
   const getVp = async () => {
     try {
       const vp = await calculateUserVotingPower(
-        address as `0x${string}`,
+        address as `0x${string}` || "",
         strategies
       );
       setUserVp(vp);
@@ -56,10 +56,6 @@ const Ballot = ({
       [item.choice_id]: item.amount,
     }),
     {}
-  );
-  console.log(
-    JSON.stringify(state?.likes) === JSON.stringify(prevVote) ||
-      Object?.values(state?.likes)?.length === 0
   );
   return (
     <>
