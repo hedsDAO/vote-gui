@@ -7,6 +7,7 @@ import { getVotingStatus } from "../../utils/getVotingStatus";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "hedsvote";
+import CreateProposalButton from "./_buttons/createProposal";
 
 const { getAllProposalsInSpace, getAllSpaces } = createClient();
 
@@ -44,17 +45,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
             <p className="font-inter text-2xl font-bold text-black">
               PROPOSALS
             </p>
-            {/* <Link href={`/${slug}/create-proposal`}>
-              <button className="flex items-center gap-2 px-4">
-                <Image
-                  alt="add proposal"
-                  src={"/icons/plus.svg"}
-                  width={10}
-                  height={10}
-                />
-                <p className="font-space-grotesk text-sm text-black">create</p>
-              </button>
-            </Link> */}
+          <CreateProposalButton admins={space?.authors} slug={slug}/>
           </div>
           <div className="my-5 grid min-w-[90vw] grid-cols-1 gap-4 pb-5 lg:min-w-full lg:grid-cols-3">
             {proposals?.length &&
