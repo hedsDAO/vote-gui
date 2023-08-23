@@ -50,7 +50,7 @@ const VotingNavbar = ({
           <Ballot
            userVote={getUserVotePercentages(proposal, address)}
             strategies={proposal?.strategies}
-            proposalId={proposal?.ipfs_hash}
+            proposal={proposal}
             choices={proposal?.choices}
           />
         </div>

@@ -14,7 +14,7 @@ const ClosedAudioCard = ({
   handleBarClick,
   playSound,
 }: {
-  proposal: Proposal,
+  proposal: Proposal;
   userVote: any;
   choice: SortedChoice;
   currentSong: CurrentSongProps | null;
@@ -30,6 +30,7 @@ const ClosedAudioCard = ({
     if (votePercentage) return Math.round(votePercentage * 100);
     else return 0;
   };
+
   return (
     <div
       className={
@@ -78,20 +79,24 @@ const ClosedAudioCard = ({
           })}
         </div>
       </div>
-      {proposal?.showResults && <div className="ml-auto flex items-center">
-        <div className="flex flex-col">
-          <div className="rounded-sm bg-heds-bg-light px-2 py-1 lg:-mr-4">
-            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
-              {Math.round(choice?.score * 10) / 10 || 0} %
-            </h1>
+      {proposal?.showResults && (
+        <div className="ml-auto flex items-center">
+          <div className="flex flex-col">
+            <div className="rounded-sm bg-heds-bg-light px-2 py-1 lg:-mr-4">
+              <h1 className="min-w-[7ch] max-w-[7ch] text-center text-xs text-white">
+                {Math.round(choice?.score * 10) / 10 || 0} %
+              </h1>
+            </div>
+            {userVote && (
+              <div className="rounded-sm bg-h-red-dark px-2 py-1 lg:-mr-4">
+                <h1 className="min-w-[7ch] max-w-[7ch] text-center text-xs text-white">
+                  {getUserVotePercentage()} %
+                </h1>
+              </div>
+            )}
           </div>
-          {userVote && <div className="rounded-sm bg-h-red-dark px-2 py-1 lg:-mr-4">
-            <h1 className="text-center text-xs text-white min-w-[7ch] max-w-[7ch]">
-              {getUserVotePercentage()} %
-            </h1>
-          </div>}
         </div>
-      </div>}
+      )}
       <div className={"ml-auto flex items-center justify-center gap-4 pr-5"}>
         {currentSong?.isLoading && choice.media === currentSong.media ? (
           <Image

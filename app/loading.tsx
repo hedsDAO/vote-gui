@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Loading = () => {
   return (
-    <div className="flex min-h-[81vh] items-center bg-heds-bg justify-center">
+    <div className="flex min-h-[81vh] items-center bg-black justify-center">
       <Image
         alt={"loading"}
         src={"/icons/spinner.svg"}

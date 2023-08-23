@@ -51,6 +51,7 @@
     "@types/react-datepicker": "^4.15.0",
     "prettier": "2.8",
     "prettier-plugin-tailwindcss": "^0.4.1",
-    "prisma": "^5.1.1"
+    "prisma": "^5.1.1",
+    "tailwindcss-bg-patterns": "^0.2.0"
   }
 }

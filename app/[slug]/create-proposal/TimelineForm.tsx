@@ -49,6 +49,38 @@ const TimelineForm = ({ setActiveStep }: OwnProps) => {
             </div>
           </div>
           <div>
+          <div className="flex items-center">
+            <select
+                className={`block h-8 w-32 appearance-none rounded-xl bg-white px-5 font-space-grotesk text-gray-800 focus:outline-none`}
+                value={state.voteDuration}
+                onChange={(e) =>
+                  dispatch({ type: "SET_VOTE_DURATION", payload: e.target.value })}
+              >
+                {[
+                  { label: "1 DAY", value: "86400000" },
+                  { label: "2 DAYS", value: "172800000" },
+                  { label: "3 DAYS", value: "259200000" },
+                  { label: "4 DAYS", value: "345600000" },
+                  { label: "5 DAYS", value: "432000000" },
+                  { label: "6 DAYS", value: "518400000" },
+                  { label: "1 WEEK", value: "604800000" },
+                ].map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <div className="relative -ml-8">
+                <svg
+                  fill="black"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="0.9em"
+                  viewBox="0 0 384 512"
+                >
+                  <path d="M214.6 454.6L192 477.3l-22.6-22.6-144-144L2.7 288 48 242.8l22.6 22.6L160 354.8 160 64l0-32 64 0 0 32 0 290.7 89.4-89.4L336 242.8 381.3 288l-22.6 22.6-144 144z" />
+                </svg>
+              </div>
+            </div>
             {/* <CustomFormInput
               label="Vote Duration"
               value={state.voteDuration}
