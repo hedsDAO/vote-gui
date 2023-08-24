@@ -11,7 +11,8 @@ const CreateProposalButton = ({slug, admins}: {slug: string, admins?: string[]})
     const {address} = useAccount();
 
     useEffect(() => {
-        if(admins?.length && address && admins.includes(address.toLowerCase())) {
+        const mappedAdmins = admins?.map(admin => admin.toLowerCase())
+        if(admins?.length && address && mappedAdmins?.includes(address.toLowerCase())) {
             setIsAdmin(true);
         }
     },[address])
