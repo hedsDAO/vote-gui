@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
@@ -8,17 +7,18 @@ import DeleteProposalModal from "../_modals/DeleteProposalModal";
 
 const DeleteProposalButton = ({
   slug,
+  id,
   admins,
   proposal
 }: {
   slug: string;
+  id: string;
   admins?: string[];
   proposal: any
 }) => {
   const [isShowingDeleteProposalModal, setIsShowingDeleteProposalModal] =
     useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const router = useRouter();
   const { address } = useAccount();
 
   useEffect(() => {
@@ -37,9 +37,11 @@ const DeleteProposalButton = ({
       {isAdmin && (
         <>
           <DeleteProposalModal
-          proposal={proposal}
+            proposal={proposal}
             setIsOpen={setIsShowingDeleteProposalModal}
             isOpen={isShowingDeleteProposalModal}
+            slug={slug}
+            id={id}
           />
           <button
             type="button"
