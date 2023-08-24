@@ -79,7 +79,7 @@ const ClosedAudioCard = ({
           })}
         </div>
       </div>
-      {proposal?.showResults && (
+      {proposal?.show_results && (
         <div className="ml-auto flex items-center">
           <div className="flex flex-col">
             <div className="rounded-sm bg-heds-bg-light px-2 py-1 lg:-mr-4">
