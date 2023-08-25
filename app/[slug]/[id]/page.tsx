@@ -39,7 +39,7 @@ export default async function Page({ params }: any) {
         <div className="mt-5 flex flex-col gap-5">
           <div className="flex mb-5 min-w-full justify-between">
             {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
-            <DeleteProposalButton proposal={proposal} slug={slug} admins={space?.authors} />
+            <DeleteProposalButton proposal={proposal} slug={slug} id={id} admins={space?.authors} />
           </div>
           {authorDisplayName && (
             <Details
