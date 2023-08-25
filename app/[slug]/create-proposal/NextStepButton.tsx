@@ -1,3 +1,5 @@
+"use client";
+import Image from "next/image";
 import { FC } from "react";
 
 interface OwnProps {
@@ -5,6 +7,7 @@ interface OwnProps {
   disabled: boolean;
   text: string;
   includeIcon?: boolean;
+  isLoading?: boolean;
 }
 
 const NextStepButton: FC<OwnProps> = ({
@@ -12,15 +15,27 @@ const NextStepButton: FC<OwnProps> = ({
   disabled,
   text,
   includeIcon,
+  isLoading,
 }) => {
   return (
     <button
-      className={`rounded-lg bg-purple-200 h-8 px-4 text-sm font-medium tracking-wider font-space-grotesk text-black disabled:opacity-50 ${
+      className={`h-8 rounded-lg bg-purple-200 px-4 font-space-grotesk text-sm font-medium tracking-wider text-black disabled:opacity-50 ${
         includeIcon ? "flex items-center justify-between" : ""
       }`}
       onClick={onClick}
-      disabled={disabled}>
-      {text}
+      disabled={disabled}
+    >
+      {isLoading ? (
+        <Image
+          alt={"loading"}
+          src={"/icons/spinner.svg"}
+          width={15}
+          height={15}
+          className="animate-spin"
+        />
+      ) : (
+        text
+      )}
       {/* {includeIcon && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
