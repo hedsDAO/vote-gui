@@ -19,6 +19,7 @@ interface OwnProps {
 }
 
 const ConfirmForm = ({ setActiveStep }: OwnProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [isShowingFullDescription, setIsShowingFullDescription] =
     useState<boolean>(false);
@@ -112,6 +113,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     if (Array.isArray(slug)) return;
     const startTime = new Date(state.voteStart);
     try {
+      setIsLoading(true);
     const proposal: Proposal = {
       author: address as string,
       block: Number(blockNumber),
@@ -131,9 +133,12 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     const { createProposal } = createClient();
     if (!signer) return;
     const createdProposal: any = await createProposal(signer,proposal);
+    setIsLoading(false);
+    console.log(`/${slug}/${createdProposal.data.ipfsHash}`, "createdProposal", createdProposal?.data)
     router.push(`/${slug}/${createdProposal.data.ipfsHash}`);
     return;
    } catch (e) {
+    setIsLoading(false);
     console.error(e);
     return
    }
@@ -342,7 +347,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
             );
           })}
         </div>
-        <div className="flex justify-flex items-start gap-2 mt-2"> 
+        <div className="flex justify-flex items-start gap-2 mt-8 mb-3"> 
           <input type="checkbox" className="default:ring-2  w-4 h-4 mt-1" onChange={(e) => {
             setConfirmedProposal(e.target.checked)
             } }/>
@@ -350,8 +355,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
         </div>
         <div className="mt-10 flex justify-end">
           <NextStepButton
+            isLoading={isLoading}
             onClick={() => submitCreateProposal()}
-            disabled={formValidation()}
+            disabled={formValidation() || isLoading}
             text="Submit"
             includeIcon
           />
