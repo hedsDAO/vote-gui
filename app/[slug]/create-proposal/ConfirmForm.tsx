@@ -70,7 +70,6 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
           const imageRes = await pinFileToIpfs(data);
           formattedChoice.image =
             "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
-          console.log(formattedChoice.image);
         } catch (e) {
           console.log(e);
         }
@@ -102,7 +101,6 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     try {
       const imageRes = await pinFileToIpfs(data);
       const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
-      console.log(coverLink);
       return coverLink;
     } catch (e) {
       console.log(e);
@@ -129,12 +127,10 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
       choice_type: state.tapeDetails.choiceType,
       show_results: state.tapeDetails.showResults
     };
-    console.log(proposal);
     //Use hedsvote createProposal via server actions
     const { createProposal } = createClient();
     if (!signer) return;
     const createdProposal: any = await createProposal(signer,proposal);
-    console.log(createdProposal)
     router.push(`/${slug}/${createdProposal.data.ipfsHash}`);
     return;
    } catch (e) {

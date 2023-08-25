@@ -6,7 +6,7 @@ import { getVotingStatus } from "../../utils/getVotingStatus";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "hedsvote";
-import CreateProposalButton from "./_buttons/createProposal";
+import CreateProposalButton from "./_buttons/CreateProposal";
 
 const { getAllProposalsInSpace, getAllSpaces } = createClient();
 

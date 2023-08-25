@@ -1,22 +1,36 @@
 "use client";
 import { Transition, Dialog } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Fragment, useState } from "react";
+import { createClient } from "hedsvote";
+import { useWalletClient } from "wagmi";
 
 const DeleteProposalModal = ({
   isOpen,
   setIsOpen,
   proposal,
+  slug,
+  id
 }: {
   isOpen: boolean;
   setIsOpen: (bool: boolean) => void;
   proposal: any;
+  slug: string;
+  id:string
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  console.log(proposal);
+  const {deleteProposal} = createClient();
+  const signer = useWalletClient().data;
+  const router = useRouter();
+  // console.log(proposal);
+
   // delete function
-  const handleDelete = () => {
-    alert("deleted");
+  const handleDelete = async () => {
+    if(!signer) return;
+    await deleteProposal(signer,slug,id);
+    setIsOpen(false);
+    router.push(`/${slug}`)
   };
   return (
     <Transition.Root show={isOpen} as={Fragment}>
