@@ -21,9 +21,8 @@ async function getProposals(name: string) {
   return proposals.data;
 }
 
-const Page = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
-
+const Page = async ({ params }: { params: { space: string } }) => {
+  const { space: slug } = params;
   const space = await getSpaceData(slug);
   const proposals: any[] | undefined = await getProposals(slug);
 

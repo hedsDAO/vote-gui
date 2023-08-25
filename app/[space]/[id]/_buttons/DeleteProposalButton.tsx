@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import DeleteProposalModal from "../_modals/DeleteProposalModal";
 
 const DeleteProposalButton = ({
-  slug,
+  space,
   id,
   admins,
   proposal
 }: {
-  slug: string;
+  space: string;
   id: string;
   admins?: string[];
   proposal: any
@@ -40,7 +40,7 @@ const DeleteProposalButton = ({
             proposal={proposal}
             setIsOpen={setIsShowingDeleteProposalModal}
             isOpen={isShowingDeleteProposalModal}
-            slug={slug}
+            slug={space}
             id={id}
           />
           <button

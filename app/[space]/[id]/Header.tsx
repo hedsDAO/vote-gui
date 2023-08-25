@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Header = ({ slug, cover }: { slug: string; cover: string }) => {
+const Header = ({ space, cover }: { space: string; cover: string }) => {
   return (
     <>
-      <Link href={`/${slug}`}>
+      <Link href={`/${space}`}>
         <div className="pointer-events-auto flex items-center gap-4 lg:-ml-8">
           <Image
             alt="back"

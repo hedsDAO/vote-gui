@@ -30,7 +30,7 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
   const blockNumber = useBlockNumber().data;
   const { address } = useAccount();
   const signer = useWalletClient().data;
-  const { slug } = useParams();
+  const { space: slug } = useParams();
 
   const formattedDate = state.voteStart.toLocaleString("en-US", {
     month: "long", // or 'numeric' for numeric representation
