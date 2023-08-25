@@ -23,13 +23,13 @@ const RootProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Provider store={store}>
-        <ProposalContextProvider>
-          <CreateProposalProvider>
-            <WagmiConfig config={config}>
-              <ConnectKitProvider>{children}</ConnectKitProvider>
-            </WagmiConfig>
-          </CreateProposalProvider>
-        </ProposalContextProvider>
+          <ProposalContextProvider>
+            <CreateProposalProvider>
+              <WagmiConfig config={config}>
+                <ConnectKitProvider>{children}</ConnectKitProvider>
+              </WagmiConfig>
+            </CreateProposalProvider>
+          </ProposalContextProvider>
       </Provider>
     </div>
   );

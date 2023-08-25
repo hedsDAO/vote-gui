@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import spaces from "@/store/spaces";
+import proposal from "@/store/proposal";
 
 export const store = configureStore({
   reducer: {
-    spaces: spaces,
+    proposal,
   },
 });
 
