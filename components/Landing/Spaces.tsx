@@ -18,8 +18,8 @@ const Spaces = async () => {
 
   return (
     <div className="">
-      <div className="mx-auto my-2 flex max-w-4xl items-center pb-2">
-        <p className="ml-5 rounded-md px-2 font-inter text-xl font-bold tracking-wide text-white/80 lg:ml-2">
+      <div className="mx-auto flex max-w-4xl items-center">
+        <p className="ml-4 rounded-md px-1 font-inter text-xl font-bold tracking-wide text-white/80 lg:ml-2">
           SPACES
         </p>
       </div>
