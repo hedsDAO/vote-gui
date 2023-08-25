@@ -22,7 +22,7 @@ async function getProposalData(id: string) {
 }
 
 export default async function Page({ params }: any) {
-  const { slug, id }: { slug: string; id: string } = params;
+  const { space: slug, id }: { space: string; id: string } = params;
   const space = await getSpaceData(slug);
   const proposal: any | undefined = await getProposalData(id);
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
@@ -38,8 +38,8 @@ export default async function Page({ params }: any) {
       <div className="flex justify-between lg:mt-10">
         <div className="mt-5 flex flex-col gap-5">
           <div className="flex mb-5 min-w-full justify-between">
-            {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
-            <DeleteProposalButton proposal={proposal} slug={slug} id={id} admins={space?.authors} />
+            {proposal?.cover && <Header space={slug} cover={proposal?.cover} />}
+            <DeleteProposalButton proposal={proposal} space={slug} id={id} admins={space?.authors} />
           </div>
           {authorDisplayName && (
             <Details

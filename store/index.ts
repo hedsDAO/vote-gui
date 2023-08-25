@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-import voteReducer from "./voteModel";
+import spaces from "@/store/spaces";
 
 export const store = configureStore({
   reducer: {
-    vote: voteReducer,
+    spaces: spaces,
   },
 });
 
