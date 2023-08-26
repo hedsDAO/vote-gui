@@ -3,7 +3,7 @@ import proposal from "@/store/proposal";
 
 export const store = configureStore({
   reducer: {
-    proposal,
+    proposal
   },
 });
 
