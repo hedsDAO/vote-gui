@@ -4,22 +4,17 @@ import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import DeleteProposalModal from "../_modals/DeleteProposalModal";
+import { useAppSelector } from "@/store/hooks";
+import { useParams } from "next/navigation";
 
-const DeleteProposalButton = ({
-  space,
-  id,
-  admins,
-  proposal
-}: {
-  space: string;
-  id: string;
-  admins?: string[];
-  proposal: any
-}) => {
+const DeleteProposalButton = () => {
   const [isShowingDeleteProposalModal, setIsShowingDeleteProposalModal] =
     useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const { address } = useAccount();
+  const proposal = useAppSelector((state) => state.proposal.proposal);
+  const admins = useAppSelector((state) => state.proposal.spaceData.authors);
+  const {spaceName, id} = useParams()
+  const { address } = useAccount()
 
   useEffect(() => {
     const formattedAdmins = admins?.map((admin) => admin?.toLowerCase()) || [];
@@ -40,8 +35,8 @@ const DeleteProposalButton = ({
             proposal={proposal}
             setIsOpen={setIsShowingDeleteProposalModal}
             isOpen={isShowingDeleteProposalModal}
-            slug={space}
-            id={id}
+            spaceName={Array.isArray(spaceName) ? spaceName[0] : spaceName}
+            id={Array.isArray(id) ? id[0] : id}
           />
           <button
             type="button"

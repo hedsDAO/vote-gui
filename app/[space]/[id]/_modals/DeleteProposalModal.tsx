@@ -10,13 +10,13 @@ const DeleteProposalModal = ({
   isOpen,
   setIsOpen,
   proposal,
-  slug,
+  spaceName,
   id
 }: {
   isOpen: boolean;
   setIsOpen: (bool: boolean) => void;
   proposal: any;
-  slug: string;
+  spaceName: string;
   id:string
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -28,9 +28,9 @@ const DeleteProposalModal = ({
   // delete function
   const handleDelete = async () => {
     if(!signer) return;
-    await deleteProposal(signer,slug,id);
+    await deleteProposal(signer,spaceName,id);
     setIsOpen(false);
-    router.push(`/${slug}`)
+    router.push(`/${spaceName}`)
   };
   return (
     <Transition.Root show={isOpen} as={Fragment}>

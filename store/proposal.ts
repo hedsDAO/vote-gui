@@ -8,13 +8,19 @@ export type VoteParticipants  = {
       displayName: string;
       profilePicture: string;
   };
-} | undefined
+} | undefined;
+
+export type ScoreData = {
+  totalScore: number;
+  sortedChoicesWithScores: any;
+} | undefined;
 
 export interface ProposalState {
   proposal: Proposal | null;
   author: string;
-  voteParticipants?: VoteParticipants
-  spaceData: SpaceData
+  voteParticipants?: VoteParticipants;
+  spaceData: SpaceData;
+  scoreData?: any;
 }
 
 const initialState: ProposalState = {
@@ -25,7 +31,8 @@ const initialState: ProposalState = {
     name: "",
     authors: [],
     image: ""
-  }
+  },
+  scoreData : {}
 };
 
 
@@ -45,6 +52,9 @@ const proposalSlice = createSlice({
     },
     setSpaceData( state, action: PayloadAction<SpaceData>) {
       state.spaceData = action.payload;
+    },
+    setScoreData( state, action: PayloadAction<ScoreData>) {
+      state.scoreData = action.payload;
     }
   },
   // extraReducers: (builder) => {
@@ -71,5 +81,5 @@ const proposalSlice = createSlice({
 // )
 
 
-export const { setAuthor, setProposal, setVoteParticipants, setSpaceData } = proposalSlice.actions;
+export const { setAuthor, setProposal, setVoteParticipants, setSpaceData, setScoreData } = proposalSlice.actions;
 export default proposalSlice.reducer;
