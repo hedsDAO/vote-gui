@@ -24,7 +24,6 @@ const Ballot = ({
   const [isShowingVPModal, setIsShowingVPModal] = useState(false);
   const [showConnectButton, setShowConnectButton] = useState<boolean>();
   const [userVp, setUserVp] = useState<number>(0);
-  console.log(state, 'state in ballot')
   const { isConnected, address } = useAccount();
   const getVp = async () => {
     try {
