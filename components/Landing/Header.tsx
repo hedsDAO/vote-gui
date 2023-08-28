@@ -4,7 +4,7 @@ const imageLinks = ["/ht11.png", "/ht14.png", "/ht15.png", "/ht12.png"];
 
 const Header = () => {
   return (
-    <div className="flex w-[100vw] flex-col items-center justify-center gap-5 pb-20 pt-16 lg:gap-5 lg:pb-20 lg:pt-16">
+    <div className="flex w-[100vw] flex-col items-center justify-center gap-5 pt-16 lg:gap-5 lg:pb-20 lg:pt-16">
       <div className="flex items-center gap-4 lg:gap-6">
         <h1 className="font-inter text-5xl font-bold text-white lg:text-8xl">
           VOTING FOR
