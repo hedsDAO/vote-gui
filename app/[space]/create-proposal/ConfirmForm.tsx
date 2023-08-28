@@ -8,7 +8,7 @@ import {
   CreateProposalContext,
 } from "@/context/createProposal.context";
 // import { pinFileToIpfs } from "../../_actions";
-import { pinFileToIpfs } from "@/utils/pinFileToIPFS";
+import { pinFileToIpfs } from "@/_actions";
 import { Choice, Proposal, createClient } from "hedsvote";
 import { useBlockNumber, useAccount, useWalletClient } from "wagmi";
 import { useParams, useRouter } from "next/navigation";
@@ -69,8 +69,9 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
         data.append("file", imageFile);
         try {
           const imageRes = await pinFileToIpfs(data);
+          console.log(imageRes)
           formattedChoice.image =
-            "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
+            "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
         } catch (e) {
           console.log(e);
         }
@@ -101,7 +102,8 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     data.append("file", coverFile);
     try {
       const imageRes = await pinFileToIpfs(data);
-      const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.data.IpfsHash;
+      console.log(imageRes)
+      const coverLink = "https://www.heds.cloud/ipfs/" + imageRes.IpfsHash;
       return coverLink;
     } catch (e) {
       console.log(e);
@@ -133,10 +135,14 @@ const ConfirmForm = ({ setActiveStep }: OwnProps) => {
     const { createProposal } = createClient();
     if (!signer) return;
     const createdProposal: any = await createProposal(signer,proposal);
-    setIsLoading(false);
-    console.log(`/${slug}/${createdProposal.data.ipfsHash}`, "createdProposal", createdProposal?.data)
-    router.push(`/${slug}/${createdProposal.data.ipfsHash}`);
-    return;
+    if (createdProposal) {
+      setIsLoading(false);
+      console.log(`/${slug}/${createdProposal.data.ipfsHash}`, "createdProposal", createdProposal?.data)
+      router.push(`/${slug}/${createdProposal.data.ipfsHash}`);
+      return;
+    } else {
+      return;
+    }
    } catch (e) {
     setIsLoading(false);
     console.error(e);

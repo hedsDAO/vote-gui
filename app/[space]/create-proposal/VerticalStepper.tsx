@@ -47,14 +47,14 @@ const VerticalStepper = () => {
                   onClick={() => 
                     canNavigateToStep(i) && 
                     setActiveStep(i)}
-                  className={
-                    `${
-                      i === activeStep ? "bg-white" : ""
-                    } ` +
-                    `${
-                      i <= activeStep ? "bg-white" : "bg-transparent opacity-60"
-                    } ` +
-                    "flex lg:min-w-[16ch] lg:min-h-auto min-w-[1.5ch] min-h-[1.5ch] items-center justify-center rounded-full lg:rounded-xl border-2 lg:border border-white py-1.5"
+                    className={
+                      `${
+                        i === activeStep ? "bg-white" : ""
+                      } ` +
+                      `${
+                        i <= activeStep ? "bg-white" : "bg-transparent opacity-60"
+                      } ` +
+                      "flex lg:min-w-[16ch] lg:min-h-auto min-w-[1.5ch] min-h-[1.5ch] items-center justify-center rounded-full lg:rounded-xl border-2 lg:border border-white py-1.5"
                   }
                 >
                   <p
