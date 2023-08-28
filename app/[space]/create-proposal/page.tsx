@@ -1,17 +1,9 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 
 import VerticalStepper from "./VerticalStepper";
-import TapeDetailsForm from "./TapeDetailsForm";
-import OptionsForm from "./OptionsForm";
-import TimelineForm from "./TimelineForm";
-import StrategyForm from "./StrategyForm";
-import ConfirmForm from "./ConfirmForm";
 
 export default function Page() {
-  const [activeStep, setActiveStep] = useState(0);
+
 
   return (
     <div className="bg-heds-bg py-8 min-h-[82vh]">
@@ -42,21 +34,7 @@ export default function Page() {
         Create Proposal
       </p>
       <hr className="mb-10 mt-4 h-[0.5px] border-t-0 bg-white opacity-100" />
-      <div className="grid grid-cols-1 lg:grid-cols-8">
-        <div className="col-span-2">
-          <VerticalStepper
-            activeStep={activeStep}
-            setActiveStep={setActiveStep}
-          />
-        </div>
-        <div className="lg:col-span-6">
-        {activeStep === 0 && <TapeDetailsForm setActiveStep={setActiveStep} />}
-        {activeStep === 1 && <OptionsForm setActiveStep={setActiveStep} />}
-        {activeStep === 2 && <TimelineForm setActiveStep={setActiveStep} />}
-        {activeStep === 3 && <StrategyForm setActiveStep={setActiveStep} />}
-        {activeStep === 4 && <ConfirmForm setActiveStep={setActiveStep} />}
-        </div>
-      </div>
+      <VerticalStepper />
     </div>
     </div>
   );
