@@ -5,18 +5,20 @@ import { useRef, useState, useEffect } from "react";
 import { Howl } from "howler";
 import ClosedAudioCard from "./ClosedAudioCard";
 import OpenAudioCard from "./OpenAudioCard";
+import { getUserVotePercentages } from "@/utils/getUserVotePercentages";
+import { useAppSelector } from "@/store/hooks";
+import { useAccount } from "wagmi";
 
 const AudioCards = ({
-  proposal,
   sortedChoicesWithScores,
   votingStatus,
-  userVote
 }: {
-  proposal: Proposal;
   sortedChoicesWithScores?: SortedChoice[];
   votingStatus: string;
-  userVote: any | null;
 }) => {
+  const { address } = useAccount();
+  const proposal = useAppSelector((state) => state.proposal.proposal);
+  const userVote = getUserVotePercentages(proposal,address);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [currentSong, setCurrentSong] = useState<{
     media: string;
@@ -154,9 +156,9 @@ const AudioCards = ({
   if (votingStatus === "closed") {
     return (
       <>
-        {sortedChoicesWithScores?.map((choice) => (
+        { proposal && sortedChoicesWithScores?.map((choice) => (
           <ClosedAudioCard
-          proposal={proposal}
+            proposal={proposal}
             key={choice.id}
             userVote={userVote}
             currentSong={currentSong}
@@ -188,6 +190,8 @@ const AudioCards = ({
         })}
       </>
     );
+  } else {
+    return null
   }
 };
 

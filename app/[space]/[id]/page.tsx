@@ -1,7 +1,5 @@
-// import { getProposalById } from "@/app/_actions";
 import Image from "next/image";
 import Details from "./Details";
-import { getVotingStatus } from "@/utils/getVotingStatus";
 import { getAuthorDisplayName } from "@/utils/getAuthorDisplayName";
 import { getParticipantsUserData } from "@/utils/getParticipantsUserData";
 import { getScoreData } from "@/utils/getScoreData";
@@ -9,9 +7,6 @@ import Header from "./Header";
 import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
 import DeleteProposalButton from "./_buttons/DeleteProposalButton";
-import { store } from "@/store";
-import { authorApi } from "@/store/api/getAuthor";
-import { setAuthor, setProposal, setVoteParticipants } from "@/store/proposal";
 import Preloader from "./Preloader";
 
 
@@ -32,22 +27,17 @@ export default async function Page({ params }: any) {
   const proposal: any | undefined = await getProposalData(id);
   const authorDisplayName = await getAuthorDisplayName(proposal?.author);
   const voterUserData = await getParticipantsUserData(proposal?.votes);
-  const { sortedChoicesWithScores, totalScore } = getScoreData(proposal);
-
-  const votingStatus = getVotingStatus(
-    proposal?.start_time,
-    proposal?.end_time
-  );
+  const scoreData = getScoreData(proposal);
 
   return (
     <>
-      {space && <Preloader proposal={proposal} author={authorDisplayName} voteParticipants={voterUserData} spaceData={space} />}
+      {space && <Preloader proposal={proposal} author={authorDisplayName} voteParticipants={voterUserData} spaceData={space} scoreData={scoreData} />}
       <div className="flex min-h-[82vh] max-w-5xl flex-col  px-4 lg:mx-auto">
         <div className="flex justify-between lg:mt-10">
           <div className="mt-5 flex flex-col gap-5">
             <div className="flex mb-5 min-w-full justify-between">
               {proposal?.cover && <Header space={slug} cover={proposal?.cover} />}
-              <DeleteProposalButton proposal={proposal} space={slug} id={id} admins={space?.authors} />
+              <DeleteProposalButton />
             </div>
             {authorDisplayName && (
               <Details
@@ -70,12 +60,7 @@ export default async function Page({ params }: any) {
             />
           </div>
         </div>
-        <VotingNavbar
-          voterUserData={voterUserData}
-          sortedChoicesWithScores={sortedChoicesWithScores}
-          proposal={proposal}
-          votingStatus={votingStatus}
-        />
+        <VotingNavbar />
       </div>
     </>
   );

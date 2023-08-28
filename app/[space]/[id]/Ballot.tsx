@@ -7,26 +7,26 @@ import { useAccount } from "wagmi";
 import { calculateUserVotingPower, Strategy, Choice } from "hedsvote";
 import BallotModal from "./BallotModal";
 import VotingPowerModal from "./VotingPowerModal";
+import { useAppSelector } from "@/store/hooks";
+import { getUserVotePercentages } from "@/utils/getUserVotePercentages";
 
 const Ballot = ({
-  userVote,
-  choices,
-  strategies,
-  proposal,
 }: {
-  userVote: any;
-  choices: Choice[];
-  strategies: Strategy[];
-  proposal?: any;
 }) => {
   const { state, dispatch } = useContext(ProposalContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isShowingVPModal, setIsShowingVPModal] = useState(false);
   const [showConnectButton, setShowConnectButton] = useState<boolean>();
   const [userVp, setUserVp] = useState<number>(0);
-  console.log(state, 'state in ballot')
   const { isConnected, address } = useAccount();
+  const proposal = useAppSelector((state) => state.proposal.proposal);
+  const choices = useAppSelector((state) => state.proposal.proposal?.choices);
+  const strategies = useAppSelector((state) => state.proposal.proposal?.strategies);
+  const proposalId = useAppSelector((state) => state.proposal.proposal?.ipfsHash);
+  const userVote = getUserVotePercentages(proposal, address);
+  console.log(state, 'state in ballot')
   const getVp = async () => {
+    if (!strategies) return;
     try {
       const vp = await calculateUserVotingPower(
         address as `0x${string}` || "",
@@ -129,15 +129,15 @@ const Ballot = ({
         <VotingPowerModal
           isOpen={isShowingVPModal}
           setIsOpen={setIsShowingVPModal}
-          strategies={proposal?.strategies}
+          strategies={strategies}
           address={address as string}
         />
       </div>
-      {address && (
+      {address && choices && (
         <BallotModal
           choices={choices}
           userVotes={state?.likes}
-          proposalId={proposal?.ipfs_hash || ""}
+          proposalId={proposalId || ""}
           vp={userVp}
           voter={address}
           isOpen={isOpen}

@@ -5,22 +5,21 @@ import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { useState } from "react";
 import ResultsModal from "./ResultsModal";
+import { useAppSelector } from "@/store/hooks";
 
 const Results = ({
-  proposal,
-  voterUserData,
   sortedChoicesWithScores,
 }: {
-  proposal: Proposal;
   sortedChoicesWithScores: any;
-  voterUserData: VoterUserData | undefined;
 }) => {
   const [currentVote, setCurrentVote] = useState<any>();
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
+  const proposal = useAppSelector((state) => state.proposal.proposal);
+  const voterUserData = useAppSelector((state) => state.proposal.voteParticipants);
 
   return (
     <div className="mb-4 mt-4 flex flex-col gap-1">
-      {proposal.votes
+      {proposal && proposal.votes
         ?.sort((a, b) => b?.vp - a?.vp)
         ?.map((vote: QuadraticVote | SingleChoiceVote) => {
           return (
