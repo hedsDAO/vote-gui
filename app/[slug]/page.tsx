@@ -28,7 +28,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   const proposals: any[] | undefined = await getProposals(slug);
 
   return (
-    <div className="min-h-[80vh]">
+    <div className="min-h-full lg:min-h-[80vh]">
       <Header src={space?.banner} />
       <ProfilePicture src={space?.image} />
       <Details title={space?.name} description={space?.description} />
