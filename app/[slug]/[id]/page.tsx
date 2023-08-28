@@ -41,11 +41,11 @@ export default async function Page({ params }: any) {
             {proposal?.cover && <Header slug={slug} cover={proposal?.cover} />}
             <DeleteProposalButton proposal={proposal} slug={slug} id={id} admins={space?.authors} />
           </div>
-          {authorDisplayName && (
+          {proposal && (
             <Details
               description={proposal.description}
               voterUserData={voterUserData}
-              displayName={authorDisplayName}
+              displayName={authorDisplayName || proposal?.author}
               proposal={proposal}
             />
           )}
