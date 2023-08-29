@@ -1,7 +1,7 @@
 "use client";
 import { Transition, Dialog } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { createClient } from "hedsvote";
 import { useWalletClient } from "wagmi";
 const BallotModal = ({
@@ -24,7 +24,7 @@ const BallotModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const { castVote } = createClient();
   const { data } = useWalletClient();
-
+  const userVoteEntries = useMemo(() => Object.entries(userVotes), [userVotes]);
   const handleCastVote = async () => {
     setIsLoading(true);
     if (!data) return;
@@ -55,8 +55,6 @@ const BallotModal = ({
     }
   };
 
-  const chosenIds = Object.keys(userVotes);
-  choices = [null, ...choices];
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -92,28 +90,31 @@ const BallotModal = ({
                   <p className="pb-2 font-inter text-black">CONFIRM CHOICES</p>
                   <hr />
                   {userVotes &&
-                    Object.keys(userVotes).map((choice, i) => {
-                      if (choice) return (
+                    userVoteEntries.map(([choiceId, choiceAmount], i) => {
+                      // console.log("object", {userVotes, choiceId, choiceAmount})
+                      // console.log(choices[choiceId])
+                      const choice = choiceId ? choices.find(choice => JSON.stringify(choice?.id) === choiceId) : null;
+                      if (choiceId) return (
                         <div
                           className="flex items-center justify-between px-1"
-                          key={choice + i}
+                          key={choiceId + i}
                         >
                           <div className="flex items-center">
                             <div className="min-w-[25px] max-w-[25px]">
                               <Image
-                                alt={choices?.[+choice]?.name}
-                                src={choices?.[+choice]?.image}
+                                alt={choice?.name}
+                                src={choice?.image}
                                 width={16}
                                 height={16}
                                 className="rounded-full object-cover"
                               />
                             </div>
                             <p className="-mt-[1px] font-space-grotesk text-sm text-black">
-                              {choices?.[+choice]?.name}
+                              {choice?.name}
                             </p>
                           </div>
                           <p className="font-space-grotesk text-sm text-black">
-                            {userVotes?.[+choice]}
+                            {userVotes?.[+choiceId]}
                           </p>
                         </div>
                       );
