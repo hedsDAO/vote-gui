@@ -66,6 +66,7 @@ const Ballot = ({
     }),
     {}
   );
+  console.log(userVp)
   return (
     <>
       <div className="flex gap-1">
@@ -84,7 +85,7 @@ const Ballot = ({
               );
             }}
           </ConnectKitButton.Custom>
-        ) : (
+        ) : userVp > 0 ? (
           <button
             onClick={() => setIsOpen(true)}
             disabled={
@@ -116,14 +117,14 @@ const Ballot = ({
               </span>
             </p>
           </button>
-        )}
+        ): null}
         {/* here */}
         <div
           role="button"
           onClick={() => setIsShowingVPModal(true)}
           className="flex items-center rounded-full bg-heds-bg px-3"
         >
-          <p className="text-sm text-white">{userVp}</p>
+          <p className="text-sm text-white p-2">{userVp === 0 ? "Click here to see list of NFTs needed to vote" : userVp}</p>
         </div>
         <VotingPowerModal
           isOpen={isShowingVPModal}
@@ -132,7 +133,7 @@ const Ballot = ({
           address={address as string}
         />
       </div>
-      {address && (
+      {address && userVp >= 1 && (
         <BallotModal
           choices={choices}
           userVotes={state?.likes}
