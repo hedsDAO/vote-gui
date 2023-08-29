@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import RootProvider from "@/providers/RootProvider";
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
-import Loading from "@/app/loading";
+import Navbar from "@/components/navs/Navbar/Navbar";
+import Footer from "@/components/navs/Footer/Footer";
+import Loading from "@/app/_components/Loading/Loading";
 import { Analytics } from "@vercel/analytics/react";
 import { Suspense } from "react";
 
