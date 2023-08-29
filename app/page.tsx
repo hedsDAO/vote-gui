@@ -6,6 +6,7 @@ export default function Home() {
   return (
     <div className={styles.$homeLayoutStyles}>
       <Header />
+      {/* @ts-expect-error Server Component */}
       <Spaces />
     </div>
   );
