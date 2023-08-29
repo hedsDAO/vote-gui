@@ -7,6 +7,7 @@ export default function Home() {
   return (
     <Flex {...styles.$flexContainerStyles}>
       <Header />
+      {/* @ts-expect-error Server Component */}
       <Spaces />
     </Flex>
   );

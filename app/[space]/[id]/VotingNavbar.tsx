@@ -18,7 +18,7 @@ const VotingNavbar = () => {
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [choicesWithScores, setChoicesWithScores] = useState<any>();
   const proposal = useAppSelector((state) => state.proposal.proposal);
-  const sortedChoicesWithScores = useAppSelector((state) => state.proposal.scoreData);
+  const sortedChoicesWithScores = useAppSelector((state) => state.proposal.scoreData).sortedChoicesWithScores;
 
 
   const votingStatus = getVotingStatus(
@@ -41,6 +41,8 @@ const VotingNavbar = () => {
       setChoicesWithScores(updatedChoicesWithScores);
     }
   }, [proposal]);
+  console.log(sortedChoicesWithScores?.length)
+  console.log(sortedChoicesWithScores)
 
   return (
     <>
