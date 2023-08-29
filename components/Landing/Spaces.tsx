@@ -17,13 +17,13 @@ const Spaces = async () => {
   const spaceData = await getSpaceData();
 
   return (
-    <div className="">
+    <div className="pt-10 lg:pt-5">
       <div className="mx-auto flex max-w-4xl items-center">
         <p className="ml-4 rounded-md px-1 font-inter text-xl font-bold tracking-wide text-white/80 lg:ml-2">
           SPACES
         </p>
       </div>
-      <div className="flex justify-center gap-3  py-6 lg:gap-4">
+      <div className="flex justify-center gap-3 py-6 lg:gap-4">
         {spaceData?.length &&
           spaceData.map((space) => {
             const { name, image } = space;

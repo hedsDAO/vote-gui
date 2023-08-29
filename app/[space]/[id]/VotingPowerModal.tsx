@@ -88,7 +88,7 @@ const VotingPowerModal = ({
                           const tokenSymbol =
                             erc721?.params?.owners?.[`${i}`]?.[0]?.symbol;
                           const tokenAddress = erc721?.params?.tokens?.[i];
-                          const numOfOwners =
+                          const numOfContractTokens =
                             erc721?.params?.owners?.[i]?.length;
                           const weight = erc721?.params?.weights?.[i];
                           let owners = erc721?.params?.owners?.[i]?.map(
@@ -156,7 +156,7 @@ const VotingPowerModal = ({
                                       />
                                     </div>
                                     <p className="font-space-grotesk text-xs text-white ">
-                                      {numOfOwners} owners
+                                      {numOfContractTokens} tokens
                                     </p>
                                   </div>
                                 </div>
@@ -270,7 +270,7 @@ const VotingPowerModal = ({
                       <div>
                         <p className="rounded-sm font-space-grotesk text-xs text-white/70">
                           <span className="mr-1 text-h-yellow-light/70">
-                            HED
+                            {erc721?.params.symbol}
                           </span>
                           {calculateUserVotingPower(address, strategies)}
                         </p>

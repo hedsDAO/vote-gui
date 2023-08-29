@@ -3,7 +3,7 @@
 import { VoterUserData } from "@/common/types";
 import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ResultsModal from "./ResultsModal";
 import { useAppSelector } from "@/store/hooks";
 
@@ -16,11 +16,11 @@ const Results = ({
   const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
   const proposal = useAppSelector((state) => state.proposal.proposal);
   const voterUserData = useAppSelector((state) => state.proposal.voteParticipants);
+  const sortedVotessByVp = useMemo(() => [...(proposal?.votes || [])].sort((a, b) => (b?.vp || 0) - (a?.vp || 0)),proposal?.votes)
 
   return (
     <div className="mb-4 mt-4 flex flex-col gap-1">
-      {proposal && proposal.votes
-        ?.sort((a, b) => b?.vp - a?.vp)
+      {proposal && sortedVotessByVp
         ?.map((vote: QuadraticVote | SingleChoiceVote) => {
           return (
             <div

@@ -24,8 +24,7 @@ const OpenImageCard = ({
         payload: likes,
       });
     }
-  }, [userVote]);
-  console.log(choice, 'choice')
+  }, []);
   return (
     <div
       className={
@@ -61,6 +60,7 @@ const OpenImageCard = ({
         <div className="flex flex-col justify-center gap-1.5">
           <button
             onClick={() => {
+              console.log(choice.id)
               dispatch({ type: "INCREASE_SCORE", payload: choice.id });
             }}
             className="rounded-sm bg-heds-bg-light p-1"
