@@ -14,7 +14,7 @@ const Header = () => {
       <Flex {...styles.$typographyAndAvatarFlexContainer}>
         <AvatarGroup {...styles.$avatarGroupStyles}>
           {constants.IMAGE_LINKS.map((src) => (
-            <Avatar {...styles.$avatarStyles(src)} />
+            <Avatar key={src} {...styles.$avatarStyles(src)} />
           ))}
         </AvatarGroup>
         <Typography {...styles.$typographyStyles}>
