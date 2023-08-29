@@ -66,7 +66,6 @@ const Ballot = ({
     }),
     {}
   );
-  console.log(userVp)
   return (
     <>
       <div className="flex gap-1">
