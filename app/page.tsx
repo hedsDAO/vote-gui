@@ -1,12 +1,13 @@
-import Header from "@/components/Landing/Header";
-import Spaces from "@/components/Landing/Spaces";
+import { Flex } from "@/common";
+import Header from "@/app/_components/Header/Header";
+import Spaces from "@/app/_components/Spaces/Spaces";
 import * as styles from "@/app/styles";
 
 export default function Home() {
   return (
-    <div className={styles.$homeLayoutStyles}>
+    <Flex {...styles.$flexContainerStyles}>
       <Header />
       <Spaces />
-    </div>
+    </Flex>
   );
 }

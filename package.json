@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.1.5",
+    "@chakra-ui/react": "^2.8.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fontsource-variable/space-grotesk": "^5.0.8",
     "@fontsource/space-mono": "^5.0.8",
     "@headlessui/react": "^1.7.16",
@@ -29,6 +33,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "ethers": "^6.6.5",
+    "framer-motion": "^6.5.1",
     "hedsvote": "^0.1.103",
     "howler": "^2.2.3",
     "lodash": "^4.17.21",
