@@ -8,6 +8,8 @@ export const defaultTheme = extendTheme({
   colors: {
     heds: {
       bg: "#2D2934",
+      bg_dark: '#28242D',
+      bg_light: "#3C3644",
     },
   },
 });

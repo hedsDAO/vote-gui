@@ -8,11 +8,16 @@ const Avatar = (props: AvatarProps) => {
     <ChakraAvatar
       icon={
         <Image
-          className="animate-pulse invert"
+          className="w-full animate-pulse invert"
           alt="loading"
           src="/logo_md.png"
-          height={60}
-          width={60}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{
+            height: "auto",
+            objectFit: "cover",
+          }}
         />
       }
       {...props}

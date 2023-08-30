@@ -11,6 +11,7 @@ const Heds = ({
 }) => {
   return (
     <Image
+      priority
       className={className || "invert"}
       src={"/logo_md.png"}
       alt="heds"
