@@ -33,7 +33,7 @@ export default function Page({params}: any) {
   )
 }
 
-export async function SpacePage({ params }: { params: { slug: string } }) {
+async function SpacePage({ params }: { params: { slug: string } }) {
   
   const { slug } = params;
 

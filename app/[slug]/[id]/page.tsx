@@ -33,7 +33,7 @@ export default function Page({params}: any) {
   )
 }
 
-export async function ProposalPage({ params }: any) {
+async function ProposalPage({ params }: any) {
   const { slug, id }: { slug: string; id: string } = params;
   const space = await getSpaceData(slug);
   const proposal: any | undefined = await getProposalData(id);
