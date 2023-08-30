@@ -23,6 +23,10 @@ export const $spaceCardFlexStyles: FlexProps = {
   gap: "2",
 };
 
+export const $imageStyles = {
+  borderRadius: 1000,
+}
+
 export const $spaceCardTypographyStyles: TextProps = {
   mt: "2",
   fontFamily: "grotesk",
@@ -36,4 +40,25 @@ export const $spaceCardEmptyBoxStyles: FlexProps = {
   rounded: "xl",
   bg: "whiteAlpha.200",
   shadow: "sm",
+};
+
+export const $emptySpaceFlexStyles: FlexProps = {
+  h: "full",
+  flexDir: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "2",
+};
+
+export const $emptyBoxStyles: BoxProps = {
+  h: "50px",
+  w: "50px",
+  rounded: "full",
+  bg: "whiteAlpha.200",
+};
+
+export const $emptyTypographyStyles: TextProps = {
+  fontFamily: "grotesk",
+  fontSize: "sm",
+  textColor: "black",
 };

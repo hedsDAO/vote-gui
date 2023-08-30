@@ -1,9 +1,13 @@
 export { default as Typography } from "@/common/Text/Typography";
+export { default as Heading } from "@/common/Text/Heading";
+export { default as HeadingTextGroup } from "@/common/Text/HeadingTextGroup";
 export { default as Badge } from "@/common/Badge/Badge";
 export { default as Flex } from "@/common/Layout/Flex";
+export { default as Grid } from "@/common/Layout/Grid";
+export { default as GridItem } from "@/common/Layout/GridItem";
 export { default as Box } from "@/common/Layout/Box";
 export { default as Avatar } from "@/common/Media/Avatar";
 export { default as AvatarGroup } from "@/common/Media/AvatarGroup";
 export { default as Button } from "@/common/Button/Button";
-
-// ICONS
+export { default as LinkIconButton } from "@/common/Button/LinkIconButton";
+export { default as Skeleton } from "@/common/Loading/Skeleton";

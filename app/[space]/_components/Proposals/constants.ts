@@ -1,0 +1,3 @@
+
+
+export const PROPOSAL_HEADER_TEXT = "PROPOSALS"
