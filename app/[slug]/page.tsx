@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "hedsvote";
 import CreateProposalButton from "./_buttons/CreateProposal";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 const { getAllProposalsInSpace, getAllSpaces } = createClient();
 
@@ -21,7 +23,18 @@ async function getProposals(name: string) {
   return proposals.data;
 }
 
-const Page = async ({ params }: { params: { slug: string } }) => {
+export default function Page({params}: any) {
+  return (
+    <>
+    <Suspense fallback={<Loading />} >
+      <SpacePage params={params} />
+    </Suspense>
+    </>
+  )
+}
+
+export async function SpacePage({ params }: { params: { slug: string } }) {
+  
   const { slug } = params;
 
   const space = await getSpaceData(slug);
@@ -113,5 +126,3 @@ const Page = async ({ params }: { params: { slug: string } }) => {
     </div>
   );
 };
-
-export default Page;
