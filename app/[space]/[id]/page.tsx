@@ -23,7 +23,7 @@ async function getProposalData(id: string) {
   return (await getProposal(id)).data;
 }
 
-export default async function Page({ params }: any) {
+export default function Page({ params }: any) {
   return (
     <>
       <Suspense fallback={<Loading />}>
@@ -34,7 +34,7 @@ export default async function Page({ params }: any) {
 }
 
 
-export async function ProposalPage({ params }: any) {
+async function ProposalPage({ params }: any) {
   const { space: slug, id }: { space: string; id: string } = params;
   const space = await getSpaceData(slug);
   const proposal: any | undefined = await getProposalData(id);
