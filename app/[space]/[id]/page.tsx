@@ -8,6 +8,8 @@ import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
 import DeleteProposalButton from "./_buttons/DeleteProposalButton";
 import Preloader from "./Preloader";
+import { Suspense } from "react";
+import Loading from "../_components/Loading/Loading";
 
 
 const { getAllProposalsInSpace, getAllSpaces, getProposal } = createClient();
@@ -22,6 +24,17 @@ async function getProposalData(id: string) {
 }
 
 export default async function Page({ params }: any) {
+  return (
+    <>
+      <Suspense fallback={<Loading />}>
+        <ProposalPage params={params} />
+      </Suspense>
+    </>
+  )
+}
+
+
+export async function ProposalPage({ params }: any) {
   const { space: slug, id }: { space: string; id: string } = params;
   const space = await getSpaceData(slug);
   const proposal: any | undefined = await getProposalData(id);

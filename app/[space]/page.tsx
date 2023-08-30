@@ -12,6 +12,8 @@ const Space = ({ params }: { params: { space: string } }) => {
     <Flex {...styles.$spaceDetailsParentFlexStyles}>
       <Suspense fallback={<Loading />}>
         <SpaceDetails slug={slug} />
+      </Suspense>
+      <Suspense fallback={<Loading />}>
         <Proposals slug={slug} />
       </Suspense>
     </Flex>
