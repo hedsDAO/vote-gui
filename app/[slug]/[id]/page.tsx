@@ -12,7 +12,7 @@ import DeleteProposalButton from "./_buttons/DeleteProposalButton";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 
-const { getAllProposalsInSpace, getAllSpaces, getProposal } = createClient();
+const { getAllSpaces, getProposal } = createClient();
 
 async function getSpaceData(name: string) {
   const spaces = await getAllSpaces();
