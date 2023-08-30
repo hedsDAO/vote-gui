@@ -9,6 +9,8 @@ import Header from "./Header";
 import VotingNavbar from "./VotingNavbar";
 import { createClient } from "hedsvote";
 import DeleteProposalButton from "./_buttons/DeleteProposalButton";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 const { getAllProposalsInSpace, getAllSpaces, getProposal } = createClient();
 
@@ -21,7 +23,17 @@ async function getProposalData(id: string) {
   return (await getProposal(id)).data;
 }
 
-export default async function Page({ params }: any) {
+export default function Page({params}: any) {
+  return (
+    <>
+    <Suspense fallback={<Loading />} >
+      <ProposalPage params={params} />
+    </Suspense>
+    </>
+  )
+}
+
+export async function ProposalPage({ params }: any) {
   const { slug, id }: { slug: string; id: string } = params;
   const space = await getSpaceData(slug);
   const proposal: any | undefined = await getProposalData(id);
