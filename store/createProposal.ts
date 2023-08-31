@@ -19,7 +19,7 @@ export interface CreateProposalState {
     coverFile: File | null;
     choiceOptions: ChoiceOption[];
     tapeDetails: TapeDetails;
-    voteStart: Date;
+    voteStart?: Date;
     voteDuration: string;
     strategy: Strategy[];
 }
@@ -44,7 +44,6 @@ const initialState: CreateProposalState = {
       choiceType: "image",
       showResults: true
     },
-    voteStart: new Date(),
     voteDuration: "86400000",
     strategy: [],
   };

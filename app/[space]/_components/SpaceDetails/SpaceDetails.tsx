@@ -7,6 +7,8 @@ import { ArrowLeft, Discord, Instagram, Soundcloud, Twitter } from "@/common/Ico
 import * as constants from "@/app/[space]/_components/SpaceDetails/constants";
 import * as styles from "@/app/[space]/_components/SpaceDetails/styles";
 import CreateProposalButton from "@/components/buttons/CreateProposalButton/CreateProposalButton";
+import { store } from "@/store";
+import { setSpaceData } from "@/store/space";
 
 const { getAllSpaces } = createClient();
 
@@ -19,6 +21,12 @@ async function getSpaceData(name: string) {
 const SpaceDetails = async ({ slug }: { slug: string }) => {
   const invertClassName = { className: "invert-0" };
   const space = await getSpaceData(slug);
+  const stateSpaceDataExists = store.getState().spaceReducer.spaceData.authors.length;
+  
+  if (space && !stateSpaceDataExists) {
+    store.dispatch(setSpaceData(space));
+  };
+
   const socialMap = {
     twitter: <Twitter {...invertClassName} />,
     discord: <Discord {...invertClassName} />,
