@@ -19,7 +19,7 @@ const CreateProposalButton = ({ slug, admins }: { slug: string; admins?: string[
     if (admins?.length && address && mappedAdmins?.includes(address.toLowerCase())) {
       setIsAdmin(true);
     }
-  }, [address]);
+  }, [address, admins]);
 
   return (
     <>

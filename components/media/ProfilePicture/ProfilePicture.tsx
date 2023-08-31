@@ -3,6 +3,7 @@
 import { Skeleton } from "@/common";
 import { SkeletonProps, useBoolean } from "@chakra-ui/react";
 import Image from "next/image";
+import * as constants from "@/components/media/ProfilePicture/constants";
 
 interface ProfilePictureProps extends SkeletonProps {
   src?: string;
@@ -17,8 +18,6 @@ const ProfilePicture = (props: ProfilePictureProps) => {
   return (
     <Skeleton
       opacity={1}
-      startColor="black"
-      endColor="heds.bg_dark"
       bg="heds.bg"
       rounded="full"
       isLoaded={hasProfilePictureLoaded}
@@ -30,7 +29,7 @@ const ProfilePicture = (props: ProfilePictureProps) => {
         priority
         onLoad={setHasProfilePictureLoaded.on}
         alt={"profile-picture"}
-        src={props?.src || "/logo_md.png"}
+        src={props?.src || "/empty.webp"}
         width={0}
         height={0}
         sizes="100vw"
@@ -39,10 +38,9 @@ const ProfilePicture = (props: ProfilePictureProps) => {
         }] max-w-[${props?.height?.base || "140px"}] lg:max-h-[${props?.height?.lg || "200px"}] lg:min-h-[${
           props?.height?.lg || "200px"
         }] lg:min-w-[${props?.height?.lg || "200px"}] lg:max-w-[${props?.height?.lg || "200px"}] rounded-full `}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        style={constants.PROFILE_PICTURE_STYLE_PROPS}
       />
     </Skeleton>
-    // </div>
   );
 };
 

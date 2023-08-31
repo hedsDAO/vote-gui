@@ -15,11 +15,7 @@ export const metadata: Metadata = {
   description: "voting for the masses",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

@@ -1,9 +1,8 @@
 import { createClient } from "hedsvote";
 import Link from "next/link";
+import { Flex, Grid } from "@/common";
 import ProposalCard from "@/components/cards/ProposalCard/ProposalCard";
-import { Flex, Grid, Typography } from "@/common";
 import * as styles from "@/app/[space]/_components/Proposals/styles";
-
 
 const { getAllProposalsInSpace } = createClient();
 

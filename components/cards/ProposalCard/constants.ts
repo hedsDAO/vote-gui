@@ -1,4 +1,4 @@
-export const calculateVotingStatusText = (votingStatus?: "upcoming" | "open" | "closed") => {
+export const calculateVotingStatusText = (votingStatus?: "upcoming" | "open" | "closed" | null) => {
   switch (votingStatus) {
     case "upcoming":
       return "OPENS";
@@ -6,5 +6,6 @@ export const calculateVotingStatusText = (votingStatus?: "upcoming" | "open" | "
       return "OPEN";
     case "closed":
       return "ENDED";
+    default: // null
   }
 };

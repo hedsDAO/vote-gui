@@ -1,25 +1,21 @@
-import { Suspense } from "react";
+"use client";
 
+import dynamic from "next/dynamic";
 import { Flex } from "@/common";
-import Loading from "./_components/Loading/Loading";
-import Proposals from "./_components/Proposals/Proposals";
-import SpaceNavbar from "./_components/SpaceNavbar/SpaceNavbar";
-import SpaceDetails from "./_components/SpaceDetails/SpaceDetails";
+import SSRProposals from "@/app/[space]/_components/Proposals/SSRProposals";
+import SSRSpaceDetails from "@/app/[space]/_components/SpaceDetails/SSRSpaceDetails";
 import * as styles from "@/app/[space]/styles";
+
+const Proposals = dynamic(() => import("./_components/Proposals/Proposals"), { loading: () => <SSRProposals /> });
+const SpaceDetails = dynamic(() => import("./_components/SpaceDetails/SpaceDetails"), { loading: () => <SSRSpaceDetails /> });
+
 
 const Space = ({ params }: { params: { space: string } }) => {
   const { space: slug } = params;
   return (
     <Flex {...styles.$spaceDetailsParentFlexStyles}>
-      <Suspense fallback={<Loading />}>
-        <SpaceDetails slug={slug} />
-      </Suspense>
-      <Flex {...styles.$parentSpaceNavbarFlexStyles}>
-        <SpaceNavbar slug={slug} />
-      </Flex>
-      <Suspense fallback={<Loading />}>
-        <Proposals slug={slug} />
-      </Suspense>
+      <SpaceDetails slug={slug} />
+      <Proposals slug={slug} />
     </Flex>
   );
 };

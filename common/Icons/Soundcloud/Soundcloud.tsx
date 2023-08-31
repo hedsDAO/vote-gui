@@ -14,8 +14,8 @@ const Soundcloud = ({
       className={className || "invert"}
       src={"/icons/soundcloud.svg"}
       alt="soundcloud"
-      height={height || 18}
-      width={width || 18}
+      height={height || 20}
+      width={width || 20}
     />
   );
 };
