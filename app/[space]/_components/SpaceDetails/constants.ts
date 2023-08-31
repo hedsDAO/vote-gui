@@ -1,5 +1,7 @@
 import { SpaceData } from "hedsvote";
 
+
+export const PROPOSAL_HEADER_TEXT = "PROPOSALS"
 export const BACK_TEXT = "back";
 export const ICON_CLASSNAME = "invert 0";
 export const BACK_BUTTON_LINK = "/"

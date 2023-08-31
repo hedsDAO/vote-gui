@@ -14,8 +14,8 @@ const Instagram = ({
       className={className || "invert"}
       src={"/icons/instagram.svg"}
       alt="instagram"
-      height={height || 18}
-      width={width || 18}
+      height={height || 15}
+      width={width || 15}
     />
   );
 };

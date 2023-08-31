@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import activeVote from "./activeVote";
-import createProposal from "./createProposal";
+import activeVoteReducer from "./activeVote";
+import createProposalReducer from "./createProposal";
 import proposal from "@/store/proposal";
+import spaceReducer from "@/store/space";
 
 export const store = configureStore({
   reducer: {
-    activeVote,
-    createProposal,
-    proposal
+    activeVoteReducer,
+    createProposalReducer,
+    proposal,
+    spaceReducer
   },
 });
 

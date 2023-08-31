@@ -2,10 +2,11 @@ import { createClient } from "hedsvote";
 import Link from "next/link";
 import Banner from "@/components/media/Banner/Banner";
 import ProfilePicture from "@/components/media/ProfilePicture/ProfilePicture";
-import { Flex, Heading, HeadingTextGroup, LinkIconButton, Skeleton, Typography } from "@/common";
+import { Flex, Heading, HeadingTextGroup, LinkIconButton, Typography } from "@/common";
 import { ArrowLeft, Discord, Instagram, Soundcloud, Twitter } from "@/common/Icons";
 import * as constants from "@/app/[space]/_components/SpaceDetails/constants";
 import * as styles from "@/app/[space]/_components/SpaceDetails/styles";
+import CreateProposalButton from "@/components/buttons/CreateProposalButton/CreateProposalButton";
 
 const { getAllSpaces } = createClient();
 
@@ -25,31 +26,39 @@ const SpaceDetails = async ({ slug }: { slug: string }) => {
     soundcloud: <Soundcloud {...invertClassName} />,
   };
   return (
-    <Flex {...styles.$spaceDetailsParentFlexStyles}>
-      <Banner src={space?.banner} />
-      <Flex {...styles.$spaceDetailsInnerFlexStyles}>
-        <ProfilePicture {...styles.$profilePictureStyles} src={space?.image} />
-        <Flex {...styles.$linkButtonFlexStyles}>
+    <>
+      <Flex {...styles.$spaceDetailsParentFlexStyles}>
+        <Banner src={space?.banner} />
+        <Flex {...styles.$spaceDetailsInnerFlexStyles}>
+          <ProfilePicture {...styles.$profilePictureStyles} src={space?.image} />
+          <Flex {...styles.$linkButtonFlexStyles}>
             <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK} leftIcon={<ArrowLeft />}>
               {constants.BACK_TEXT}
             </LinkIconButton>
-          <Flex {...styles.$socialLinksAndTextFlexStyles}>
-            <HeadingTextGroup>
-              <Heading {...styles.$headingFlexStyles}>{space?.name}</Heading>
-              <Typography {...styles.$typographyTextStyles}>{space?.description}</Typography>
-            </HeadingTextGroup>
-            <Flex {...styles.$iconFlexContainerStyles}>
-              {space &&
-                constants.gatherSocialLinks(space).map((social, idx) => (
-                  <Link key={social?.name + idx} href={social.url} target={constants.URL_TARGET}>
-                    {socialMap[social.name]}
-                  </Link>
-                ))}
+            <Flex {...styles.$socialLinksAndTextFlexStyles}>
+              <HeadingTextGroup>
+                <Heading {...styles.$headingFlexStyles}>{space?.name}</Heading>
+                <Typography {...styles.$typographyTextStyles}>{space?.description}</Typography>
+              </HeadingTextGroup>
+              <Flex {...styles.$iconFlexContainerStyles}>
+                {space &&
+                  constants.gatherSocialLinks(space).map((social, idx) => (
+                    <Link key={social?.name + idx} href={social.url} target={constants.URL_TARGET}>
+                      {socialMap[social.name]}
+                    </Link>
+                  ))}
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+      <Flex {...styles.$parentSpaceNavbarFlexStyles}>
+        <Flex {...styles.$parentFlexStyles}>
+          <Typography {...styles.$proposalHeaderTextStyles}>{constants.PROPOSAL_HEADER_TEXT}</Typography>
+          <CreateProposalButton slug={slug} admins={space?.authors} />
+        </Flex>
+      </Flex>
+    </>
   );
 };
 

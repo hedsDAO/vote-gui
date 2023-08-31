@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, Box, Flex, GridItem, Typography } from "@/common";
 import { getVotingStatus } from "@/utils/getVotingStatus";
 import * as styles from "@/components/cards/ProposalCard/styles";
@@ -16,9 +17,7 @@ const ProposalCard = (proposal: any) => {
       </Box>
       <Flex {...styles.$textFlexContainerStyles}>
         <Typography {...styles.$proposalTitleTextStyles}>{proposal?.title}</Typography>
-        <Typography {...styles.$proposalTimelineTextStyles}>
-          {constants.calculateVotingStatusText(votingStatus)}
-        </Typography>
+        <Typography {...styles.$proposalTimelineTextStyles}>{constants.calculateVotingStatusText(votingStatus)}</Typography>
         <Typography {...styles.$proposalDateTextStyles}>{new Date(proposal?.end_time).toLocaleDateString()}</Typography>
       </Flex>
     </GridItem>

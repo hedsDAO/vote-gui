@@ -1,27 +1,33 @@
 "use client";
 
-import { Avatar as ChakraAvatar, AvatarProps } from "@chakra-ui/react";
+import { Avatar as ChakraAvatar, AvatarProps, useBoolean } from "@chakra-ui/react";
+import { Skeleton } from "@/common";
 import Image from "next/image";
 
 const Avatar = (props: AvatarProps) => {
+  const [hasAvatarLoaded, setHasAvatarLoaded] = useBoolean();
   return (
-    <ChakraAvatar
-      icon={
-        <Image
-          className="w-full animate-pulse invert"
-          alt="loading"
-          src="/logo_md.png"
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{
-            height: "auto",
-            objectFit: "cover",
-          }}
-        />
-      }
-      {...props}
-    />
+    <Skeleton fitContent rounded="full" isLoaded={hasAvatarLoaded}>
+      <ChakraAvatar
+        onLoad={setHasAvatarLoaded.on}
+        icon={
+          <Image
+            className="w-full animate-pulse invert"
+            alt="loading"
+            src="/empty.webp"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{
+              height: "auto",
+              objectFit: "cover",
+              borderRadius: 1000,
+            }}
+          />
+        }
+        {...props}
+      />
+    </Skeleton>
   );
 };
 

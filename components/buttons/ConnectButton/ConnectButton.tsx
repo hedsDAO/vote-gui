@@ -37,7 +37,7 @@ const ConnectButton = () => {
   useEffect(() => {
     if (!address) return;
     getUserData(address as `0x${string}`);
-  }, [isConnected]);
+  }, [isConnected, address]);
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, isConnecting, show, address }) => {

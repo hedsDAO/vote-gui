@@ -15,7 +15,7 @@ export const $contentFlexStyles: FlexProps = {
 export const $gridContainerStyles: GridProps = {
   my: "5",
   gridTemplateColumns: { base: "1fr", lg: "repeat(3, 1fr)" },
-  gap: "4",
+  gap: "5",
   pb: "5",
   minW: { lg: "full" },
 };
