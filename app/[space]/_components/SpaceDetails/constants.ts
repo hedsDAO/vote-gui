@@ -1,4 +1,4 @@
-import { SpaceData } from "hedsvote";
+import { Space_Data } from "hedsvote";
 
 
 export const PROPOSAL_HEADER_TEXT = "PROPOSALS"
@@ -7,7 +7,7 @@ export const ICON_CLASSNAME = "invert 0";
 export const BACK_BUTTON_LINK = "/"
 export const URL_TARGET = "_blank";
 
-export const gatherSocialLinks = (space: SpaceData) => {
+export const gatherSocialLinks = (space: Space_Data) => {
   const { twitter, discord, soundcloud, instagram } = space;
   const socialLinks: { name: "twitter" | "soundcloud" | "discord" | "instagram"; url: string }[] = [];
   if (twitter) socialLinks.push({ name: "twitter", url: twitter });
