@@ -7,18 +7,17 @@ import * as constants from "@/app/[space]/[id]/_components/ProposalDetails/const
 import ProfilePicture from "@/components/media/ProfilePicture/ProfilePicture";
 import { ArrowLeft } from "@/common/Icons";
 
-const { getAllProposalsInSpace } = createClient();
+const { getAllProposalsInSpace, getProposal } = createClient();
 
-async function getProposalData(space: string, id: string) {
-  const allProposals = await getAllProposalsInSpace(space);
-  const proposalData = allProposals.data.find((proposal) => proposal?.ipfs_hash === id);
+async function getProposalData(id: string) {
+  const allProposals = await getProposal(id);
+  const proposalData = allProposals.data;
   return proposalData;
 }
 
 const ProposalDetails = async ({ slug, id }: { slug: string; id: string }) => {
   const stateProposalDataExists = store.getState().proposal?.proposal?.ipfs_hash?.length;
-  let proposal = await getProposalData(slug, id);
-
+  let proposal = await getProposalData(id);
   if (proposal && !stateProposalDataExists) {
     store.dispatch(setProposal(proposal));
   }

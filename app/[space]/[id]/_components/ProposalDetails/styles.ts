@@ -6,7 +6,7 @@ export const $proposalDetailsParentFlexStyles: FlexProps = {
   maxW: "4xl",
   w: "full",
   mx: "auto",
-  gap: 3,
+  gap: 5,
 };
 
 export const $linkButtonStyles: ButtonProps = {
