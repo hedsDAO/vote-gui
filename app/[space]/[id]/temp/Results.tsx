@@ -1,7 +1,7 @@
 "use client";
 
 import { VoterUserData } from "@/common/types";
-import { Proposal, Quadratic_Vote, Single_Choice_Vote } from "hedsvote";
+import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import ResultsModal from "./ResultsModal";
@@ -21,7 +21,7 @@ const Results = ({
   return (
     <div className="mb-4 mt-4 flex flex-col gap-1">
       {proposal && sortedVotessByVp
-        ?.map((vote: Quadratic_Vote | Single_Choice_Vote) => {
+        ?.map((vote: QuadraticVote | SingleChoiceVote) => {
           return (
             <div
               role="button"

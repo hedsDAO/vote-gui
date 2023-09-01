@@ -97,6 +97,7 @@ export const $avatarImageStyles: AvatarProps = {
   width: "full",
   aspectRatio: 1,
   border: "4px",
+  borderColor:'white',
   shadow: "sm",
 };
 

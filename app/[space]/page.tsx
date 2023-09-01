@@ -9,7 +9,6 @@ import * as styles from "@/app/[space]/styles";
 const Proposals = dynamic(() => import("./_components/Proposals/Proposals"), { loading: () => <SSRProposals /> });
 const SpaceDetails = dynamic(() => import("./_components/SpaceDetails/SpaceDetails"), { loading: () => <SSRSpaceDetails /> });
 
-
 const Space = ({ params }: { params: { space: string } }) => {
   const { space: slug } = params;
   return (
