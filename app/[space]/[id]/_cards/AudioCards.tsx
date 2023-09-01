@@ -1,6 +1,6 @@
 "use client";
 import { SortedChoice } from "@/common/types";
-import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
+import { Proposal } from "hedsvote";
 import { useRef, useState, useEffect } from "react";
 import { Howl } from "howler";
 import ClosedAudioCard from "./ClosedAudioCard";

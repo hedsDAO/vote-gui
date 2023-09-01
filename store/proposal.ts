@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Proposal, SpaceData } from "hedsvote";
+import { Proposal, Space_Data } from "hedsvote";
 
 export type VoteParticipants  = {
     [voter: string]: {
@@ -19,7 +19,7 @@ export interface ProposalState {
   proposal: Proposal | null;
   author: string;
   voteParticipants?: VoteParticipants;
-  spaceData: SpaceData;
+  spaceData: Space_Data;
   scoreData?: any;
 }
 
@@ -50,7 +50,7 @@ const proposalSlice = createSlice({
       if (!action.payload) return;
       state.voteParticipants = action.payload;
     },
-    setSpaceData( state, action: PayloadAction<SpaceData>) {
+    setSpaceData( state, action: PayloadAction<Space_Data>) {
       state.spaceData = action.payload;
     },
     setScoreData( state, action: PayloadAction<ScoreData>) {

@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import Image from "next/image";
+import { Proposal } from "hedsvote";
 
 const formatTime = (time: string) => {
   const dateObj = DateTime.fromISO(time);
@@ -20,36 +21,24 @@ const Details = ({
   voterUserData,
   description,
 }: {
-  proposal: any;
+  proposal: Proposal;
   displayName: string;
   description: string;
   voterUserData: any;
 }) => {
   return (
     <>
-      <p className="mb-10 text-center font-space-grotesk text-4xl font-light text-black lg:text-left">
-        {proposal?.title}
-      </p>
+      <p className="mb-10 text-center font-space-grotesk text-4xl font-light text-black lg:text-left">{proposal?.title}</p>
       <div className="flex flex-col">
-        <p className="font-inter text-xs font-semibold tracking-wide text-black/80">
-          CREATED BY
-        </p>
-        <p className="font-space-grotesk text-sm text-black/80">
-          {displayName}
-        </p>
+        <p className="font-inter text-xs font-semibold tracking-wide text-black/80">CREATED BY</p>
+        <p className="font-space-grotesk text-sm text-black/80">{displayName}</p>
       </div>
       <div className="flex flex-col">
-        <p className="font-inter text-xs font-semibold text-black/80">
-          DESCRIPTION
-        </p>
-        <p className="font-space-grotesk text-sm text-black/80">
-          {description}
-        </p>
+        <p className="font-inter text-xs font-semibold text-black/80">DESCRIPTION</p>
+        <p className="font-space-grotesk text-sm text-black/80">{description}</p>
       </div>
       <div className="flex flex-col">
-        <p className="font-inter text-xs font-semibold text-black/80">
-          VOTE REQUIREMENTS
-        </p>
+        <p className="font-inter text-xs font-semibold text-black/80">VOTE REQUIREMENTS</p>
         <p className="font-space-grotesk text-sm text-black/80">
           {`Participants in this vote must hold at least one token from whitelisted contracts.`}
         </p>
@@ -84,20 +73,12 @@ const Details = ({
       </div>
       <div className="flex flex-row gap-6">
         <div className="flex flex-col">
-          <p className="font-inter text-xs font-semibold text-black/80">
-            START TIME
-          </p>
-          <p className="mt-1 font-space-grotesk text-sm text-black/80">
-            {formatTime(proposal?.start_time)}
-          </p>
+          <p className="font-inter text-xs font-semibold text-black/80">START TIME</p>
+          <p className="mt-1 font-space-grotesk text-sm text-black/80">{formatTime(proposal?.start_time.toString())}</p>
         </div>
         <div className="flex flex-col">
-          <p className="font-inter text-xs font-semibold text-black/80">
-            END TIME
-          </p>
-          <p className="mt-1 font-space-grotesk text-sm text-black/80">
-            {formatTime(proposal?.end_time)}
-          </p>
+          <p className="font-inter text-xs font-semibold text-black/80">END TIME</p>
+          <p className="mt-1 font-space-grotesk text-sm text-black/80">{formatTime(proposal?.end_time.toString())}</p>
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
 "use client";
 import { SortedChoice } from "@/common/types";
 import { Transition, Dialog } from "@headlessui/react";
-import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
+import { Proposal } from "hedsvote";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 

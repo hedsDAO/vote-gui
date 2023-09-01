@@ -3,10 +3,10 @@
 import { useRef } from "react";
 import { store } from "@/store";
 import { setAuthor, setProposal, setVoteParticipants, VoteParticipants, setSpaceData, ScoreData, setScoreData } from "@/store/proposal";
-import { Proposal, SpaceData } from "hedsvote";
+import { Proposal, Space_Data } from "hedsvote";
 // import { Pokemon } from "@/types";
 
-function Preloader({ proposal, author, voteParticipants, spaceData, scoreData }: { proposal: Proposal, author: string, voteParticipants: VoteParticipants, spaceData: SpaceData, scoreData: ScoreData }) {
+function Preloader({ proposal, author, voteParticipants, spaceData, scoreData }: { proposal: Proposal, author: string, voteParticipants: VoteParticipants, spaceData: Space_Data, scoreData: ScoreData }) {
   const loaded = useRef(false);
   if (!loaded.current) {
     store.dispatch(setProposal(proposal));

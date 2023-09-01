@@ -2,7 +2,7 @@
 import { SortedChoice } from "@/common/types";
 import { useAppSelector } from "@/store/hooks";
 import { getUserVotePercentages } from "@/utils/getUserVotePercentages";
-import { Proposal, QuadraticVote, SingleChoiceVote } from "hedsvote";
+import { Proposal } from "hedsvote";
 import { useAccount } from "wagmi";
 import ClosedImageCard from "./ClosedImageCard";
 import OpenImageCard from "./OpenImageCard";
