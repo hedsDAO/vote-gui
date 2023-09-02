@@ -18,10 +18,11 @@ const ProposalNavbar = dynamic(() => import("./_components/ProposalNavbar/Propos
 const Proposal = ({ params }: { params: { space: string; id: string } }) => {
   const { space: slug, id } = params;
   const proposal = useAppSelector((state) => state.proposal?.proposal);
+
   return (
     <Flex {...styles.$proposalParentFlexStyles}>
       <ProposalDetails slug={slug} id={id} />
-      {proposal && <ProposalNavbar slug={slug} id={id} />}
+      {proposal && <ProposalNavbar />}
     </Flex>
   );
 };

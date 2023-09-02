@@ -8,11 +8,13 @@ import { Provider } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { store } from "@/store";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Space_Mono, Work_Sans } from "next/font/google";
 import { defaultTheme } from "@/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] });
+const workSans = Work_Sans({ subsets: ["latin"] });
 
 const WC_PROJECT_ID = "d7f07ef372c401f9d0ff10c1ff07fbaf";
 const INFURA_PROVIDER_KEY = "b8453c72aa7c484fb1efee0eed133fe6";
@@ -32,7 +34,21 @@ const RootProvider = ({ children }: { children: React.ReactNode }) => {
       <style jsx global>
         {`
           :root {
-            --font-rubik: ${inter.style.fontFamily};
+            --font-work-sans: ${workSans.style.fontFamily};
+          }
+        `}
+      </style>
+      <style jsx global>
+        {`
+          :root {
+            --font-space-mono: ${spaceMono.style.fontFamily};
+          }
+        `}
+      </style>
+      <style jsx global>
+        {`
+          :root {
+            --font-inter: ${inter.style.fontFamily};
           }
         `}
       </style>

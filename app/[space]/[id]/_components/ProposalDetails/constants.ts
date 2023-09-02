@@ -1,4 +1,4 @@
-export const BACK_BUTTON_LINK = "/";
+export const BACK_BUTTON_LINK = (slug?: string) => `/${slug}` || "/";
 export const BACK_TEXT = "space";
 export const VOTE_REQUIREMENTS = `Participants in this vote must hold at least one token from whitelisted contracts.`;
 
