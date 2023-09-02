@@ -8,13 +8,13 @@ const SSRProposalDetails = () => {
   return (
     <Flex {...styles.$proposalDetailsParentFlexStyles}>
       <Flex {...styles.$linkButtonFlexStyles}>
-        <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK} leftIcon={<ArrowLeft />}>
+        <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK()} leftIcon={<ArrowLeft />}>
           {constants.BACK_TEXT}
         </LinkIconButton>
       </Flex>
       <Flex {...styles.$proposalDetailsFlexStyles}>
         <Skeleton {...styles.$skeletonHeadingStyles} />
-        <ProfilePicture />
+        <ProfilePicture {...styles.$profilePictureStyles} />
       </Flex>
       <Flex {...styles.$proposalDetailsInnerFlexStyles}>
         <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>
@@ -32,7 +32,10 @@ const SSRProposalDetails = () => {
         </HeadingTextGroup>
         <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>
           <Heading {...styles.$headingStyles}>{constants.VOTE_REQUIREMENTS_HEADER}</Heading>
-          <Skeleton {...styles.$skeletonVoteRequirementsTextStyles} />
+          <Flex {...styles.$skeletonDescriptionFlexStyles}>
+            <Skeleton {...styles.$skeletonVoteRequirementsTextStyles} />
+            <Skeleton {...styles.$skeletonVoteRequirementsTextStyles} />
+          </Flex>
         </HeadingTextGroup>
         <Flex {...styles.$timeFlexStyles}>
           <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>

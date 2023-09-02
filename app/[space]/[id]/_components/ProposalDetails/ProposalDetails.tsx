@@ -1,13 +1,15 @@
-import { Flex, Heading, LinkIconButton, Typography, HeadingTextGroup } from "@/common";
+import { Flex, Heading, LinkIconButton, Typography, HeadingTextGroup, Box } from "@/common";
 import { createClient } from "hedsvote";
 import { store } from "@/store";
-import { setProposal } from "@/store/proposal";
+import { setProposal, setVoteParticipants } from "@/store/proposal";
 import * as styles from "@/app/[space]/[id]/_components/ProposalDetails/styles";
 import * as constants from "@/app/[space]/[id]/_components/ProposalDetails/constants";
 import ProfilePicture from "@/components/media/ProfilePicture/ProfilePicture";
 import { ArrowLeft } from "@/common/Icons";
+import { getParticipantsUserData } from "@/utils/getParticipantsUserData";
+import { isEmpty } from "lodash";
 
-const { getAllProposalsInSpace, getProposal } = createClient();
+const { getProposal } = createClient();
 
 async function getProposalData(id: string) {
   const allProposals = await getProposal(id);
@@ -17,21 +19,28 @@ async function getProposalData(id: string) {
 
 const ProposalDetails = async ({ slug, id }: { slug: string; id: string }) => {
   const stateProposalDataExists = store.getState().proposal?.proposal?.ipfs_hash?.length;
-  let proposal = await getProposalData(id);
+  // const stateVoterDataExists = store.getState().proposal?.voteParticipants;
+  // const stateVoterData = store.getState().proposal?.voteParticipants;
+  const proposal = await getProposalData(id);
   if (proposal && !stateProposalDataExists) {
     store.dispatch(setProposal(proposal));
   }
+  // const voterUserData = await getParticipantsUserData(proposal.votes);
+  // if (voterUserData && isEmpty(stateVoterData) && !stateVoterDataExists) {
+  //   store.dispatch(setVoteParticipants(voterUserData))
+  // }
 
   return (
     <Flex {...styles.$proposalDetailsParentFlexStyles}>
+      <Box {...styles.$bgOverlayBoxStyles(proposal?.cover)}/>
       <Flex {...styles.$linkButtonFlexStyles}>
-        <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK} leftIcon={<ArrowLeft />}>
+        <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK(slug)} leftIcon={<ArrowLeft />}>
           {constants.BACK_TEXT}
         </LinkIconButton>
       </Flex>
       <Flex {...styles.$proposalDetailsFlexStyles}>
         <Heading {...styles.$titleStyles}>{proposal?.title}</Heading>
-        <ProfilePicture src={proposal?.cover} />
+        <ProfilePicture {...styles.$profilePictureStyles}  src={proposal?.cover} />
       </Flex>
       <Flex {...styles.$proposalDetailsInnerFlexStyles}>
         <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>

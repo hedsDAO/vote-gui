@@ -1,9 +1,9 @@
-import { ButtonProps, FlexProps, TextProps } from "@chakra-ui/react";
+import { BoxProps, ButtonProps, FlexProps, SkeletonProps, TextProps } from "@chakra-ui/react";
 
 export const $proposalDetailsParentFlexStyles: FlexProps = {
   direction: "column",
   my: { base: 3, lg: 10 },
-  maxW: "4xl",
+  maxW: { lg: "90vw" },
   w: "full",
   mx: "auto",
   gap: 5,
@@ -33,7 +33,7 @@ export const $proposalDetailsFlexStyles: FlexProps = {
   mt: { base: 4, lg: 4 },
   gap: { base: 8, lg: 0 },
   w: "full",
-  maxW: "4xl",
+  maxW: { lg: "90vw" },
   mx: { lg: "auto" },
   alignItems: { base: "center", lg: "start" },
   justifyContent: "space-between",
@@ -43,39 +43,40 @@ export const $proposalDetailsFlexStyles: FlexProps = {
 export const $proposalDetailsInnerFlexStyles: FlexProps = {
   px: { base: 8, lg: 0 },
   gap: 4,
-  mt: { base: 5, lg: "-32" },
+  mt: { base: 5, lg: "-52" },
   direction: "column",
 };
 
 export const $titleStyles: TextProps = {
   fontWeight: "normal",
   fontSize: { base: "4xl", lg: "5xl" },
-  fontFamily: "grotesk",
+  fontFamily: "mono",
 };
 
 export const $headingStyles: TextProps = {
-  textColor: "blackAlpha.800",
-  fontWeight: "bold",
-  letterSpacing: "tight",
+  textColor: "gray.800",
+  fontWeight: 600,
+  letterSpacing: "normal",
   fontSize: "xs",
   fontFamily: "inter",
 };
 
 export const $typographyStyles: TextProps = {
   textColor: "blackAlpha.800",
-  fontFamily: "grotesk",
+  fontFamily: "work",
   fontSize: "sm",
 };
 
 export const $descriptionTypographyStyles: TextProps = {
   textColor: "blackAlpha.800",
-  maxW: { lg: "70%" },
+  maxW: { lg: "50%" },
   fontFamily: "grotesk",
   fontSize: "sm",
 };
 
 export const $voteRequirementsTypographyStyles: TextProps = {
   textColor: "blackAlpha.800",
+  maxW: { lg: "50%" },
   fontFamily: "grotesk",
   fontSize: "sm",
 };
@@ -102,42 +103,42 @@ export const $skeletonVoteRequirementsTextStyles: TextProps = {
   fontFamily: "grotesk",
   fontWeight: "normal",
   mt: 1,
-  maxW: { base: "100%", lg: "60%" },
+  maxW: { base: "100%", lg: "50%" },
   minH: "1.5ch",
-  minW: { base: "100%", lg: "60%" },
+  minW: { base: "100%", lg: "50%" },
 };
 
 export const $skeletonDescriptionFlexStyles: FlexProps = {
   direction: "column",
   gap: "2px",
-  minW: { base: "100%", lg: "60%" },
+  minW: { base: "100%", lg: "50%" },
 };
 
 export const $skeletonDescriptionTextStyles: TextProps = {
   fontFamily: "grotesk",
   fontWeight: "normal",
   mt: "4px",
-  maxW: { base: "100%", lg: "60%" },
+  maxW: { base: "100%", lg: "50%" },
   minH: "1.5ch",
-  minW: { base: "100%", lg: "60%" },
+  minW: { base: "100%", lg: "50%" },
 };
 
 export const $skeletonDescriptionTextStyles2: TextProps = {
   fontFamily: "grotesk",
   fontWeight: "normal",
   mt: "4px",
-  maxW: { base: "100%", lg: "60%" },
+  maxW: { base: "100%", lg: "50%" },
   minH: "1.5ch",
-  minW: { base: "100%", lg: "60%" },
+  minW: { base: "100%", lg: "50%" },
 };
 
 export const $skeletonCreatedByTextStyles: TextProps = {
   fontFamily: "grotesk",
   fontWeight: "normal",
   mt: "4px",
-  maxW: { base: "100%", lg: "60%" },
+  maxW: { base: "100%", lg: "50%" },
   minH: "1.5ch",
-  minW: { base: "100%", lg: "60%" },
+  minW: { base: "100%", lg: "50%" },
 };
 
 export const $skeletonStartTimeTextStyles: TextProps = {
@@ -156,3 +157,23 @@ export const $skeletonEndTimeTextStyles: TextProps = {
   minH: "1.5ch",
   minW: { base: "100%", lg: "15ch" },
 };
+
+export const $profilePictureStyles = {
+  height: { base: "200px", lg: "300px" },
+  width: { base: "200px", lg: "300px" },
+};
+
+export const $bgOverlayBoxStyles = (cover?: string): BoxProps => ({
+  position: "absolute",
+  top: 0,
+  bottom: 0,
+  right: 0,
+  left: 0,
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  backgroundPosition: "center center",
+  filter: "blur(40px)",
+  opacity: 0.35,
+  zIndex: "-1",
+  backgroundImage: `url(${cover})`,
+});

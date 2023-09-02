@@ -8,6 +8,7 @@ import * as constants from "@/components/media/ProfilePicture/constants";
 interface ProfilePictureProps extends SkeletonProps {
   src?: string;
   height?: { base: string | number; lg: string | number };
+  width?: { base: string | number; lg: string | number };
 }
 
 const ProfilePicture = (props: ProfilePictureProps) => {
@@ -37,7 +38,7 @@ const ProfilePicture = (props: ProfilePictureProps) => {
           props?.height?.base || "140px"
         }] max-w-[${props?.height?.base || "140px"}] lg:max-h-[${props?.height?.lg || "200px"}] lg:min-h-[${
           props?.height?.lg || "200px"
-        }] lg:min-w-[${props?.height?.lg || "200px"}] lg:max-w-[${props?.height?.lg || "200px"}] rounded-full `}
+        }] lg:min-w-[${props?.height?.lg || "200px"}] lg:max-w-[${props?.height?.lg || "200px"}] rounded-full ${formattedStyleProps?.className || ""}`}
         style={constants.PROFILE_PICTURE_STYLE_PROPS}
       />
     </Skeleton>

@@ -3,7 +3,9 @@ import { extendTheme } from "@chakra-ui/react";
 export const defaultTheme = extendTheme({
   fonts: {
     grotesk: "var(--font-space-grotesk)",
-    inter: "var(--font-space-inter)",
+    inter: "var(--font-inter)",
+    mono: "var(--font-space-mono)",
+    work: "var(--font-work-sans)"
   },
   colors: {
     heds: {
