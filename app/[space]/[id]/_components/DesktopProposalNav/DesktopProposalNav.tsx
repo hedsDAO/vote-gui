@@ -3,6 +3,8 @@ import { Box, Button, Checkbox, Flex, GridItem, Typography } from "@/common";
 import { Grids, List } from "@/common/Icons";
 import * as styles from "@/app/[space]/[id]/_components/DesktopProposalNav/styles";
 import * as constants from "@/app/[space]/[id]/_components/DesktopProposalNav/constants";
+import { useAccount } from "wagmi";
+import { useAppSelector } from "@/store/hooks";
 
 const DesktopProposalNav = ({
   proposal,
@@ -13,6 +15,14 @@ const DesktopProposalNav = ({
   currentView,
   setCurrentView,
 }: constants.DesktopProposalNavProps) => {
+  const { address } = useAccount();
+  const spaceAuthors = useAppSelector((state) => state.spaceReducer.spaceData.authors);
+
+  const handleShowResults = (address: `0x${string}` | undefined) => {
+    if (spaceAuthors?.find((author) => author?.toLowerCase() === address?.toLowerCase())) return true;
+    else if (address?.toLowerCase() === proposal?.author?.toLowerCase()) return true;
+    else if (proposal?.show_results && proposal?.votes?.length) return true;
+  };
   return (
     <>
       <GridItem {...styles.$gridItemStyles(isShowingVoters)}>
@@ -20,7 +30,7 @@ const DesktopProposalNav = ({
           <Typography {...styles.$choicesTypographyStyles(isShowingVoters)}>{constants.CHOICE_TITLE_TEXT}</Typography>
         </Flex>
         <Flex {...styles.$defaultFlexStyles}>
-          {proposal?.votes?.length && proposal?.show_results ? (
+          {handleShowResults(address) ? (
             <Flex {...styles.$defaultFlexStyles}>
               <Flex {...styles.$resultsFlexStyles(isShowingResults)}>
                 <Checkbox
@@ -33,7 +43,7 @@ const DesktopProposalNav = ({
               <Box {...styles.$boxDividerStyles} />
             </Flex>
           ) : null}
-          {proposal?.votes?.length && proposal?.show_results ? (
+          {handleShowResults(address) ? (
             <Flex {...styles.$defaultFlexStyles}>
               <Flex {...styles.$showVotersFlexStyles(isShowingVoters)}>
                 <Checkbox

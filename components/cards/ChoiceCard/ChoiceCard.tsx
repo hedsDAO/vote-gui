@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSong, setCurrentSongIsPlaying, updateCurrentSongPercentage } from "@/store/audio";
 import { RootState } from "@/store";
 import { Howl } from "howler";
+import _ from "lodash";
 
 const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreData }: constants.AudioChoiceCardProps) => {
   const dispatch = useDispatch();
@@ -91,6 +92,8 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
       }
     };
   }, []);
+
+  const percentageVote = scoreData?.scores?.[choice?.id];
   return (
     <GridItem {...styles.$parentAudioChoiceCardGridItemStyles(currentView)}>
       <Flex {...styles.$parentFlexContainerStyles(currentView)}>
@@ -129,13 +132,13 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
         {isShowingResults && (
           <Flex {...styles.$resultsFlexContainer(currentView)}>
             <Typography {...styles.$percentageTextStyles}>
-              {Math.round((scoreData?.sortedScores?.[choice?.id]?.score / scoreData?.totalScore) * 1000)}%
+              {_.round(((percentageVote / scoreData.totalScore) * 100), 2)}%
             </Typography>
             <Flex {...styles.$percentageParentFlexStyles}>
               <Box {...styles.$percentageContainerBoxStyles} />
               <Box
                 {...styles.$percentageVariableWidthBoxStyles(
-                  Math.round((scoreData?.sortedScores?.[choice?.id]?.score / scoreData?.totalScore) * 1000)
+                  _.round(((percentageVote / scoreData.totalScore) * 100), 2)
                 )}
               />
             </Flex>
@@ -145,13 +148,13 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
       {isShowingResults && (
         <Flex {...styles.$percentageListParentFlexStyles(currentView)}>
           <Typography {...styles.$percentageTextStyles}>
-            {Math.round((scoreData?.sortedScores?.[choice?.id]?.score / scoreData?.totalScore) * 1000)}%
+            {_.round(((percentageVote / scoreData.totalScore) * 100), 2)}%
           </Typography>
           <Flex {...styles.$percentageParentFlexStyles}>
             <Box {...styles.$percentageContainerBoxStyles} />
             <Box
               {...styles.$percentageVariableWidthBoxStyles(
-                Math.round((scoreData?.sortedScores?.[choice?.id]?.score / scoreData?.totalScore) * 1000)
+                _.round(((percentageVote / scoreData.totalScore) * 100), 2)
               )}
             />
           </Flex>
