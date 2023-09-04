@@ -3,9 +3,11 @@ import activeVoteReducer from "./activeVote";
 import createProposalReducer from "./createProposal";
 import proposal from "@/store/proposal";
 import spaceReducer from "@/store/space";
+import audioReducer from "@/store/audio";
 
 export const store = configureStore({
   reducer: {
+    audioReducer,
     activeVoteReducer,
     createProposalReducer,
     proposal,
