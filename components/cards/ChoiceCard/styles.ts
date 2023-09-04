@@ -21,14 +21,20 @@ export const $parentFlexContainerStyles = (currentView?: GridListChoice): FlexPr
 });
 
 export const $centerPlayContainerProps: CenterProps = {
-  role: "button",
-  cursor: "pointer",
   position: "relative",
   bgSize: { base: "30em", lg: "62em" },
+  minW: '0 !important',
+  h: 'auto',
+  background: 'transparent !important',
+  padding: '0 !important',
+  maxW: 'auto !important'
 };
 
 export const $playButtonClassName = (currentView?: GridListChoice) =>
   `${currentView === "list" ? "h-10" : "h-auto"} ` + "absolute invert transition-all group-hover:z-10";
+
+  export const $loadingButtonClassName = (currentView?: GridListChoice) =>
+  `${currentView === "list" ? "h-10" : "h-auto"} ` + "absolute animate-spin invert transition-all group-hover:z-10";
 
 export const $audioAvatarImageStyles = (currentView?: GridListChoice): AvatarProps => ({
   size: currentView === "list" ? "sm" : "lg",

@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Avatar, Box, Center, Flex, GridItem, Typography } from "@/common";
+import { Avatar, Box, Button, Center, Flex, GridItem, Typography } from "@/common";
 import { Play, Pause, Spinner } from "@/common/Icons";
 import * as styles from "@/components/cards/ChoiceCard/styles";
 import * as constants from "@/components/cards/ChoiceCard/constants";
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentSong, setCurrentSongIsPlaying, updateCurrentSongPercentage } from '@/store/audio'; 
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentSong, setCurrentSongIsPlaying, updateCurrentSongPercentage } from "@/store/audio";
 import { RootState } from "@/store";
-import { Howl } from 'howler';
+import { Howl } from "howler";
 
 const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreData }: constants.AudioChoiceCardProps) => {
   const dispatch = useDispatch();
@@ -20,48 +20,51 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
       togglePlayPause();
       return;
     }
-  
+
     if (soundRef.current) {
       soundRef.current.stop();
       if (intervalRef.current) clearInterval(intervalRef.current);
     }
-  
+
     const newSound = new Howl({
       src: [audioSrc],
       format: ["mp3", "wav"],
     });
-  
+
     soundRef.current = newSound;
-  
+
     newSound.once("load", () => {
       newSound.play();
-      dispatch(setCurrentSong({
-        media: audioSrc,
-        percentage: 0,
-        isLoading: false,
-        isPlaying: true,
-      }));
-  
+      dispatch(
+        setCurrentSong({
+          media: audioSrc,
+          percentage: 0,
+          isLoading: false,
+          isPlaying: true,
+        })
+      );
+
       intervalRef.current = setInterval(() => {
         if (newSound.playing()) {
           dispatch(updateCurrentSongPercentage(newSound.seek() / newSound.duration()));
         }
       }, 1000);
     });
-  
+
     newSound.on("end", () => {
       dispatch(setCurrentSong(null));
       if (intervalRef.current) clearInterval(intervalRef.current);
     });
-  
-    dispatch(setCurrentSong({
-      media: audioSrc,
-      percentage: 0,
-      isLoading: true,
-      isPlaying: false,
-    }));
+
+    dispatch(
+      setCurrentSong({
+        media: audioSrc,
+        percentage: 0,
+        isLoading: true,
+        isPlaying: false,
+      })
+    );
   };
-  
 
   const togglePlayPause = () => {
     if (currentSong && soundRef.current) {
@@ -74,48 +77,50 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
       }
     }
   };
-  
+
   useEffect(() => {
     return () => {
       if (soundRef.current) {
         soundRef.current.stop();
         soundRef.current = null;
       }
-  
+
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
   }, []);
-    return (
+  return (
     <GridItem {...styles.$parentAudioChoiceCardGridItemStyles(currentView)}>
       <Flex {...styles.$parentFlexContainerStyles(currentView)}>
-      {choiceType === "audio" ? (
-          <Center 
-              onClick={() => { 
-                  if (choice.media) {
-                      if (currentSong && currentSong.media === choice.media) {
-                          togglePlayPause();
-                      } else {
-                          playSound(choice.media);
-                      }
-                  }
-              }} 
-              {...styles.$centerPlayContainerProps}
-              >
-              {currentSong?.isPlaying && currentSong?.media === choice.media ? 
-                  <Pause className={styles.$playButtonClassName(currentView)} /> 
-                  : 
-                  currentSong?.isLoading && currentSong?.media === choice.media ? 
-                    <Spinner width={40} height={40} /> 
-                    : 
-                    <Play className={styles.$playButtonClassName(currentView)} /> 
+        {choiceType === "audio" ? (
+          <Center
+            as={Button}
+            onClick={() => {
+              if (currentSong?.isLoading) return;
+              if (choice.media) {
+                if (currentSong && currentSong.media === choice.media) {
+                  togglePlayPause();
+                } else {
+                  playSound(choice.media);
+                }
               }
-              <Avatar {...styles.$audioAvatarImageStyles(currentView)} src={choice?.image} />
+            }}
+            pointerEvents={currentSong?.isLoading ? "none" : "auto"}
+            {...styles.$centerPlayContainerProps}
+          >
+            {currentSong?.isPlaying && currentSong?.media === choice.media ? (
+              <Pause className={styles.$playButtonClassName(currentView)} />
+            ) : currentSong?.isLoading && currentSong?.media === choice.media ? (
+              <Spinner className={styles.$loadingButtonClassName(currentView)} />
+            ) : (
+              <Play className={styles.$playButtonClassName(currentView)} />
+            )}
+            <Avatar {...styles.$audioAvatarImageStyles(currentView)} src={choice?.image} />
           </Center>
-          ) : (
-            <Avatar {...styles.$imageAvatarImageStyles(currentView)} src={choice?.image} />
+        ) : (
+          <Avatar {...styles.$imageAvatarImageStyles(currentView)} src={choice?.image} />
         )}
         <Flex {...styles.$textFlexContainer(currentView)}>
           <Typography {...styles.$artistNameTextStyles(currentView)}>{choice.artist}</Typography>
