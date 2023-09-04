@@ -3,6 +3,7 @@ import { BoxProps, ButtonProps, FlexProps, SkeletonProps, TextProps } from "@cha
 export const $proposalDetailsParentFlexStyles: FlexProps = {
   direction: "column",
   my: { base: 3, lg: 10 },
+  pb: { base: 3, lg: 5 },
   maxW: { lg: "90vw" },
   w: "full",
   mx: "auto",
