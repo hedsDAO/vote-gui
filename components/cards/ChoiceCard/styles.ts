@@ -90,6 +90,8 @@ export const $percentageTextStyles: TextProps = {
   fontFamily: "grotesk",
   letterSpacing: "widest",
   fontSize: "xs",
+  minW: '7ch',
+  maxW: '7ch',
 };
 
 export const $percentageParentFlexStyles: FlexProps = {
