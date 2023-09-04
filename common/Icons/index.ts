@@ -14,3 +14,4 @@ export { default as CaretUp } from "@/common/Icons/CaretUp/CaretUp";
 export { default as CaretDown } from "@/common/Icons/CaretDown/CaretDown";
 export { default as Play } from "@/common/Icons/Play/Play";
 export { default as Pause } from "@/common/Icons/Pause/Pause";
+export { default as Ellipsis } from "@/common/Icons/Ellipsis/Ellipsis";

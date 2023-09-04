@@ -41,11 +41,13 @@ export const $showVotersFlexStyles = (isShowingVoters: boolean): FlexProps => ({
 
 export const $resultsCheckboxStyles: CheckboxProps = {
   colorScheme: "telegram",
+  borderColor: 'blackAlpha.600 !important',
   size: "sm",
 };
 
 export const $showVotersCheckboxStyles: CheckboxProps = {
   colorScheme: "telegram",
+  borderColor: 'blackAlpha.600 !important',
   size: "sm",
 };
 
