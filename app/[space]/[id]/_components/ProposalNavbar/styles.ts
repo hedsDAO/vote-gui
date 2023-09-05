@@ -24,3 +24,9 @@ export const $proposalNavbarCardsGridStyles: GridProps = {
   mt: 6,
   gridTemplateColumns: { base: "1fr", lg: "repeat(5, 1fr)" },
 };
+
+export const $ssrProposalNavbarCardsGridStyles: GridProps = {
+  gap: { base: 2,lg: 5 },
+  mt: 6,
+  gridTemplateColumns: { base: "1fr", lg: "repeat(5, 1fr)" },
+};

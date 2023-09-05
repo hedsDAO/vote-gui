@@ -21,7 +21,7 @@ const Proposal = ({ params }: { params: { space: string; id: string } }) => {
 
   return (
     <Flex {...styles.$proposalParentFlexStyles}>
-      <ProposalDetails slug={slug} id={id} />
+      <ProposalDetails slug={slug} id={id} /> 
       {proposal && <ProposalNavbar />}
     </Flex>
   );
