@@ -13,6 +13,9 @@ export const store = configureStore({
     proposal,
     spaceReducer
   },
+  // middleware: (getDefaultMiddleware) => {
+  //   getDefaultMiddleware({serializableCheck: false}).concat()
+  // },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
