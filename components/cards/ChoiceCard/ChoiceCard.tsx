@@ -105,7 +105,7 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
               if (choice.media) {
                 if (currentSong && currentSong.media === choice.media) {
                   togglePlayPause();
-                } else {
+                } else {  
                   playSound(choice.media);
                 }
               }
