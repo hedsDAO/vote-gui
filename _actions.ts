@@ -81,7 +81,6 @@ export async function getHedsTapeTracks(choices: Choice[]) {
       songHashes: songsQuery
     }});
   const songs = res.data;
-  console.log(res.data)
   const updatedChoices = choices.map(choice => {
     const isPublicTrack = songs.some((song: any) => song.audio === choice.media && song.public);
     return {
