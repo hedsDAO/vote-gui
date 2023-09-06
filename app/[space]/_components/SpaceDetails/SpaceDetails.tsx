@@ -20,11 +20,19 @@ async function getSpaceData(name: string) {
 
 const SpaceDetails = async ({ slug }: { slug: string }) => {
   const invertClassName = { className: "invert-0" };
+  const stateSpaceData = store.getState().spaceReducer.spaceData;
   const stateSpaceDataExists = store.getState().spaceReducer.spaceData.authors.length;
-  let space = await getSpaceData(slug);
 
-  if (space && !stateSpaceDataExists) {
+  if (!stateSpaceDataExists) {
+    const space = await getSpaceData(slug);
+    if (!space) return;
     store.dispatch(setSpaceData(space));
+    return;
+  } else if (stateSpaceData.name !== slug) {
+    const space = await getSpaceData(slug);
+    if (!space) return;
+    store.dispatch(setSpaceData(space));
+    return;
   }
 
   const socialMap = {
@@ -36,21 +44,21 @@ const SpaceDetails = async ({ slug }: { slug: string }) => {
   return (
     <>
       <Flex {...styles.$spaceDetailsParentFlexStyles}>
-        <Banner src={space?.banner} />
+        <Banner src={stateSpaceData?.banner} />
         <Flex {...styles.$spaceDetailsInnerFlexStyles}>
-          <ProfilePicture {...styles.$profilePictureStyles} src={space?.image} />
+          <ProfilePicture {...styles.$profilePictureStyles} src={stateSpaceData?.image} />
           <Flex {...styles.$linkButtonFlexStyles}>
             <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK} leftIcon={<ArrowLeft />}>
               {constants.BACK_TEXT}
             </LinkIconButton>
             <Flex {...styles.$socialLinksAndTextFlexStyles}>
               <HeadingTextGroup>
-                <Heading {...styles.$headingFlexStyles}>{space?.name}</Heading>
-                <Typography {...styles.$typographyTextStyles}>{space?.description}</Typography>
+                <Heading {...styles.$headingFlexStyles}>{stateSpaceData?.name}</Heading>
+                <Typography {...styles.$typographyTextStyles}>{stateSpaceData?.description}</Typography>
               </HeadingTextGroup>
               <Flex {...styles.$iconFlexContainerStyles}>
-                {space &&
-                  constants.gatherSocialLinks(space).map((social, idx) => (
+                {stateSpaceData &&
+                  constants.gatherSocialLinks(stateSpaceData).map((social, idx) => (
                     <Link key={social?.name + idx} href={social.url} target={constants.URL_TARGET}>
                       {socialMap[social.name]}
                     </Link>
@@ -63,7 +71,7 @@ const SpaceDetails = async ({ slug }: { slug: string }) => {
       <Flex {...styles.$parentSpaceNavbarFlexStyles}>
         <Flex {...styles.$parentFlexStyles}>
           <Typography {...styles.$proposalHeaderTextStyles}>{constants.PROPOSAL_HEADER_TEXT}</Typography>
-          <CreateProposalButton slug={slug} admins={space?.authors} />
+          <CreateProposalButton slug={slug} admins={stateSpaceData?.authors} />
         </Flex>
       </Flex>
     </>
