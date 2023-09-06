@@ -1,8 +1,9 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { createClient, Vote, Proposal } from "hedsvote";
+import { createClient, Vote, Proposal, Choice } from "hedsvote";
 import { WalletClient } from "viem";
+import axios from "axios";
 
 export const pinFileToIpfs = async (formData: FormData) => {
   try {
@@ -70,6 +71,28 @@ export async function getSpaceData(spaceName: string) {
   const spaces = await getAllSpaces();
   const space = spaces.data.find(space => space.name === spaceName);
   return space || null;
+}
+
+export async function getHedsTapeTracks(choices: Choice[]) {
+  const songsQuery = choices.map(choice => choice.media?.slice(choice.media.lastIndexOf("/") + 1)).join(',');
+  try {
+  const res = await axios.get(`https://us-central1-heds-104d8.cloudfunctions.net/api/songs/many-songs`,{
+    params: {
+      songHashes: songsQuery
+    }});
+  const songs = res.data;
+  console.log(res.data)
+  const updatedChoices = choices.map(choice => {
+    const isPublicTrack = songs.some((song: any) => song.audio === choice.media && song.public);
+    return {
+      ...choice,
+      isPublic: isPublicTrack
+    }
+  })
+  return updatedChoices;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 // const prisma = new PrismaClient();
