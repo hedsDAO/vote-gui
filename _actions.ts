@@ -107,47 +107,17 @@ export async function getVoterData(votes: SingleChoiceVote[] | QuadraticVote[]) 
   return voterData;
 }
 
-// const prisma = new PrismaClient();
-
-// export async function getuserData(user: `0x${string}`) {
-//   try {
-//     const userProfileData = await prisma.users.findUnique({
-//       where: {
-//         wallet: user.toLowerCase(),
-//       },
-//     });
-//     await prisma.$disconnect();
-//     return userProfileData;
-//   } catch (e) {
-//     console.error(e);
-//     await prisma.$disconnect();
-//     process.exit(1);
-//   }
-// }
-
-// export async function getDisplayNameForAuthors(proposals: Proposal[] | undefined) {
-//   const displayNames: {[author:string]: string} = {};
-//   if (!proposals) return;
-//   for (const proposal of proposals) {
-//     const author = proposal.author;
-//     try {
-//       const authorRecord = await prisma.users.findUnique({
-//         where: {
-//           wallet: author.toLowerCase(),
-//         },
-//         select: {
-//           display_name: true
-//         }
-//       });
-//       if (authorRecord && authorRecord.display_name) {
-//         displayNames[author] = authorRecord.display_name;
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       process.exit(1);
-//     } finally {
-//       await prisma.$disconnect();
-//     }
-//   }
-//   return displayNames;
-// }
+export async function getTapeData(proposal_image: string) {
+  const res = await axios.get(`https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/`);
+  if (res.data) {
+    const filteredTapes = res.data.filter((e: any) => e.image === proposal_image);
+    if (filteredTapes?.length) {
+      const tape_id = filteredTapes[0]?.id;
+      const res = await axios.get(`https://us-central1-heds-104d8.cloudfunctions.net/api/tapes/${tape_id}/songs`);
+      if (res.data) {
+        const tapeTracks = res.data.filter((track: any) => track?.type === "track");
+        return tapeTracks.map((track: any) => track?.submission_data?.sub_id)
+      }
+    }
+  }
+}

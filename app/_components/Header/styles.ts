@@ -56,7 +56,6 @@ export const $badgeStyles: BadgeProps = {
 };
 
 export const $avatarStyles = (src: string): AvatarProps => ({
-  key: src + "avatar",
   src: src,
   bg: 'black',
   shadow: "md",

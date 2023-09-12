@@ -24,6 +24,22 @@ export const $linkButtonStyles: ButtonProps = {
   py: 0,
 };
 
+export const $ssrLinkButtonStyles: ButtonProps = {
+  ml: { lg: "-8" },
+  _hover: { bg: "transparent", textColor: "black" },
+  size: "sm",
+  transition: "all 0.2s ease-in-out",
+  textColor: "blackAlpha.800",
+  gap: 2,
+  letterSpacing: 'wide',
+  bg: 'transparent !important',
+  fontSize: "base",
+  fontWeight: "normal !important",
+  fontFamily: "grotesk",
+  px: 0,
+  py: 0,
+};
+
 export const $linkButtonFlexStyles: FlexProps = {
   gap: 4,
   px: { base: 6, lg: 0 },

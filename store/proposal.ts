@@ -59,6 +59,7 @@ export interface ProposalState {
   isCastingVote: boolean;
   isVoteOpen: boolean;
   hoveringVote: HoveringChoiceData | null;
+  chosenTracks: string[] | null;
   votingPower: number;
   canShowResults: boolean;
   hasCheckedPublicStatus: boolean;
@@ -82,6 +83,7 @@ const initialState: ProposalState = {
   isCastingVote: false,
   isVoteOpen: false,
   hoveringVote: null,
+  chosenTracks: null,
   votingPower: 0,
   canShowResults: false,
   hasCheckedPublicStatus: false,
@@ -101,7 +103,6 @@ const proposalSlice = createSlice({
     setVoteParticipants(state, action: PayloadAction<VoteParticipantsProps>) {
       if (!action.payload.proposal || !action.payload.voterData) return;
       const { proposal, voterData } = action.payload;
-      console.log(voterData, "voterData");
       const voteParticipants: VoteParticipants = {};
       proposal.votes?.forEach((vote) => {
         const voter = vote.voter?.toLowerCase();
@@ -188,6 +189,9 @@ const proposalSlice = createSlice({
     setHoveringVote: (state, action: PayloadAction<HoveringChoiceData | null>) => {
       state.hoveringVote = action.payload;
     },
+    setChosenTracks: (state, action: PayloadAction<string[] | null>) => {
+      state.chosenTracks = action.payload;
+    },
     reset: () => initialState,
   },
 });
@@ -209,6 +213,7 @@ export const {
   setVotingPower,
   setPublicStatus,
   setHoveringVote,
+  setChosenTracks,
   reset,
 } = proposalSlice.actions;
 export default proposalSlice.reducer;

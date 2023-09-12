@@ -13,20 +13,31 @@ import { setDecreaseScore, setIncreaseScore } from "@/store/activeVote";
 import * as styles from "@/components/cards/ChoiceCard/styles";
 import { useAccount } from "wagmi";
 import { useAppSelector } from "@/store/hooks";
-import { HedsVoteChoice } from "./constants";
 import { Choice } from "hedsvote";
 
 const ChoiceCard = ({ choice }: { choice: Choice }) => {
   const dispatch = useDispatch();
-  const { currentView, isVoteOpen, canShowResults, publicStatus, isShowingResults, scoreData, proposal, hoveringVote } =
+  const { currentView, isVoteOpen, chosenTracks, publicStatus, isShowingResults, scoreData, proposal, hoveringVote } =
     useAppSelector((state: RootState) => state.proposal);
   const choiceType = proposal?.choice_type || "image";
   const { isConnected } = useAccount();
   const state = useSelector((state: RootState) => state.activeVoteReducer);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const currentSong = useSelector((state: RootState) => state.audioReducer.currentSong);
+  const currentSong = useAppSelector((state: RootState) => state.audioReducer.currentSong);
   const soundRef = useRef<Howl | null>(null);
+
   const playSound = (audioSrc: string) => {
+    if (currentSong?.media !== audioSrc) {
+      if (soundRef.current) {
+        soundRef.current.stop();
+        soundRef.current.unload();
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          dispatch(setCurrentSongIsPlaying(false));
+          dispatch(setCurrentSong(null));
+        }
+      }
+    }
     if (currentSong && currentSong.media === audioSrc) {
       togglePlayPause();
       return;
@@ -107,7 +118,8 @@ const ChoiceCard = ({ choice }: { choice: Choice }) => {
       {...styles.$parentAudioChoiceCardGridItemStyles(
         currentView,
         currentSong?.media === choice?.media,
-        hoveringVote ? choice?.id in hoveringVote : false
+        hoveringVote ? choice?.id in hoveringVote : false,
+        chosenTracks?.length ? chosenTracks?.includes(choice?.name) : false
       )}
     >
       <Flex {...styles.$parentFlexContainerStyles(currentView)}>
@@ -163,11 +175,21 @@ const ChoiceCard = ({ choice }: { choice: Choice }) => {
         {isShowingResults && (
           <Flex {...styles.$resultsFlexContainer(currentView)}>
             {!_.isNull(hoveringVote) && choice.id in hoveringVote ? (
-              <Typography {...styles.$percentageTextStyles(hoveringVote ? choice?.id in hoveringVote : false)}>
+              <Typography
+                {...styles.$percentageTextStyles(
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
+                )}
+              >
                 {scoreData?.[choice?.id]?.percentage}%
               </Typography>
             ) : _.isNull(hoveringVote) ? (
-              <Typography {...styles.$percentageTextStyles(hoveringVote ? choice?.id in hoveringVote : false)}>
+              <Typography
+                {...styles.$percentageTextStyles(
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
+                )}
+              >
                 {scoreData?.[choice?.id]?.percentage}%
               </Typography>
             ) : (
@@ -243,33 +265,62 @@ const ChoiceCard = ({ choice }: { choice: Choice }) => {
       {isShowingResults && (
         <Flex {...styles.$percentageListParentFlexStyles(currentView)}>
           {!_.isNull(hoveringVote) && choice.id in hoveringVote ? (
-            <Typography {...styles.$percentageTextStyles(hoveringVote ? choice?.id in hoveringVote : false)}>
+            <Typography
+              {...styles.$percentageTextStyles(
+                hoveringVote ? choice?.id in hoveringVote : false,
+                currentSong?.media === choice?.media
+              )}
+            >
               {hoveringVote?.[choice?.id] ? +hoveringVote[choice?.id] : scoreData?.[choice?.id]?.percentage || 0}%
             </Typography>
           ) : _.isNull(hoveringVote) ? (
-            <Typography {...styles.$percentageTextStyles(hoveringVote ? choice?.id in hoveringVote : false)}>
+            <Typography
+              {...styles.$percentageTextStyles(
+                hoveringVote ? choice?.id in hoveringVote : false,
+                currentSong?.media === choice?.media
+              )}
+            >
               {hoveringVote?.[choice?.id] ? +hoveringVote[choice?.id] : scoreData?.[choice?.id]?.percentage || 0}%
             </Typography>
           ) : (
-            <></>
+            <Typography
+              {...styles.$percentageTextStyles(
+                hoveringVote ? choice?.id in hoveringVote : false,
+                currentSong?.media === choice?.media
+              )}
+            >
+              {hoveringVote?.[choice?.id] ? +hoveringVote[choice?.id] : scoreData?.[choice?.id]?.percentage || 0}%
+            </Typography>
           )}
           {!_.isNull(hoveringVote) && choice.id in hoveringVote ? (
             <Flex {...styles.$percentageParentFlexStyles}>
-              <Box {...styles.$percentageContainerBoxStyles(hoveringVote ? choice?.id in hoveringVote : false)} />
+              <Box
+                {...styles.$percentageContainerBoxStyles(
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
+                )}
+              />
               <Box
                 {...styles.$percentageVariableWidthBoxStyles(
                   hoveringVote ? +hoveringVote?.[choice?.id] : scoreData?.[choice?.id]?.percentage || 0,
-                  hoveringVote ? choice?.id in hoveringVote : false
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
                 )}
               />
             </Flex>
           ) : _.isNull(hoveringVote) ? (
             <Flex {...styles.$percentageParentFlexStyles}>
-              <Box {...styles.$percentageContainerBoxStyles(hoveringVote ? choice?.id in hoveringVote : false)} />
+              <Box
+                {...styles.$percentageContainerBoxStyles(
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
+                )}
+              />
               <Box
                 {...styles.$percentageVariableWidthBoxStyles(
                   hoveringVote ? +hoveringVote?.[choice?.id] : scoreData?.[choice?.id]?.percentage || 0,
-                  hoveringVote ? choice?.id in hoveringVote : false
+                  hoveringVote ? choice?.id in hoveringVote : false,
+                  currentSong?.media === choice?.media
                 )}
               />
             </Flex>
