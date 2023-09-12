@@ -1,16 +1,15 @@
 "use client";
 
-import { Transition, Dialog } from "@headlessui/react";
-import { Strategy, calculateUserVotingPower } from "hedsvote";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
-import * as styles from "@/components/modals/VotingStrategiesModal/styles";
-import * as constants from "@/components/modals/VotingStrategiesModal/constants";
-import { Box, Button, Flex, Typography } from "@/common";
-import { Link, Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setIsShowingStrategies } from "@/store/proposal";
-import { useAccount } from "wagmi";
+
+import { Box, Button, Flex, Typography } from "@/common";
+import { Link, Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
+import * as styles from "@/components/modals/VotingStrategiesModal/styles";
+import * as constants from "@/components/modals/VotingStrategiesModal/constants";
 
 const VotingStrategiesModal = () => {
   const dispatch = useAppDispatch();
@@ -137,17 +136,9 @@ const VotingStrategiesModal = () => {
                 </Flex>
               </Flex>
             </Box>
-            <Box mt={2} display="flex" justifyContent="end">
-              <Button
-                fontWeight={"normal"}
-                fontFamily={"grotesk"}
-                color="white"
-                size="sm"
-                onClick={() => dispatch(setIsShowingStrategies(false))}
-                bg="blackAlpha.400 !important"
-                _hover={{ bg: "blackAlpha.600 !important" }}
-              >
-                back
+            <Box {...styles.$backButtonBoxStyles}>
+              <Button {...styles.$backButtonStyles} onClick={() => dispatch(setIsShowingStrategies(false))}>
+                {constants.BACK_BUTTON_TEXT}
               </Button>
             </Box>
           </Flex>

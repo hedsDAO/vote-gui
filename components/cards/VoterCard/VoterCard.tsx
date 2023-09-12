@@ -1,12 +1,32 @@
 "use client";
+import { useEffect } from "react";
 import { Avatar, Flex, GridItem, Typography } from "@/common";
 import { Info } from "@/common/Icons";
+import { useAppDispatch } from "@/store/hooks";
+import { setHoveringVote } from "@/store/proposal";
 import { QuadraticVote, SingleChoiceVote } from "hedsvote";
+import _ from "lodash";
 
 const VoterCard = ({ vote, image }: { vote: QuadraticVote | SingleChoiceVote; image?: string }) => {
-  console.log(vote)
+  const dispatch = useAppDispatch();
+  const handleSetHoveringVote = (vote: any) => {
+    const { vote_choices } = vote;
+    let hoveringVote: { [key: number]: string } = {};
+    const totalVotesDistributed = vote_choices.reduce((acc: number, choice: any) => acc + choice.amount, 0);
+    vote_choices.forEach((choice: any) => {
+      hoveringVote[choice.choice_id] = `${_.round((choice.amount / totalVotesDistributed) * 100, 2)}`;
+    });
+    dispatch(setHoveringVote(hoveringVote));
+  };
+  useEffect(() => {
+    return () => {
+      dispatch(setHoveringVote(null));
+    };
+  }, [vote]);
   return (
     <GridItem
+      onMouseEnter={() => handleSetHoveringVote(vote)}
+      onMouseLeave={() => dispatch(setHoveringVote(null))}
       _hover={{ bg: "heds.bg_light" }}
       transition="all 0.3s ease-in-out"
       key={vote.voter}

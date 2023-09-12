@@ -4,7 +4,7 @@ import * as styles from "@/app/[space]/[id]/_components/ProposalNavbar/styles";
 
 const SSRProposalNavbar = () => {
   return (
-    <Flex {...styles.$proposalNavbarParentFlexStyles}>
+    <Flex {...styles.$proposalNavbarParentFlexStyles} pb={3}>
       <Box {...styles.$proposalNavbarBoxStyles} />
       <Flex {...styles.$ssrProposalNavbarFlexStyles}>
         <Skeleton {...styles.$proposalNavbarSkeleton1Styles} />

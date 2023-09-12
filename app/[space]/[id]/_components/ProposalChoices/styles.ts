@@ -3,7 +3,7 @@ import { FlexProps, GridItemProps, GridProps } from "@chakra-ui/react";
 export const $proposalChoicesParentFlexStyles: FlexProps = {
   direction: "column",
   pb: 32,
-  px: 8,
+  px: 6,
   borderTop: "1px",
   borderColor: "blackAlpha.300",
 };

@@ -3,13 +3,13 @@ import { BoxProps, FlexProps, GridProps, SkeletonProps } from "@chakra-ui/react"
 export const $proposalNavbarParentFlexStyles: FlexProps = {
   direction: "column",
   px: 8,
-  pb: 4,
+  pb: 7,
   borderTop: "1px",
   borderColor: "blackAlpha.300",
 };
 
 export const $proposalNavbarBoxStyles: BoxProps = {
-  my: 4,
+  my: 3,
   w: "full",
   bg: "blackAlpha.200",
 };
