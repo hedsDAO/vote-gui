@@ -27,7 +27,6 @@ const ProfilePicture = (props: ProfilePictureProps) => {
       {...formattedStyleProps}
     >
       <Image
-        priority
         onLoad={setHasProfilePictureLoaded.on}
         alt={"profile-picture"}
         src={props?.src || "/empty.webp"}
@@ -38,7 +37,9 @@ const ProfilePicture = (props: ProfilePictureProps) => {
           props?.height?.base || "140px"
         }] max-w-[${props?.height?.base || "140px"}] lg:max-h-[${props?.height?.lg || "200px"}] lg:min-h-[${
           props?.height?.lg || "200px"
-        }] lg:min-w-[${props?.height?.lg || "200px"}] lg:max-w-[${props?.height?.lg || "200px"}] rounded-full ${formattedStyleProps?.className || ""}`}
+        }] lg:min-w-[${props?.height?.lg || "200px"}] lg:max-w-[${props?.height?.lg || "200px"}] rounded-full ${
+          formattedStyleProps?.className || ""
+        }`}
         style={constants.PROFILE_PICTURE_STYLE_PROPS}
       />
     </Skeleton>

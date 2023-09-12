@@ -10,7 +10,13 @@ export interface MobileProposalNavProps {
   setIsShowingResults: (value: boolean) => void;
   currentView: GridListChoice;
   setCurrentView: (value: GridListChoice) => void;
+  canShowResults: boolean;
+  isShowingStrategies: boolean;
+  setIsShowingStrategies: (value: boolean) => void;
+  isCastingVote: boolean;
+  setIsCastingVote: (value: boolean) => void;
 }
 
 export const CHOICE_TEXT = 'CHOICES'
 export const VOTERS_TEXT = 'VOTERS'
+export const VOTE_TEXT = 'vote'

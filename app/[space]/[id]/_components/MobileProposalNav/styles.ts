@@ -85,8 +85,63 @@ export const $defaultChoicesTextStyles: TextProps = {
   alignSelf: "start",
 };
 
-
 export const $defaultFlexStyles: FlexProps = {
-    gap: 3,
-    alignItems: "center",
-  };
+  gap: 3,
+  alignItems: "center",
+};
+
+export const $boxDividerStyles: BoxProps = {
+  w: "1px",
+  h: "16px",
+  bg: "blackAlpha.400",
+};
+
+export const $voteButtonStyles: ButtonProps = {
+  alignItems: "center",
+  rounded: "md",
+  gap: 2,
+  px: "2.5 !important",
+  minH: "24.5px",
+  maxH: "24.5px",
+  bg: "green.500 !important",
+  _hover: { bg: "green.600 !important" },
+};
+
+export const $parentVoteFlexStyles: FlexProps = {
+  gap: 3.5,
+  alignItems: "center",
+};
+
+export const $voteButtonTextStyles: TextProps = {
+  textColor: "white",
+  mt: "1px",
+  fontFamily: "grotesk",
+  fontSize: "0.75rem",
+};
+
+export const $strategiesButtonStyles: ButtonProps = {
+  alignItems: "center",
+  rounded: "md",
+  gap: 2,
+  pl: "2.5 !important",
+  pr: "0 !important",
+  bg: "blackAlpha.200 !important",
+  minH: "24.5px",
+  maxH: "24.5px",
+  _hover: { bg: "blackAlpha.300 !important" },
+};
+
+export const $strategiesButtonTextStyles: TextProps = {
+  textColor: "blackAlpha.700",
+  mt: "1px",
+  fontFamily: "grotesk",
+  fontSize: "0.75rem",
+};
+
+export const $infoIconFlexStyles: FlexProps = {
+  px: 2,
+  roundedRight: "md",
+  minH: "24.5px",
+  maxH: "24.5px",
+  bg: "blackAlpha.200",
+};

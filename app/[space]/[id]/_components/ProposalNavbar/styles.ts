@@ -1,11 +1,11 @@
-import { BoxProps, FlexProps, GridProps } from "@chakra-ui/react";
+import { BoxProps, FlexProps, GridProps, SkeletonProps } from "@chakra-ui/react";
 
 export const $proposalNavbarParentFlexStyles: FlexProps = {
   direction: "column",
-  pb: 32,
   px: 8,
-  borderTop: '1px',
-  borderColor: 'blackAlpha.300'
+  pb: 4,
+  borderTop: "1px",
+  borderColor: "blackAlpha.300",
 };
 
 export const $proposalNavbarBoxStyles: BoxProps = {
@@ -25,8 +25,17 @@ export const $proposalNavbarCardsGridStyles: GridProps = {
   gridTemplateColumns: { base: "1fr", lg: "repeat(5, 1fr)" },
 };
 
-export const $ssrProposalNavbarCardsGridStyles: GridProps = {
-  gap: { base: 2,lg: 5 },
-  mt: 6,
-  gridTemplateColumns: { base: "1fr", lg: "repeat(5, 1fr)" },
+export const $proposalNavbarSkeleton1Styles: SkeletonProps = {
+  minW: "12ch",
+  minH: "25px",
+};
+
+export const $proposalNavbarSkeleton2Styles: SkeletonProps = {
+  minW: "30px",
+  minH: "25px",
+};
+
+export const $ssrProposalNavbarFlexStyles: FlexProps = {
+  pr: { lg: 4 },
+  justifyContent: "space-between",
 };

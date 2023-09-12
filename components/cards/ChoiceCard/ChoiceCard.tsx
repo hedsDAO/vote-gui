@@ -1,21 +1,32 @@
 "use client";
+
 import { useEffect, useRef } from "react";
-import { Avatar, Box, Button, Center, Flex, GridItem, Typography } from "@/common";
-import { Play, Pause, Spinner } from "@/common/Icons";
-import * as styles from "@/components/cards/ChoiceCard/styles";
-import * as constants from "@/components/cards/ChoiceCard/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentSong, setCurrentSongIsPlaying, updateCurrentSongPercentage } from "@/store/audio";
 import { RootState } from "@/store";
 import { Howl } from "howler";
 import _ from "lodash";
 
-const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreData }: constants.AudioChoiceCardProps) => {
+import { Avatar, Box, Button, Center, Flex, GridItem, Heading, Typography } from "@/common";
+import { setCurrentSong, setCurrentSongIsPlaying, updateCurrentSongPercentage } from "@/store/audio";
+import { Minus, Pause, Play, Plus, Spinner } from "@/common/Icons";
+import { setDecreaseScore, setIncreaseScore } from "@/store/activeVote";
+import * as styles from "@/components/cards/ChoiceCard/styles";
+import { useAccount } from "wagmi";
+import { useAppSelector } from "@/store/hooks";
+import { HedsVoteChoice } from "./constants";
+import { Choice } from "hedsvote";
+
+const ChoiceCard = ({ choice }: { choice: Choice }) => {
   const dispatch = useDispatch();
+  const { currentView, isVoteOpen, canShowResults, publicStatus, isShowingResults, scoreData, proposal } = useAppSelector(
+    (state: RootState) => state.proposal
+  );
+  const choiceType = proposal?.choice_type || "image";
+  const { isConnected } = useAccount();
+  const state = useSelector((state: RootState) => state.activeVoteReducer);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const currentSong = useSelector((state: RootState) => state.audioReducer.currentSong);
   const soundRef = useRef<Howl | null>(null);
-
   const playSound = (audioSrc: string) => {
     if (currentSong && currentSong.media === audioSrc) {
       togglePlayPause();
@@ -92,20 +103,19 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
       }
     };
   }, []);
-
-  const percentageVote = scoreData?.scores?.[choice?.id];
   return (
-    <GridItem {...styles.$parentAudioChoiceCardGridItemStyles(currentView)}>
+    <GridItem {...styles.$parentAudioChoiceCardGridItemStyles(currentView, currentSong?.media === choice?.media)}>
       <Flex {...styles.$parentFlexContainerStyles(currentView)}>
         {choiceType === "audio" ? (
           <Center
+            isDisabled={currentSong?.isLoading}
             as={Button}
             onClick={() => {
               if (currentSong?.isLoading) return;
               if (choice.media) {
                 if (currentSong && currentSong.media === choice.media) {
                   togglePlayPause();
-                } else {  
+                } else {
                   playSound(choice.media);
                 }
               }
@@ -126,37 +136,70 @@ const ChoiceCard = ({ choiceType, currentView, choice, isShowingResults, scoreDa
           <Avatar {...styles.$imageAvatarImageStyles(currentView)} src={choice?.image} />
         )}
         <Flex {...styles.$textFlexContainer(currentView)}>
-          <Typography {...styles.$artistNameTextStyles(currentView)}>{choice.artist}</Typography>
-          <Typography {...styles.$choiceNameTextStyles(currentView)}>{choice.name}</Typography>
+          <Typography {...styles.$artistNameTextStyles(currentView, currentSong?.media === choice?.media)}>
+            {_.isEmpty(publicStatus) ? choice.artist : publicStatus?.[choice?.id] ? choice.artist : ""}
+          </Typography>
+          <Typography {...styles.$choiceNameTextStyles(currentView, currentSong?.media === choice?.media)}>
+            {choice.name}
+          </Typography>
         </Flex>
         {isShowingResults && (
           <Flex {...styles.$resultsFlexContainer(currentView)}>
-            <Typography {...styles.$percentageTextStyles}>
-              {_.round(((percentageVote / scoreData.totalScore) * 100), 2)}%
-            </Typography>
+            <Typography {...styles.$percentageTextStyles}>{scoreData?.[choice?.id]?.percentage}%</Typography>
             <Flex {...styles.$percentageParentFlexStyles}>
               <Box {...styles.$percentageContainerBoxStyles} />
-              <Box
-                {...styles.$percentageVariableWidthBoxStyles(
-                  _.round(((percentageVote / scoreData.totalScore) * 100), 2)
-                )}
-              />
+              <Box {...styles.$percentageVariableWidthBoxStyles(scoreData?.[choice?.id]?.percentage || 0)} />
             </Flex>
           </Flex>
+        )}
+        {isVoteOpen && isConnected && currentView === "list" ? (
+          <Flex {...styles.$listViewVotingFlexStyles}>
+            <Flex {...styles.$listViewParentFlexStyles}>
+              <Button {...styles.$listViewIncreaseButtonStyles} onClick={() => dispatch(setIncreaseScore(choice.id))}>
+                <Plus {...styles.$listViewIconDimensions} />
+              </Button>
+              <Box {...styles.$listViewBoxCounterStyles}>
+                <Heading {...styles.$listViewCounterTextStyles}>{state?.voteSelections?.[choice.id] || 0}</Heading>
+              </Box>
+              <Button
+                isDisabled={!(state?.voteSelections && choice.id in state?.voteSelections)}
+                {...styles.$listViewDecreaseButtonStyles}
+                onClick={() => dispatch(setDecreaseScore(choice.id))}
+              >
+                <Minus {...styles.$listViewIconDimensions} />
+              </Button>
+            </Flex>
+          </Flex>
+        ) : isVoteOpen && isConnected && currentView === "grid" ? (
+          <Flex {...styles.$gridViewFlexStyles}>
+            <Flex {...styles.$gridViewChildFlexStyles}>
+              <Box {...styles.$gridViewCounterBoxStyles}>
+                <Heading {...styles.$gridViewCounterTextStyles}>{state?.voteSelections?.[choice.id] || 0}</Heading>
+              </Box>
+            </Flex>
+            <Flex {...styles.$gridViewChildFlexStyles2}>
+              <Button {...styles.$gridViewIncreaseButtonStyles} onClick={() => dispatch(setIncreaseScore(choice.id))}>
+                <Plus {...styles.$gridViewIconDimensions} />
+              </Button>
+              <Button
+                isDisabled={!(state?.voteSelections && choice.id in state?.voteSelections)}
+                {...styles.$gridViewDecreaseButtonStyles}
+                onClick={() => dispatch(setDecreaseScore(choice.id))}
+              >
+                <Minus {...styles.$gridViewIconDimensions} />
+              </Button>
+            </Flex>
+          </Flex>
+        ) : (
+          <></>
         )}
       </Flex>
       {isShowingResults && (
         <Flex {...styles.$percentageListParentFlexStyles(currentView)}>
-          <Typography {...styles.$percentageTextStyles}>
-            {_.round(((percentageVote / scoreData.totalScore) * 100), 2)}%
-          </Typography>
+          <Typography {...styles.$percentageTextStyles}>{scoreData?.[choice?.id]?.percentage}%</Typography>
           <Flex {...styles.$percentageParentFlexStyles}>
             <Box {...styles.$percentageContainerBoxStyles} />
-            <Box
-              {...styles.$percentageVariableWidthBoxStyles(
-                _.round(((percentageVote / scoreData.totalScore) * 100), 2)
-              )}
-            />
+            <Box {...styles.$percentageVariableWidthBoxStyles(scoreData?.[choice?.id]?.percentage || 0)} />
           </Flex>
         </Flex>
       )}

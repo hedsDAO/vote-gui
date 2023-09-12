@@ -10,8 +10,10 @@ export interface ScoreDataProps {
 }
 export interface AudioChoiceCardProps {
   choiceType: string;
-  currentView: GridListChoice;
-  choice: Choice;
+  choice: HedsVoteChoice | Choice;
   isShowingResults: boolean;
-  scoreData: ScoreDataProps | any;
+}
+
+export interface HedsVoteChoice extends Choice {
+  isPublic: boolean;
 }
