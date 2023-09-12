@@ -1,8 +1,8 @@
-import { Flex, Heading, LinkIconButton, Typography, HeadingTextGroup, Skeleton } from "@/common";
+import { Flex, Heading, LinkIconButton, HeadingTextGroup, Skeleton } from "@/common";
+import { ProfilePicture } from "@/components/media";
+import { ArrowLeft } from "@/common/Icons";
 import * as styles from "@/app/[space]/[id]/_components/ProposalDetails/styles";
 import * as constants from "@/app/[space]/[id]/_components/ProposalDetails/constants";
-import ProfilePicture from "@/components/media/ProfilePicture/ProfilePicture";
-import { ArrowLeft } from "@/common/Icons";
 
 const SSRProposalDetails = () => {
   return (

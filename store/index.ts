@@ -11,8 +11,9 @@ export const store = configureStore({
     activeVoteReducer,
     createProposalReducer,
     proposal,
-    spaceReducer
+    spaceReducer,
   },
+  devTools: true,
   // middleware: (getDefaultMiddleware) => {
   //   getDefaultMiddleware({serializableCheck: false}).concat()
   // },

@@ -4,6 +4,7 @@ import { Info } from "@/common/Icons";
 import { QuadraticVote, SingleChoiceVote } from "hedsvote";
 
 const VoterCard = ({ vote, image }: { vote: QuadraticVote | SingleChoiceVote; image?: string }) => {
+  console.log(vote)
   return (
     <GridItem
       _hover={{ bg: "heds.bg_light" }}
@@ -24,7 +25,7 @@ const VoterCard = ({ vote, image }: { vote: QuadraticVote | SingleChoiceVote; im
           </Typography>
         </Flex>
         <Flex px={2}>
-          <Info className="invert" />
+          <Info className="opacity-50 invert" />
         </Flex>
       </Flex>
     </GridItem>

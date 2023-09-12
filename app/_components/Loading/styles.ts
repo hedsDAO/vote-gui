@@ -4,5 +4,5 @@ export const $loadingFlexContainerStyles: FlexProps = {
   minH: "81vh",
   alignItems: "center",
   justifyContent: "center",
-  bg: "black",
+  bgGradient: "linear(to-b, heds.bg, black)",
 };

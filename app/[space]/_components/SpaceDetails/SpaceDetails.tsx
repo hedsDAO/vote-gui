@@ -46,7 +46,7 @@ const SpaceDetails = async ({ slug }: { slug: string }) => {
       <Flex {...styles.$spaceDetailsParentFlexStyles}>
         <Banner src={stateSpaceData?.banner} />
         <Flex {...styles.$spaceDetailsInnerFlexStyles}>
-          <ProfilePicture {...styles.$profilePictureStyles} src={stateSpaceData?.image} />
+          {<ProfilePicture {...styles.$profilePictureStyles} src={stateSpaceData?.image} />}
           <Flex {...styles.$linkButtonFlexStyles}>
             <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK} leftIcon={<ArrowLeft />}>
               {constants.BACK_TEXT}

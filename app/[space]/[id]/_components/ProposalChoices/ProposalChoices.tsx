@@ -1,59 +1,28 @@
 "use client";
-import { Avatar, Box, Center, Flex, Grid, GridItem, Typography } from "@/common";
-import { CaretDown, CaretUp, Play } from "@/common/Icons";
+import { useAppSelector } from "@/store/hooks";
+import { Choice } from "hedsvote";
+
 import ChoiceCard from "@/components/cards/ChoiceCard/ChoiceCard";
-import { getScoreData } from "@/utils/getScoreData";
-import { Choice, Proposal, QuadraticVote, quadratic } from "hedsvote";
+import { Grid, GridItem } from "@/common";
+import { sortChoices } from "@/utils/sortChoices";
+import * as styles from "@/app/[space]/[id]/_components/ProposalChoices/styles";
 
-const ProposalChoices = ({
-  proposal,
-  isShowingVoters,
-  isShowingResults,
-  currentView,
-}: {
-  proposal: Proposal;
-  isShowingVoters: boolean;
-  isShowingResults: boolean;
-  currentView: "list" | "grid";
-}) => {
-  const { getScores } = quadratic({ votes: proposal.votes as QuadraticVote[], choices: proposal.choices });
-  const calculatedScores = getScores();
-  const scoreData = getScoreData({ ...proposal, scores: calculatedScores });
+/**
+ * @const {JSX.Element} ProposalChoices
+ * @description This component is responsible for rendering the proposal choices and sorting them when showing results.
+ * @returns {JSX.Element} The proposal choices component.
+ */
 
+const ProposalChoices = () => {
+  const { currentView, isShowingVoters, proposal, scoreData, isShowingResults } = useAppSelector((state) => state.proposal);
   return (
-    <GridItem
-      display={{ base: isShowingVoters ? "none" : "flex", lg: "flex" }}
-      colSpan={{ base: 1, lg: isShowingVoters ? 4 : 5 }}
-      alignSelf={"start"}
-    >
-      <Grid
-        gap={currentView === "list" ? 2 : 2}
-        minW="full"
-        gridTemplateColumns={
-          currentView === "list" ? "1fr" : { base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)", xl: "repeat(4, 1fr)" }
-        }
-      >
-        {isShowingResults
-          ? scoreData?.sortedChoicesWithScores?.map((choice: Choice) => (
-              <ChoiceCard
-                choiceType={proposal?.choice_type}
-                key={choice.id}
-                currentView={currentView}
-                choice={choice}
-                isShowingResults={isShowingResults}
-                scoreData={scoreData}
-              />
-            ))
-          : proposal?.choices?.map((choice: Choice) => (
-              <ChoiceCard
-                choiceType={proposal?.choice_type}
-                key={choice.id}
-                currentView={currentView}
-                choice={choice}
-                isShowingResults={isShowingResults}
-                scoreData={scoreData}
-              />
-            ))}
+    <GridItem {...styles.$proposalChoicesGridItemStyles(isShowingVoters)}>
+      <Grid {...styles.$proposalContentGridStyles(currentView)}>
+        {isShowingResults && scoreData
+          ? sortChoices(proposal, scoreData)?.map((choice) => <ChoiceCard choice={choice} key={choice?.id} />)
+          : proposal?.choices?.map((choice: Choice) => {
+              return <ChoiceCard choice={choice} key={choice.id} />;
+            })}
       </Grid>
     </GridItem>
   );

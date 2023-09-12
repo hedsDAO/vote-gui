@@ -1,33 +1,41 @@
 "use client";
-import { Box, Button, Flex, GridItem, Typography } from "@/common";
-import { Grids, List, Percentage } from "@/common/Icons";
-import * as styles from "@/app/[space]/[id]/_components/MobileProposalNav/styles";
-import * as constants from "@/app/[space]/[id]/_components/MobileProposalNav/constants";
 
-const MobileProposalNav = ({
-  proposal,
-  isShowingVoters,
-  setIsShowingVoters,
-  isShowingResults,
-  setIsShowingResults,
-  currentView,
-  setCurrentView,
-}: constants.MobileProposalNavProps) => {
+import { useAccount } from "wagmi";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
+import ConnectButtonSm from "@/components/buttons/ConnectButton/ConnectButtonSm";
+import { Box, Button, Flex, GridItem, Typography } from "@/common";
+import { Grids, List, Percentage, Question } from "@/common/Icons";
+import * as constants from "@/app/[space]/[id]/_components/MobileProposalNav/constants";
+import * as styles from "@/app/[space]/[id]/_components/MobileProposalNav/styles";
+import * as actions from "@/store/proposal";
+
+/**
+ * @const {JSX.Element} MobileProposalNav
+ * @description This component is responsible for rendering the responsive mobile proposal navbar.
+ * It also handles the logic for the voting strategies button + modal and the cast vote button + modal.
+ * @returns {JSX.Element} The mobile proposal navbar component.
+ */
+
+const MobileProposalNav = () => {
+  const dispatch = useAppDispatch();
+  const proposalState = useAppSelector((state) => state.proposal);
+  const { isConnected } = useAccount();
   return (
     <>
-      <GridItem {...styles.$gridItemStyles(isShowingVoters)}>
-        {proposal?.votes?.length && proposal?.show_results ? (
+      <GridItem {...styles.$gridItemStyles(proposalState.isShowingVoters)}>
+        {proposalState.canShowResults ? (
           <Flex {...styles.$defaultFlexStyles}>
             <Typography
-              {...styles.$choicesTypographyStyles(isShowingVoters)}
-              onClick={isShowingVoters ? () => setIsShowingVoters(false) : () => {}}
+              {...styles.$choicesTypographyStyles(proposalState.isShowingVoters)}
+              onClick={proposalState.isShowingVoters ? () => dispatch(actions.setIsShowingVoters(false)) : () => {}}
             >
               {constants.CHOICE_TEXT}
             </Typography>
             <Box {...styles.$dividerBoxStyles} />
             <Typography
-              {...styles.$votersTypographyStyles(isShowingVoters)}
-              onClick={isShowingVoters ? () => {} : () => setIsShowingVoters(true)}
+              {...styles.$votersTypographyStyles(proposalState.isShowingVoters)}
+              onClick={proposalState.isShowingVoters ? () => {} : () => dispatch(actions.setIsShowingVoters(true))}
             >
               {constants.VOTERS_TEXT}
             </Typography>
@@ -37,20 +45,45 @@ const MobileProposalNav = ({
             <Typography {...styles.$defaultChoicesTextStyles}>{constants.CHOICE_TEXT}</Typography>
           </Flex>
         )}
-        <Flex {...styles.$iconsFlexStyles(isShowingVoters)}>
-          {proposal?.votes?.length && proposal?.show_results ? (
+        <Flex {...styles.$iconsFlexStyles(proposalState.isShowingVoters)}>
+          {proposalState.canShowResults ? (
             <Flex {...styles.$viewButtonsFlexStyles}>
-              <Button {...styles.$resultsButtonStyles(isShowingResults)} onClick={() => setIsShowingResults(!isShowingResults)}>
+              <Button
+                {...styles.$resultsButtonStyles(proposalState.isShowingResults)}
+                onClick={() => dispatch(actions.setIsShowingResults(!proposalState.isShowingResults))}
+              >
                 <Percentage />
               </Button>
               <Box {...styles.$dividerBoxStyles} />
             </Flex>
           ) : null}
+          <Flex {...styles.$parentVoteFlexStyles}>
+            <Button
+              onClick={() => dispatch(actions.setIsCastingVote(!proposalState.isShowingStrategies))}
+              {...styles.$voteButtonStyles}
+            >
+              <Typography {...styles.$voteButtonTextStyles}>{constants.VOTE_TEXT}</Typography>
+            </Button>
+            {isConnected ? (
+              <Button
+                onClick={() => dispatch(actions.setIsShowingStrategies(!proposalState.isShowingStrategies))}
+                {...styles.$strategiesButtonStyles}
+              >
+                <Typography {...styles.$strategiesButtonTextStyles}>{proposalState?.votingPower}</Typography>
+                <Flex {...styles.$infoIconFlexStyles}>
+                  <Question />
+                </Flex>
+              </Button>
+            ) : (
+              <ConnectButtonSm />
+            )}
+            <Box {...styles.$boxDividerStyles} />
+          </Flex>
           <Flex {...styles.$viewButtonsFlexStyles}>
-            <Button {...styles.$gridButtonStyles(currentView, setCurrentView)}>
+            <Button {...styles.$gridButtonStyles(proposalState.currentView, dispatch(actions.setCurrentView))}>
               <Grids />
             </Button>
-            <Button {...styles.$listButtonStyles(currentView, setCurrentView)}>
+            <Button {...styles.$listButtonStyles(proposalState.currentView, dispatch(actions.setCurrentView))}>
               <List />
             </Button>
           </Flex>

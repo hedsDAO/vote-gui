@@ -31,9 +31,8 @@ const getUserData = async (address: string) => {
   }
 };
 
-const ConnectButton = () => {
+const ConnectButtonSm = () => {
   const { address, isConnected } = useAccount();
-
   useEffect(() => {
     if (!address) return;
     getUserData(address as `0x${string}`);
@@ -43,15 +42,15 @@ const ConnectButton = () => {
     <ConnectKitButton.Custom>
       {({ isConnected, isConnecting, show, address }) => {
         return (
-          <Button {...styles.$connectButtonStyles} onClick={show}>
+          <Button {...styles.$connectButtonSmStyles} onClick={show}>
             {isConnecting ? (
-              <Spinner />
+              <Spinner height={12} width={12} className="invert-0 animate-spin"  />
             ) : isConnected ? (
               <Typography {...styles.$connectButtonTextStyles}>
                 {address?.slice(0, 5).toLowerCase() + "..."}
               </Typography>
             ) : (
-              <Typography {...styles.$connectButtonTextStyles}>
+              <Typography {...styles.$connectButtonTextSmStyles}>
                 connect
               </Typography>
             )}
@@ -62,4 +61,4 @@ const ConnectButton = () => {
   );
 };
 
-export default ConnectButton;
+export default ConnectButtonSm;
