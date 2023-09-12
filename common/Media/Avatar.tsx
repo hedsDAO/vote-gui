@@ -6,8 +6,11 @@ import Image from "next/image";
 
 const Avatar = (props: AvatarProps) => {
   const [hasAvatarLoaded, setHasAvatarLoaded] = useBoolean();
+  const newProps = {...props};
+  delete newProps.key;
+  delete newProps.showBorder;
   return (
-    <Skeleton fitContent rounded="full" {...props}  isLoaded={hasAvatarLoaded}>
+    <Skeleton fitContent rounded="full" {...newProps}  isLoaded={hasAvatarLoaded}>
       <ChakraAvatar
         onLoad={setHasAvatarLoaded.on}
         icon={

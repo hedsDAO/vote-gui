@@ -8,9 +8,13 @@ export interface GetHedsTapeTracks {
 export interface StateHydrationProps {
   getHedsTapeTracks: GetHedsTapeTracks;
   getVoterData: GetVoterData;
+  getTapeData: GetTapeData;
   params: { space: string; id: string };
 }
 
+export interface GetTapeData {
+  (proposal_image: string): Promise<any>;
+}
 export interface GetVoterData {
   (votes: SingleChoiceVote[] | QuadraticVote[]): Promise<any>;
 }

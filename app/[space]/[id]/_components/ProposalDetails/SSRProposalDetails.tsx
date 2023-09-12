@@ -1,4 +1,4 @@
-import { Flex, Heading, LinkIconButton, HeadingTextGroup, Skeleton } from "@/common";
+import { Flex, Heading, LinkIconButton, HeadingTextGroup, Skeleton, Button } from "@/common";
 import { ProfilePicture } from "@/components/media";
 import { ArrowLeft } from "@/common/Icons";
 import * as styles from "@/app/[space]/[id]/_components/ProposalDetails/styles";
@@ -8,9 +8,9 @@ const SSRProposalDetails = () => {
   return (
     <Flex {...styles.$proposalDetailsParentFlexStyles}>
       <Flex {...styles.$linkButtonFlexStyles}>
-        <LinkIconButton {...styles.$linkButtonStyles} link={constants.BACK_BUTTON_LINK()} leftIcon={<ArrowLeft />}>
+        <Button {...styles.$ssrLinkButtonStyles} isDisabled leftIcon={<ArrowLeft />}>
           {constants.BACK_TEXT}
-        </LinkIconButton>
+        </Button>
       </Flex>
       <Flex {...styles.$proposalDetailsFlexStyles}>
         <Skeleton {...styles.$skeletonHeadingStyles} />

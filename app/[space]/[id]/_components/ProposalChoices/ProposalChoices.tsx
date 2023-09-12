@@ -15,14 +15,14 @@ import SSRProposalChoices from "./SSRProposalChoices";
  */
 
 const ProposalChoices = () => {
-  const { currentView, isShowingVoters, proposal, scoreData, isShowingResults } = useAppSelector((state) => state.proposal);
+  const { currentView, isShowingVoters, proposal, scoreData, isShowingResults, chosenTracks } = useAppSelector((state) => state.proposal);
   return (
     <>
       {proposal ? (
         <GridItem {...styles.$proposalChoicesGridItemStyles(isShowingVoters)}>
           <Grid {...styles.$proposalContentGridStyles(currentView)}>
             {isShowingResults && scoreData
-              ? sortChoices(proposal, scoreData)?.map((choice) => <ChoiceCard choice={choice} key={choice?.id} />)
+              ? sortChoices(proposal, scoreData, chosenTracks)?.map((choice) => <ChoiceCard choice={choice} key={choice?.id} />)
               : proposal?.choices?.map((choice: Choice) => {
                   return <ChoiceCard choice={choice} key={choice.id} />;
                 })}

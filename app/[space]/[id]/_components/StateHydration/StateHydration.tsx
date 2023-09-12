@@ -17,7 +17,7 @@ import _ from "lodash";
  * @description This component is responsible for hydrating the client proposal state.
  */
 
-const StateHydration = ({ getHedsTapeTracks, getVoterData, params }: StateHydrationProps) => {
+const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }: StateHydrationProps) => {
   const dispatch = useAppDispatch();
   const { isConnected, address } = useAccount();
   const { getProposal, getAllSpaces } = createClient();
@@ -71,8 +71,10 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, params }: StateHydrat
         dispatch(proposalActions.setIsVoteOpen({ proposal: proposalData }));
         // note: Add Space ID or Validate for isHedsTape
         const isHedsTape = proposalData?.choice_type === "audio";
-        if (proposalData?.votes?.length) {
+        if (proposalData?.votes?.length && proposalData?.cover) {
           const res = await getVoterData(proposalData.votes);
+          const tapeData = await getTapeData(proposalData?.cover);
+          if (tapeData) dispatch(proposalActions.setChosenTracks(tapeData));
           dispatch(proposalActions.setVoteParticipants({ voterData: res, proposal: proposalData }));
         }
         if (isHedsTape) {

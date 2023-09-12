@@ -6,6 +6,7 @@ import SSRProposalDetails from "@/app/[space]/[id]/_components/ProposalDetails/S
 import { Box, Flex, Heading, HeadingTextGroup, LinkIconButton, Typography } from "@/common";
 import { ProfilePicture } from "@/components/media";
 import { ArrowLeft } from "@/common/Icons";
+import formatTime from "@/utils/formatTime";
 import * as constants from "@/app/[space]/[id]/_components/ProposalDetails/constants";
 import * as styles from "@/app/[space]/[id]/_components/ProposalDetails/styles";
 
@@ -49,11 +50,11 @@ const ProposalDetails = () => {
             <Flex {...styles.$timeFlexStyles}>
               <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>
                 <Heading {...styles.$headingStyles}>{constants.VOTE_START_HEADER}</Heading>
-                <Typography {...styles.$typographyStyles}>{`${proposal?.start_time}`}</Typography>
+                <Typography {...styles.$typographyStyles}>{`${formatTime(proposal?.start_time)}`}</Typography>
               </HeadingTextGroup>
               <HeadingTextGroup {...styles.$flexHeaderDescriptionGroupStyles}>
                 <Heading {...styles.$headingStyles}>{constants.VOTE_END_HEADER}</Heading>
-                <Typography {...styles.$typographyStyles}>{`${proposal?.end_time}`}</Typography>
+                <Typography {...styles.$typographyStyles}>{`${formatTime(proposal?.end_time)}`}</Typography>
               </HeadingTextGroup>
             </Flex>
           </Flex>

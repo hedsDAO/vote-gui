@@ -2,12 +2,12 @@ import { AvatarProps, BoxProps, ButtonProps, CenterProps, FlexProps, GridItemPro
 import { GridListChoice } from "@/components/cards/ChoiceCard/constants";
 import { HoveringChoiceData } from "@/store/proposal";
 
-export const $parentAudioChoiceCardGridItemStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?: boolean): GridItemProps => ({
+export const $parentAudioChoiceCardGridItemStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?: boolean, isChosen?: boolean): GridItemProps => ({
   rounded: currentView === "list" ? "xl" : "2xl",
-  bg: isCurrentSong || isHovering ? "whiteAlpha.700" : "heds.bg_dark",
+  bg: isCurrentSong || isHovering ? "whiteAlpha.700" : isChosen ? "heds.bg_extra_dark" :  "heds.bg_light",
   w: "full",
-  border: "1px solid",
-  borderColor: "heds.bg_light",
+  border: "1.5px solid",
+  borderColor: isChosen || isHovering ? "whiteAlpha.800" : "heds.bg_light",
   className: "group",
   transition: "all 0.3s ease-in-out",
   boxSizing: "border-box",
@@ -40,7 +40,7 @@ export const $playButtonClassName = (currentView?: GridListChoice) =>
   `${currentView === "list" ? "h-10" : "h-auto"} ` + "absolute invert transition-all group-hover:z-10";
 
 export const $loadingButtonClassName = (currentView?: GridListChoice) =>
-  `${currentView === "list" ? "h-10" : "h-auto"} ` + "absolute animate-spin invert transition-all group-hover:z-10";
+  `${currentView === "list" ? "h-10" : "h-auto"} ` + "absolute animate-spin invert-0 transition-all group-hover:z-10";
 
 export const $audioAvatarImageStyles = (currentView?: GridListChoice): AvatarProps => ({
   size: currentView === "list" ? "sm" : "lg",
@@ -92,13 +92,13 @@ export const $resultsFlexContainer = (currentView?: GridListChoice): FlexProps =
   w: "full",
 });
 
-export const $percentageTextStyles = (isHovering?: boolean): TextProps => ({
+export const $percentageTextStyles = (isHovering?: boolean, isCurrentSong?: boolean): TextProps => ({
   fontFamily: "grotesk",
   letterSpacing: "widest",
   fontSize: "xs",
   minW: "7ch",
   maxW: "7ch",
-  color: isHovering ? "heds.bg" : "whiteAlpha.700",
+  color: isHovering || isCurrentSong  ? "heds.bg" : "whiteAlpha.700",
 });
 
 export const $percentageParentFlexStyles: FlexProps = {
@@ -107,18 +107,18 @@ export const $percentageParentFlexStyles: FlexProps = {
   direction: "column",
 };
 
-export const $percentageContainerBoxStyles = (isHovering?:boolean): BoxProps => ({
+export const $percentageContainerBoxStyles = (isHovering?:boolean, isCurrentSong?: boolean): BoxProps => ({
   minH: "9px",
   rounded: "full",
-  bg: isHovering? "whiteAlpha.400" : "whiteAlpha.400",
+  bg: isHovering || isCurrentSong ? "whiteAlpha.400" : "whiteAlpha.400",
   w: "full",
 });
 
-export const $percentageVariableWidthBoxStyles = (percentage: number, isHovering?: boolean): BoxProps => ({
+export const $percentageVariableWidthBoxStyles = (percentage: number, isHovering?: boolean, isCurrentSong?: boolean): BoxProps => ({
   mt: "-9px",
   minH: "9px",
   rounded: "full",
-  bg: isHovering ? "heds.bg_light": "whiteAlpha.700",
+  bg: isHovering || isCurrentSong ? "heds.bg_light": "whiteAlpha.700",
   w: `${percentage}%`,
 });
 

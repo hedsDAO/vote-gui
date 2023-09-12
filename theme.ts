@@ -11,6 +11,7 @@ export const defaultTheme = extendTheme({
     heds: {
       bg: "#2D2934",
       bg_dark: '#28242D',
+      bg_extra_dark: "#28242D",
       bg_light: "#3C3644",
     },
   },

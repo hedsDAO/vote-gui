@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Flex, Grid } from "@/common";
-import { getHedsTapeTracks, getVoterData } from "@/_actions";
+import { getHedsTapeTracks, getVoterData, getTapeData } from "@/_actions";
 
 import SSRProposalNavbar from "@/app/[space]/[id]/_components/ProposalNavbar/SSRProposalNavbar";
 import SSRProposalDetails from "@/app/[space]/[id]/_components/ProposalDetails/SSRProposalDetails";
@@ -27,7 +27,7 @@ const VoteModal = dynamic(() => import("@/components/modals/CastVoteModal/CastVo
 const Proposal = ({ params }: { params: { space: string; id: string } }) => {
   return (
     <Flex {...styles.$proposalParentFlexStyles}>
-      <StateHydration getVoterData={getVoterData} getHedsTapeTracks={getHedsTapeTracks} params={params} />
+      <StateHydration getTapeData={getTapeData} getVoterData={getVoterData} getHedsTapeTracks={getHedsTapeTracks} params={params} />
       <Details />
       <Navbar />
       <Grid {...styles.$proposalGridStyles}>
