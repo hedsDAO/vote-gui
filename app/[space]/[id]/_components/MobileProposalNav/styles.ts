@@ -68,8 +68,8 @@ export const $iconsFlexStyles = (isShowingVoters: boolean): FlexProps => ({
 });
 
 export const $viewButtonsFlexStyles: FlexProps = {
-  mx: { lg: 2 },
-  px: 0.5,
+  ml: { lg: 2 },
+  pl: 0.5,
   py: 0.5,
   gap: 0.5,
   rounded: "lg",
@@ -108,7 +108,7 @@ export const $voteButtonStyles: ButtonProps = {
 };
 
 export const $parentVoteFlexStyles: FlexProps = {
-  gap: 3.5,
+  gap: 3,
   alignItems: "center",
 };
 

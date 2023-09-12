@@ -7,7 +7,7 @@ export const VOTERS_TITLE_TEXT = "VOTERS";
 export const LIST_BUTTON_ARG = "list";
 export const GRID_BUTTON_ARG = "grid";
 export type GridListChoice = "grid" | "list";
-export const VOTE_TEXT = 'vote'
+export const VOTE_TEXT = 'VOTE'
 export const TOKEN_TEXT = 'HED'
 
 export interface DesktopProposalNavProps {

@@ -19,4 +19,4 @@ export interface MobileProposalNavProps {
 
 export const CHOICE_TEXT = 'CHOICES'
 export const VOTERS_TEXT = 'VOTERS'
-export const VOTE_TEXT = 'vote'
+export const VOTE_TEXT = 'VOTE'

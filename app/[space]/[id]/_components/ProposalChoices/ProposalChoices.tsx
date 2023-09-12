@@ -6,6 +6,7 @@ import ChoiceCard from "@/components/cards/ChoiceCard/ChoiceCard";
 import { Grid, GridItem } from "@/common";
 import { sortChoices } from "@/utils/sortChoices";
 import * as styles from "@/app/[space]/[id]/_components/ProposalChoices/styles";
+import SSRProposalChoices from "./SSRProposalChoices";
 
 /**
  * @const {JSX.Element} ProposalChoices
@@ -16,15 +17,21 @@ import * as styles from "@/app/[space]/[id]/_components/ProposalChoices/styles";
 const ProposalChoices = () => {
   const { currentView, isShowingVoters, proposal, scoreData, isShowingResults } = useAppSelector((state) => state.proposal);
   return (
-    <GridItem {...styles.$proposalChoicesGridItemStyles(isShowingVoters)}>
-      <Grid {...styles.$proposalContentGridStyles(currentView)}>
-        {isShowingResults && scoreData
-          ? sortChoices(proposal, scoreData)?.map((choice) => <ChoiceCard choice={choice} key={choice?.id} />)
-          : proposal?.choices?.map((choice: Choice) => {
-              return <ChoiceCard choice={choice} key={choice.id} />;
-            })}
-      </Grid>
-    </GridItem>
+    <>
+      {proposal ? (
+        <GridItem {...styles.$proposalChoicesGridItemStyles(isShowingVoters)}>
+          <Grid {...styles.$proposalContentGridStyles(currentView)}>
+            {isShowingResults && scoreData
+              ? sortChoices(proposal, scoreData)?.map((choice) => <ChoiceCard choice={choice} key={choice?.id} />)
+              : proposal?.choices?.map((choice: Choice) => {
+                  return <ChoiceCard choice={choice} key={choice.id} />;
+                })}
+          </Grid>
+        </GridItem>
+      ) : (
+        <SSRProposalChoices />
+      )}
+    </>
   );
 };
 

@@ -7,3 +7,5 @@ export const HOLDERS_POWER_TEXT = 'that give holders voting power.'
 export const generateSubheading = (text: string) => {
   return `where do my ${text} voting points come from?`;
 };
+
+export const BACK_BUTTON_TEXT = 'back'

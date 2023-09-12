@@ -6,6 +6,7 @@ import { Box, Flex, Grid } from "@/common";
 import DesktopProposalNav from "@/app/[space]/[id]/_components/DesktopProposalNav/DesktopProposalNav";
 import MobileProposalNav from "@/app/[space]/[id]/_components/MobileProposalNav/MobileProposalNav";
 import * as styles from "@/app/[space]/[id]/_components/ProposalNavbar/styles";
+import SSRProposalNavbar from "./SSRProposalNavbar";
 
 /**
  * @const {JSX.Element} ProposalNavbar
@@ -16,15 +17,19 @@ import * as styles from "@/app/[space]/[id]/_components/ProposalNavbar/styles";
 const ProposalNavbar = () => {
   const proposal = useAppSelector((store) => store.proposal?.proposal);
   return (
-    <Flex {...styles.$proposalNavbarParentFlexStyles}>
-      <Box {...styles.$proposalNavbarBoxStyles} />
-      {proposal && (
-        <Grid {...styles.$navbarGridStyles}>
-          <DesktopProposalNav />
-          <MobileProposalNav />
-        </Grid>
+    <>
+      {proposal ? (
+        <Flex {...styles.$proposalNavbarParentFlexStyles}>
+          <Box {...styles.$proposalNavbarBoxStyles} />
+          <Grid {...styles.$navbarGridStyles}>
+            <DesktopProposalNav />
+            <MobileProposalNav />
+          </Grid>
+        </Flex>
+      ) : (
+        <SSRProposalNavbar />
       )}
-    </Flex>
+    </>
   );
 };
 

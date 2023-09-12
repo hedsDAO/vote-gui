@@ -9,6 +9,7 @@ import { Grids, List, Percentage, Question } from "@/common/Icons";
 import * as constants from "@/app/[space]/[id]/_components/MobileProposalNav/constants";
 import * as styles from "@/app/[space]/[id]/_components/MobileProposalNav/styles";
 import * as actions from "@/store/proposal";
+import _ from "lodash";
 
 /**
  * @const {JSX.Element} MobileProposalNav
@@ -20,6 +21,7 @@ import * as actions from "@/store/proposal";
 const MobileProposalNav = () => {
   const dispatch = useAppDispatch();
   const proposalState = useAppSelector((state) => state.proposal);
+  const { voteSelections } = useAppSelector((state) => state.activeVoteReducer);
   const { isConnected } = useAccount();
   return (
     <>
@@ -46,7 +48,7 @@ const MobileProposalNav = () => {
           </Flex>
         )}
         <Flex {...styles.$iconsFlexStyles(proposalState.isShowingVoters)}>
-          {proposalState.canShowResults ? (
+          {proposalState.canShowResults && !_.isEmpty(proposalState?.scoreData) ? (
             <Flex {...styles.$viewButtonsFlexStyles}>
               <Button
                 {...styles.$resultsButtonStyles(proposalState.isShowingResults)}
@@ -57,33 +59,38 @@ const MobileProposalNav = () => {
               <Box {...styles.$dividerBoxStyles} />
             </Flex>
           ) : null}
-          <Flex {...styles.$parentVoteFlexStyles}>
-            <Button
-              onClick={() => dispatch(actions.setIsCastingVote(!proposalState.isShowingStrategies))}
-              {...styles.$voteButtonStyles}
-            >
-              <Typography {...styles.$voteButtonTextStyles}>{constants.VOTE_TEXT}</Typography>
-            </Button>
-            {isConnected ? (
+          {proposalState?.isVoteOpen ? (
+            <Flex {...styles.$parentVoteFlexStyles}>
               <Button
-                onClick={() => dispatch(actions.setIsShowingStrategies(!proposalState.isShowingStrategies))}
-                {...styles.$strategiesButtonStyles}
+                isDisabled={!isConnected || _.isEmpty(voteSelections)}
+                onClick={() => dispatch(actions.setIsCastingVote(!proposalState.isCastingVote))}
+                {...styles.$voteButtonStyles}
               >
-                <Typography {...styles.$strategiesButtonTextStyles}>{proposalState?.votingPower}</Typography>
-                <Flex {...styles.$infoIconFlexStyles}>
-                  <Question />
-                </Flex>
+                <Typography {...styles.$voteButtonTextStyles}>{constants.VOTE_TEXT}</Typography>
               </Button>
-            ) : (
-              <ConnectButtonSm />
-            )}
-            <Box {...styles.$boxDividerStyles} />
-          </Flex>
+              {isConnected ? (
+                <Button
+                  onClick={() => dispatch(actions.setIsShowingStrategies(!proposalState.isShowingStrategies))}
+                  {...styles.$strategiesButtonStyles}
+                >
+                  <Typography {...styles.$strategiesButtonTextStyles}>{proposalState?.votingPower}</Typography>
+                  <Flex {...styles.$infoIconFlexStyles}>
+                    <Question />
+                  </Flex>
+                </Button>
+              ) : (
+                <ConnectButtonSm />
+              )}
+              <Box {...styles.$boxDividerStyles} />
+            </Flex>
+          ) : (
+            <></>
+          )}
           <Flex {...styles.$viewButtonsFlexStyles}>
-            <Button {...styles.$gridButtonStyles(proposalState.currentView, dispatch(actions.setCurrentView))}>
+            <Button {...styles.$gridButtonStyles(proposalState.currentView, (arg) => dispatch(actions.setCurrentView(arg)))}>
               <Grids />
             </Button>
-            <Button {...styles.$listButtonStyles(proposalState.currentView, dispatch(actions.setCurrentView))}>
+            <Button {...styles.$listButtonStyles(proposalState.currentView, (arg) => dispatch(actions.setCurrentView(arg)))}>
               <List />
             </Button>
           </Flex>

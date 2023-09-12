@@ -4,7 +4,7 @@ import { GridListChoice } from "./constants";
 export const $gridItemStyles = (isShowingVoters: boolean): GridItemProps => ({
   px: 1,
   alignItems: "center",
-  minH: "40px",
+  minH: "20px",
   display: { base: "none", lg: "flex" },
   justifyContent: "space-between",
   colSpan: { base: 1, lg: isShowingVoters ? 4 : 5 },
@@ -70,8 +70,8 @@ export const $showVotersTypographyStyles = (isShowingVoters: boolean): TextProps
 });
 
 export const $viewButtonsFlexStyles: FlexProps = {
-  mx: { lg: 2 },
-  px: 0.5,
+  ml: { lg: 2 },
+  pl: 0.5,
   py: 0.5,
   gap: 1,
   rounded: "lg",
@@ -117,7 +117,6 @@ export const $boxDividerStyles: BoxProps = {
 };
 
 export const $defaultFlexStyles: FlexProps = {
-  gap: 3,
   alignItems: "center",
 };
 
@@ -139,8 +138,8 @@ export const $voteButtonStyles: ButtonProps = {
   px: "3!important",
   minH: "24.5px",
   maxH: "24.5px",
-  bg: "green.500 !important",
-  _hover: { bg: "green.600 !important" },
+  bg: "green.600 !important",
+  _hover: { bg: "green.500 !important" },
 };
 
 export const $voteTextStyles: TextProps = {
@@ -153,7 +152,7 @@ export const $voteTextStyles: TextProps = {
 
 export const $parentVoteFlexStyles: FlexProps = {
   mx: 2,
-  gap: 3.5,
+  gap: 4,
   alignItems: "center",
 };
 

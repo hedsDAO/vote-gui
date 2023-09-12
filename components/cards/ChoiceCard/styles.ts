@@ -1,9 +1,10 @@
 import { AvatarProps, BoxProps, ButtonProps, CenterProps, FlexProps, GridItemProps, TextProps } from "@chakra-ui/react";
 import { GridListChoice } from "@/components/cards/ChoiceCard/constants";
+import { HoveringChoiceData } from "@/store/proposal";
 
-export const $parentAudioChoiceCardGridItemStyles = (currentView?: GridListChoice, isCurrentSong?: boolean): GridItemProps => ({
+export const $parentAudioChoiceCardGridItemStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?: boolean): GridItemProps => ({
   rounded: currentView === "list" ? "xl" : "2xl",
-  bg: isCurrentSong ? "whiteAlpha.700" : "heds.bg_dark",
+  bg: isCurrentSong || isHovering ? "whiteAlpha.700" : "heds.bg_dark",
   w: "full",
   border: "1px solid",
   borderColor: "heds.bg_light",
@@ -66,19 +67,19 @@ export const $textFlexContainer = (currentView?: GridListChoice): FlexProps => (
   direction: "column",
 });
 
-export const $artistNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean): TextProps => ({
+export const $artistNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?:boolean): TextProps => ({
   isTruncated: true,
   fontSize: { base: currentView === "list" ? "0.6rem" : "xs", lg: "xs" },
-  textColor: isCurrentSong ? "heds.bg_light" : "whiteAlpha.700",
+  textColor: isCurrentSong || isHovering ? "heds.bg_light" : "whiteAlpha.700",
   fontFamily: "grotesk",
 });
 
-export const $choiceNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean): TextProps => ({
+export const $choiceNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?:boolean): TextProps => ({
   isTruncated: true,
   mt: currentView === "list" ? "-1.5 !important" : "-1 !important",
   fontSize: { base: currentView === "list" ? "0.75rem" : "sm", lg: "sm" },
   fontFamily: "grotesk",
-  textColor: isCurrentSong ? "heds.bg" : "whiteAlpha.700",
+  textColor: isCurrentSong || isHovering ? "heds.bg" : "whiteAlpha.700",
 });
 
 export const $resultsFlexContainer = (currentView?: GridListChoice): FlexProps => ({
@@ -91,13 +92,14 @@ export const $resultsFlexContainer = (currentView?: GridListChoice): FlexProps =
   w: "full",
 });
 
-export const $percentageTextStyles: TextProps = {
+export const $percentageTextStyles = (isHovering?: boolean): TextProps => ({
   fontFamily: "grotesk",
   letterSpacing: "widest",
   fontSize: "xs",
   minW: "7ch",
   maxW: "7ch",
-};
+  color: isHovering ? "heds.bg" : "whiteAlpha.700",
+});
 
 export const $percentageParentFlexStyles: FlexProps = {
   w: "full",
@@ -105,18 +107,18 @@ export const $percentageParentFlexStyles: FlexProps = {
   direction: "column",
 };
 
-export const $percentageContainerBoxStyles: BoxProps = {
+export const $percentageContainerBoxStyles = (isHovering?:boolean): BoxProps => ({
   minH: "9px",
   rounded: "full",
-  bg: "whiteAlpha.400",
+  bg: isHovering? "whiteAlpha.400" : "whiteAlpha.400",
   w: "full",
-};
+});
 
-export const $percentageVariableWidthBoxStyles = (percentage: number): BoxProps => ({
+export const $percentageVariableWidthBoxStyles = (percentage: number, isHovering?: boolean): BoxProps => ({
   mt: "-9px",
   minH: "9px",
   rounded: "full",
-  bg: "whiteAlpha.700",
+  bg: isHovering ? "heds.bg_light": "whiteAlpha.700",
   w: `${percentage}%`,
 });
 
