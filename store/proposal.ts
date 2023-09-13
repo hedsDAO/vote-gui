@@ -2,6 +2,8 @@ import { HedsVoteChoice } from "@/components/cards/ChoiceCard/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Choice, Proposal, QuadraticVote, SpaceData, quadratic } from "hedsvote";
+import { VoteSelections } from "./activeVote";
+import _ from "lodash";
 
 export type VoteParticipantsProps = {
   voterData: {
@@ -37,7 +39,7 @@ export interface ScoreData {
 }
 
 export interface HoveringChoiceData {
-  [id: number] : string;
+  [id: number]: string;
 }
 
 export interface CanShowResultsData {
@@ -60,6 +62,7 @@ export interface ProposalState {
   isVoteOpen: boolean;
   hoveringVote: HoveringChoiceData | null;
   chosenTracks: string[] | null;
+  previousVote: VoteSelections | null;
   votingPower: number;
   canShowResults: boolean;
   hasCheckedPublicStatus: boolean;
@@ -84,6 +87,7 @@ const initialState: ProposalState = {
   isVoteOpen: false,
   hoveringVote: null,
   chosenTracks: null,
+  previousVote: null,
   votingPower: 0,
   canShowResults: false,
   hasCheckedPublicStatus: false,
@@ -192,6 +196,9 @@ const proposalSlice = createSlice({
     setChosenTracks: (state, action: PayloadAction<string[] | null>) => {
       state.chosenTracks = action.payload;
     },
+    setPreviousVote: (state, action: PayloadAction<VoteSelections>) => {
+      if (!_.isEmpty(action?.payload)) state.previousVote = action.payload;
+    },
     reset: () => initialState,
   },
 });
@@ -214,6 +221,7 @@ export const {
   setPublicStatus,
   setHoveringVote,
   setChosenTracks,
+  setPreviousVote,
   reset,
 } = proposalSlice.actions;
 export default proposalSlice.reducer;

@@ -8,6 +8,7 @@ import { HedsVoteChoice } from "@/components/cards/ChoiceCard/constants";
 import { StateHydrationProps } from "@/app/[space]/[id]/_components/StateHydration/constants";
 import * as proposalActions from "@/store/proposal";
 import * as spaceActions from "@/store/space";
+import * as voteActions from "@/store/activeVote";
 import _ from "lodash";
 
 /**
@@ -53,6 +54,20 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }
   }, [isConnected, spaceAuthors, proposalData, spaceAuthors, address]);
   useEffect(() => {
     if (proposalState?.isVoteOpen && proposalData && address?.length) {
+      if (proposalState.proposal?.votes?.length) {
+        proposalState.proposal?.votes.map((vote: any) => {
+          if (vote.voter?.toLowerCase() === address.toLowerCase()) {
+            let voterSelections: { [key: string]: number } = {};
+            vote?.vote_choices?.map((choice: any) => {
+              voterSelections[choice.choice_id] = choice.amount;
+            });
+            if (!_.isEmpty(voterSelections)) {
+              dispatch(voteActions.setVoteSelections(voterSelections));
+              dispatch(proposalActions.setPreviousVote(voterSelections));
+            }
+          }
+        });
+      }
       dispatch(proposalActions.setVotingPower(calculateUserVotingPower(address, proposalData.strategies)));
     }
   }, [proposalState?.isVoteOpen, address]);

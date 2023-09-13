@@ -4,6 +4,8 @@ import { Proposal, Vote } from "hedsvote";
 export const HEADING_TEXT = "Submit your vote";
 export const SUBHEADING_TEXT = "Confirm your choices and cast your vote.";
 export const BUTTON_TEXT = "CAST VOTE";
+export const SUCCESS_SUBHEADING = 'your vote has been cast'
+export const SUCCESS_HEADING = 'Success!'
 
 export interface VoteArgumentProps {
   proposal: Proposal;

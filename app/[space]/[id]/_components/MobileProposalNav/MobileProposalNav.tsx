@@ -62,7 +62,11 @@ const MobileProposalNav = () => {
           {proposalState?.isVoteOpen ? (
             <Flex {...styles.$parentVoteFlexStyles}>
               <Button
-                isDisabled={!isConnected || _.isEmpty(voteSelections)}
+                isDisabled={
+                  !isConnected ||
+                  _.isEmpty(voteSelections) ||
+                  JSON.stringify(voteSelections) === JSON.stringify(proposalState?.previousVote)
+                }
                 onClick={() => dispatch(actions.setIsCastingVote(!proposalState.isCastingVote))}
                 {...styles.$voteButtonStyles}
               >

@@ -1,28 +1,34 @@
 import { AvatarProps, BoxProps, ButtonProps, CenterProps, FlexProps, GridItemProps, TextProps } from "@chakra-ui/react";
 import { GridListChoice } from "@/components/cards/ChoiceCard/constants";
-import { HoveringChoiceData } from "@/store/proposal";
 
-export const $parentAudioChoiceCardGridItemStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?: boolean, isChosen?: boolean): GridItemProps => ({
+export const $parentAudioChoiceCardGridItemStyles = (
+  currentView?: GridListChoice,
+  isCurrentSong?: boolean,
+  isHovering?: boolean,
+  isChosen?: boolean
+): GridItemProps => ({
   rounded: currentView === "list" ? "xl" : "2xl",
-  bg: isCurrentSong || isHovering ? "whiteAlpha.700" : isChosen ? "heds.bg_extra_dark" :  "heds.bg_light",
+  bg: isCurrentSong || isHovering ? "whiteAlpha.700" : "heds.bg",
+  bgGradient:
+    isHovering && isChosen ? "linear(to-r, whiteAlpha.700, whiteAlpha.700)" : isChosen ? "linear(to-r, pink.900, heds.bg)" : "",
   w: "full",
-  border: "1.5px solid",
-  borderColor: isChosen || isHovering ? "whiteAlpha.800" : "heds.bg_light",
+  border: "1px solid",
+  borderColor: isChosen || isHovering ? "whiteAlpha.700" : "heds.bg_light",
   className: "group",
   transition: "all 0.3s ease-in-out",
   boxSizing: "border-box",
   color: "white",
   p: 2,
   colSpan: 1,
-  shadow: 'sm'
+  shadow: "sm",
 });
 
 export const $parentFlexContainerStyles = (currentView?: GridListChoice): FlexProps => ({
   px: { base: currentView === "list" ? 1 : 1, lg: currentView === "list" ? 2 : 1 },
   py: { base: currentView === "list" ? 1 : 1, lg: currentView === "list" ? 0.5 : 1 },
   alignItems: "center",
-  minH: currentView === 'list' ? "40px" : 'unset',
-  maxH: currentView === 'list' ? "40px" : 'unset',
+  minH: currentView === "list" ? "40px" : "unset",
+  maxH: currentView === "list" ? "40px" : "unset",
   gap: 3,
 });
 
@@ -48,7 +54,7 @@ export const $audioAvatarImageStyles = (currentView?: GridListChoice): AvatarPro
   borderRadius: currentView === "list" ? "md" : "xl",
   transition: "all 0.3s ease-in-out",
   _groupHover: { opacity: "50%" },
-  shadow: 'sm'
+  shadow: "sm",
 });
 
 export const $imageAvatarImageStyles = (currentView?: GridListChoice): AvatarProps => ({
@@ -67,14 +73,22 @@ export const $textFlexContainer = (currentView?: GridListChoice): FlexProps => (
   direction: "column",
 });
 
-export const $artistNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?:boolean): TextProps => ({
+export const $artistNameTextStyles = (
+  currentView?: GridListChoice,
+  isCurrentSong?: boolean,
+  isHovering?: boolean
+): TextProps => ({
   isTruncated: true,
   fontSize: { base: currentView === "list" ? "0.6rem" : "xs", lg: "xs" },
   textColor: isCurrentSong || isHovering ? "heds.bg_light" : "whiteAlpha.700",
   fontFamily: "grotesk",
 });
 
-export const $choiceNameTextStyles = (currentView?: GridListChoice, isCurrentSong?: boolean, isHovering?:boolean): TextProps => ({
+export const $choiceNameTextStyles = (
+  currentView?: GridListChoice,
+  isCurrentSong?: boolean,
+  isHovering?: boolean
+): TextProps => ({
   isTruncated: true,
   mt: currentView === "list" ? "-1.5 !important" : "-1 !important",
   fontSize: { base: currentView === "list" ? "0.75rem" : "sm", lg: "sm" },
@@ -98,7 +112,7 @@ export const $percentageTextStyles = (isHovering?: boolean, isCurrentSong?: bool
   fontSize: "xs",
   minW: "7ch",
   maxW: "7ch",
-  color: isHovering || isCurrentSong  ? "heds.bg" : "whiteAlpha.700",
+  color: isHovering || isCurrentSong ? "heds.bg" : "whiteAlpha.700",
 });
 
 export const $percentageParentFlexStyles: FlexProps = {
@@ -107,18 +121,22 @@ export const $percentageParentFlexStyles: FlexProps = {
   direction: "column",
 };
 
-export const $percentageContainerBoxStyles = (isHovering?:boolean, isCurrentSong?: boolean): BoxProps => ({
+export const $percentageContainerBoxStyles = (isHovering?: boolean, isCurrentSong?: boolean): BoxProps => ({
   minH: "9px",
   rounded: "full",
   bg: isHovering || isCurrentSong ? "whiteAlpha.400" : "whiteAlpha.400",
   w: "full",
 });
 
-export const $percentageVariableWidthBoxStyles = (percentage: number, isHovering?: boolean, isCurrentSong?: boolean): BoxProps => ({
+export const $percentageVariableWidthBoxStyles = (
+  percentage: number,
+  isHovering?: boolean,
+  isCurrentSong?: boolean
+): BoxProps => ({
   mt: "-9px",
   minH: "9px",
   rounded: "full",
-  bg: isHovering || isCurrentSong ? "heds.bg_light": "whiteAlpha.700",
+  bg: isHovering || isCurrentSong ? "heds.bg_light" : "whiteAlpha.700",
   w: `${percentage}%`,
 });
 
@@ -126,7 +144,7 @@ export const $percentageListParentFlexStyles = (currentView?: GridListChoice): F
   display: currentView === "list" ? "none" : "flex",
   transition: "all 0.3s ease-in-out",
   px: 1.5,
-  pt: 1 ,
+  pt: 1,
   alignItems: "center",
   gap: 2,
   w: "full",

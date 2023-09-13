@@ -67,7 +67,11 @@ const DesktopProposalNav = () => {
             <Flex {...styles.$parentVoteFlexStyles}>
               {proposalState?.isVoteOpen ? (
                 <Button
-                  isDisabled={!isConnected || _.isEmpty(voteSelections)}
+                  isDisabled={
+                    !isConnected ||
+                    _.isEmpty(voteSelections) ||
+                    JSON.stringify(voteSelections) === JSON.stringify(proposalState?.previousVote)
+                  }
                   onClick={() => dispatch(actions.setIsCastingVote(!proposalState?.isCastingVote))}
                   {...styles.$voteButtonStyles}
                 >
