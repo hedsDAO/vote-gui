@@ -71,6 +71,7 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }
       dispatch(proposalActions.setVotingPower(calculateUserVotingPower(address, proposalData.strategies)));
     }
   }, [proposalState?.isVoteOpen, address]);
+
   useEffect(() => {
     if (proposalState?.canShowResults && proposalData) {
       dispatch(proposalActions.setScoreData(proposalData));
@@ -83,6 +84,7 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }
       const proposalData = allProposals?.data;
       if (proposalData) {
         dispatch(proposalActions.setProposal(proposalData));
+        if (proposalData?.show_results) dispatch(proposalActions.setCanShowResultsDefault({proposal:proposalData, show:true}))
         dispatch(proposalActions.setIsVoteOpen({ proposal: proposalData }));
         // note: Add Space ID or Validate for isHedsTape
         const isHedsTape = proposalData?.choice_type === "audio";
