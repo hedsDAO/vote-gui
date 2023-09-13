@@ -48,6 +48,11 @@ export interface CanShowResultsData {
   proposal: Proposal;
 }
 
+export interface CanShowResultsDefault {
+  proposal: Proposal;
+  show: boolean;
+}
+
 export interface ProposalState {
   proposal: Proposal | null;
   author: string;
@@ -184,6 +189,15 @@ const proposalSlice = createSlice({
         state.canShowResults = false;
       }
     },
+    setCanShowResultsDefault(state, action: PayloadAction<CanShowResultsDefault>) {
+      if (!action.payload.proposal) state.canShowResults = false;
+      const proposal = action.payload.proposal;
+      const currentTimeMS = new Date().getTime();
+      const starTimeMS = new Date(proposal?.start_time).getTime();
+      const endTimeMS = new Date(proposal?.end_time).getTime();
+      const proposalIsOpen = currentTimeMS < endTimeMS && currentTimeMS > starTimeMS;
+      if (!proposalIsOpen) state.canShowResults = true;
+    },
     setPublicStatus(state, action: PayloadAction<PublicStatus>) {
       state.publicStatus = action.payload;
     },
@@ -214,6 +228,7 @@ export const {
   setIsShowingStrategies,
   setIsShowingVoters,
   setCanShowResults,
+  setCanShowResultsDefault,
   setCurrentView,
   setHasCheckedPublicStatus,
   setIsVoteOpen,
