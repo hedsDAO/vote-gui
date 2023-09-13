@@ -17,6 +17,7 @@ const VotingStrategiesModal = () => {
   const { address } = useAccount();
   const [erc721, setErc721] = useState<any>();
   const [whitelist, setWhitelist] = useState<any>();
+
   useEffect(() => {
     if (proposalState?.proposal?.strategies) {
       proposalState?.proposal?.strategies?.map((e: any) => {
@@ -52,8 +53,8 @@ const VotingStrategiesModal = () => {
             <Box mt={3}>
               <Flex direction="column" gap={2}>
                 <Typography color="whiteAlpha.800">{constants.TOKEN_AND_CONTRACTS_HEADING}</Typography>
-                <Typography fontFamily="grotesk" color="whiteAlpha.600" fontSize="xs">
-                  {constants.TOKEN_CONTRACTS_TEXT}
+                <Typography mb={2} fontFamily="grotesk" color="whiteAlpha.600" fontSize="xs">
+                  {constants.VOTING_PROPOSAL_TEXT}
                   <Typography as="span" color="orange.400">
                     {constants.TOKEN_CONTRACTS_TEXT}
                   </Typography>
@@ -74,7 +75,7 @@ const VotingStrategiesModal = () => {
                         key={i + "token"}
                         bg={isOwner ? "green.600" : "black.800"}
                         borderRadius="lg"
-                        p={2}
+                        p={1}
                         display="flex"
                         position={"relative"}
                         gap={2}
@@ -84,55 +85,101 @@ const VotingStrategiesModal = () => {
                           alignItems="center"
                           justifyContent="center"
                           borderRadius="sm"
-                          p={5}
+                          px={5}
+                          py={0.5}
                           minWidth="9ch"
                         >
-                          <Typography fontSize="xs" color="whiteAlpha.600">
+                          <Typography fontSize="0.5rem" color="whiteAlpha.600">
                             symbol
                           </Typography>
                           <Typography fontSize="xs" color="white" isTruncated maxWidth="7ch">
                             {tokenSymbol}
                           </Typography>
                         </Flex>
-                        <Flex direction="column" justifyContent="center" gap={1}>
-                          <Flex gap={1} alignItems="center" borderRadius="sm" p={1}>
-                            <Box minWidth="1.25ch" maxWidth="1.25ch" textAlign="center">
-                              <Image alt="etherscan" className="invert" src={"/icons/etherscan.svg"} width={13} height={13} />
+                        <Flex direction="row" alignItems={"center"} w="full" gap={1}>
+                          <Flex
+                            minW={{ base: "2rem", lg: "7rem" }}
+                            maxW={{ base: "2rem", lg: "7rem" }}
+                            gap={1}
+                            alignItems="center"
+                            borderRadius="sm"
+                            p={1}
+                          >
+                            <Box minWidth="1.45ch" maxWidth="1.45ch" textAlign="center">
+                              <Image alt="etherscan" className="invert" src={"/icons/etherscan.svg"} width={15} height={15} />
                             </Box>
-                            <Link href={`https://etherscan.io/address/${tokenAddress}`} isExternal fontSize="xs" color="white">
+                            <Link
+                              display={{ base: "none", lg: "inline" }}
+                              href={`https://etherscan.io/address/${tokenAddress}`}
+                              isExternal
+                              fontSize="xs"
+                              color="white"
+                            >
                               {tokenAddress?.slice(0, 6) + "..."}
                             </Link>
                           </Flex>
-                          <Flex gap={1} alignItems="center" borderRadius="sm" p={1}>
+                          <Flex
+                            minW={{ base: "4rem", lg: "7rem" }}
+                            maxW={{ base: "4rem", lg: "7rem" }}
+                            gap={1}
+                            alignItems="center"
+                            borderRadius="sm"
+                            p={1}
+                          >
                             <Box minWidth="1.25ch" maxWidth="1.25ch" textAlign="center">
                               <Image alt="owners" className="invert" src={"/icons/user.svg"} width={11} height={11} />
                             </Box>
                             <Typography fontSize="xs" color="white">
-                              {numOfContractTokens} tokens
+                              {numOfContractTokens}{" "}
+                              <Typography as="span" display={{ base: "none", lg: "inline" }}>
+                                owners
+                              </Typography>
                             </Typography>
                           </Flex>
-                          <Flex gap={1} alignItems="center" borderRadius="sm" p={1}>
+                          <Flex
+                            minW={{ base: "3rem", lg: "7rem" }}
+                            maxW={{ base: "3rem", lg: "7rem" }}
+                            gap={1}
+                            alignItems="center"
+                            borderRadius="sm"
+                            p={1}
+                          >
                             <Box minWidth="1.25ch" maxWidth="1.25ch" textAlign="center">
                               <Image alt="weight" className="invert" src={"/icons/weight.svg"} width={11} height={11} />
                             </Box>
-                            <Typography fontSize="xs" color="white">
-                              {weight} {erc721?.params?.symbol}{" "}
-                              <Typography as="span" fontFamily="inter" letterSpacing="wider">{`${
-                                quantity > 1 ? `(${quantity})` : ""
-                              }`}</Typography>
+                            <Typography alignItems={"center"} display={"flex"} gap={2} fontSize="xs" color="white">
+                              {weight}{" "}
+                              <Typography as="span" display={{ base: "none", lg: "inline" }}>
+                                {erc721?.params?.symbol}
+                              </Typography>
+                              <Typography
+                                fontSize={{ base: "0.6rem", lg: "xs" }}
+                                as="span"
+                                fontFamily="inter"
+                                textColor={"whiteAlpha.800"}
+                                letterSpacing="wider"
+                              >{`${quantity ? `(${quantity})` : ""}`}</Typography>
                             </Typography>
                           </Flex>
                         </Flex>
-                        {isOwner && (
+                        {/* {isOwner && (
                           <Box mt={2} ml="auto" mr={"-2"} h="27px" w="110px" roundedLeft={"lg"} bg="green.700">
                             <Typography paddingLeft="4" paddingTop="1" paddingBottom="2" fontSize="xs" color="whiteAlpha.800">
                               you own this
                             </Typography>
                           </Box>
-                        )}
+                        )} */}
                       </Box>
                     );
                   })}
+                </Flex>
+                <Flex px={2} py={1.5} mt={0.5} rounded="lg" alignItems={"center"} justifyContent="space-between" bg="whiteAlpha.800">
+                  <Typography px={2} fontFamily={'mono'} color="blackAlpha.800" fontSize='xs' as="span">
+                    {address.slice(0, 8) + "..."}
+                  </Typography>
+                  <Typography bg="blackAlpha.800" px={2} py={1} rounded='md' fontFamily={'grotesk'} color="whiteAlpha.800" fontSize="xs">
+                    HED: {proposalState.votingPower}
+                  </Typography>
                 </Flex>
               </Flex>
             </Box>

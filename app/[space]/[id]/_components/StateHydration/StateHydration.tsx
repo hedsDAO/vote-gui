@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 import { RootState } from "@/store";
-import { createClient, calculateUserVotingPower } from "hedsvote";
+import { createClient, calculateUserHedsTapeVotingPower } from "hedsvote";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 import { HedsVoteChoice } from "@/components/cards/ChoiceCard/constants";
@@ -68,7 +68,7 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }
           }
         });
       }
-      dispatch(proposalActions.setVotingPower(calculateUserVotingPower(address, proposalData.strategies)));
+      dispatch(proposalActions.setVotingPower(calculateUserHedsTapeVotingPower(address, proposalData.strategies)));
     }
   }, [proposalState?.isVoteOpen, address]);
 
@@ -86,6 +86,10 @@ const StateHydration = ({ getHedsTapeTracks, getVoterData, getTapeData, params }
         dispatch(proposalActions.setProposal(proposalData));
         if (proposalData?.show_results) dispatch(proposalActions.setCanShowResultsDefault({proposal:proposalData, show:true}))
         dispatch(proposalActions.setIsVoteOpen({ proposal: proposalData }));
+
+        // note: voting power test call
+        // if (address && proposalData?.strategies) dispatch(proposalActions.setVotingPower(calculateUserHedsTapeVotingPower(address, proposalData?.strategies)));
+        
         // note: Add Space ID or Validate for isHedsTape
         const isHedsTape = proposalData?.choice_type === "audio";
         if (proposalData?.votes?.length && proposalData?.cover) {
