@@ -46,8 +46,8 @@ export const $modalContentStyles = {
 };
 
 export const $modalOverlayStyles = {
-  bg: "heds.bg_dark",
-  opacity: "0.9 !important",
+  bg: "black",
+  opacity: "90% !important",
 };
 
 export const $modalStyles: Partial<ModalProps> = {
@@ -90,3 +90,35 @@ export const $voteChoiceValueTextStyles: TextProps = {
   fontSize: { base: "xs", lg: "sm" },
   color: "whiteAlpha.900",
 };
+
+export const $checkmarkFlexAnimationStyles: FlexProps = {
+  alignItems: "center",
+  textAlign: "center",
+  justifyContent: "center",
+  direction: "column",
+  mx: "auto",
+  maxW: "xs",
+  minW: "xs",
+  maxH: "xs",
+  minH: "xs",
+  mt: -10,
+};
+
+export const $successTextFlexStyles: FlexProps = {
+  mt: 2,
+  direction: 'column'
+}
+
+export const $successSubheadingStyles: TextProps = {
+  textColor: 'whiteAlpha.600',
+  fontSize: 'xs',
+  fontFamily: 'grotesk',
+  mt: -10
+}
+
+export const $successHeadingStyles: TextProps = {
+  textColor: 'whiteAlpha.800',
+  fontSize: 'sm',
+  fontFamily: 'grotesk',
+  mt: -10
+}
