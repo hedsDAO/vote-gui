@@ -17,7 +17,7 @@ export const $backButtonStyles: ButtonProps = {
   fontFamily: "grotesk",
   color: "white",
   size: "sm",
-  bg: "blackAlpha.400 !important",
+  bg: "blackAlpha.700 !important",
   _hover: { bg: "blackAlpha.600 !important" },
 };
 
