@@ -22,7 +22,7 @@ const SpaceDetails = ({ slug }: { slug: string }) => {
   };
   return (
     <>
-      {spaceData ? (
+      {spaceData?.name?.length ? (
         <>
           <Flex {...styles.$spaceDetailsParentFlexStyles}>
             <Banner src={spaceData?.banner} />
