@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: {
-  //   serverActions: true,
-  // },
+  experimental: {
+    serverActions: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -16,11 +16,13 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "www.heds.cloud",
-        port: "",
         pathname: "/ipfs/**",
       },
     ],
   },
 };
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

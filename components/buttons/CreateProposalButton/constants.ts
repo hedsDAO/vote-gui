@@ -1,0 +1,1 @@
+export const CREATE_PROPOSAL_BUTTON_LABEL = 'create';

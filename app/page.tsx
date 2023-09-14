@@ -1,16 +1,19 @@
-import Header from "@/components/Landing/Header";
-import Spaces from "@/components/Landing/Spaces";
+import { Flex } from "@/common";
+import Header from "@/app/_components/Header/Header";
+import Spaces from "@/app/_components/Spaces/Spaces";
 import * as styles from "@/app/styles";
-import { Suspense } from "react";
-import Loading from "./loading";
+
+/**
+ * @constant {JSX.Element} Home
+ * @description This component is responsible for rending the home page
+ * @returns {JSX.Element} The home page.
+ */
 
 export default function Home() {
   return (
-    <div className={styles.$homeLayoutStyles}>
+    <Flex {...styles.$flexContainerStyles}>
       <Header />
-      <Suspense fallback={<Loading />} >
-        <Spaces />
-      </Suspense>
-    </div>
+      <Spaces />
+    </Flex>
   );
 }
