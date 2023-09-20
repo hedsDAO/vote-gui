@@ -67,7 +67,7 @@ const ChoiceCard = ({ choice }: { choice: Choice }) => {
                   hoveringVote ? choice?.id in hoveringVote : false
                 )}
               >
-                {_.isEmpty(publicStatus) ? choice.artist : publicStatus?.[choice?.id] ? choice.artist : ""}
+                {_.isEmpty(publicStatus) ? "" : publicStatus?.[choice?.id] ? choice.artist : ""}
               </Typography>
               <Typography
                 {...styles.$choiceNameTextStyles(
