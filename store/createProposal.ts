@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Strategy } from "hedsvote";
+import { Strategy } from "@heds-dev/hedsvote";
 
 export interface TapeDetails {
     title: string;

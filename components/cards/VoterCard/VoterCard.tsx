@@ -4,10 +4,10 @@ import { Avatar, Flex, GridItem, Typography } from "@/common";
 import { Info } from "@/common/Icons";
 import { useAppDispatch } from "@/store/hooks";
 import { setHoveringVote } from "@/store/proposal";
-import { QuadraticVote, SingleChoiceVote } from "hedsvote";
+import { Vote } from "@heds-dev/hedsvote";
 import _ from "lodash";
 
-const VoterCard = ({ vote, image }: { vote: QuadraticVote | SingleChoiceVote; image?: string }) => {
+const VoterCard = ({ vote, image }: { vote: Vote; image?: string }) => {
   const dispatch = useAppDispatch();
   const handleSetHoveringVote = (vote: any) => {
     const { vote_choices } = vote;
@@ -41,7 +41,7 @@ const VoterCard = ({ vote, image }: { vote: QuadraticVote | SingleChoiceVote; im
         <Flex gap={2} alignItems={"center"}>
           <Avatar size="xs" rounded={"xl"} borderRadius="xl" src={image} />
           <Typography color="whiteAlpha.800" fontSize={"xs"} fontFamily={"grotesk"}>
-            {vote.voter?.slice(0, 5) + "..."}
+            {vote.voter}
           </Typography>
         </Flex>
         <Flex px={2}>

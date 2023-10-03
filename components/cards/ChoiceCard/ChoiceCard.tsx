@@ -11,7 +11,7 @@ import { setDecreaseScore, setIncreaseScore } from "@/store/activeVote";
 import * as styles from "@/components/cards/ChoiceCard/styles";
 import { useAccount } from "wagmi";
 import { useAppSelector } from "@/store/hooks";
-import { Choice } from "hedsvote";
+import { Choice } from "@heds-dev/hedsvote";
 
 const ChoiceCard = ({ choice }: { choice: Choice }) => {
   const dispatch = useDispatch();

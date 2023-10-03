@@ -16,6 +16,8 @@
     "@fontsource-variable/space-grotesk": "^5.0.8",
     "@fontsource/space-mono": "^5.0.8",
     "@headlessui/react": "^1.7.16",
+    "@heds-dev/auth": "^0.0.12",
+    "@heds-dev/hedsvote": "^0.1.0",
     "@phosphor-icons/react": "^2.0.10",
     "@prisma/client": "^5.1.1",
     "@reduxjs/toolkit": "^1.9.5",

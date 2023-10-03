@@ -1,4 +1,4 @@
-import { Choice } from "hedsvote";
+import { Choice } from "@heds-dev/hedsvote";
 
 export type GridListChoice = "grid" | "list";
 export interface ScoreDataProps {

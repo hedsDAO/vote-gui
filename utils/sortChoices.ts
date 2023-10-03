@@ -1,5 +1,5 @@
 import { ScoreData } from "@/store/proposal";
-import { Choice, Proposal } from "hedsvote";
+import { Choice, Proposal } from "@heds-dev/hedsvote";
 
 export const sortChoices = (proposal: Proposal | null, scoreData: ScoreData, chosenTracks?: string[] | null): Choice[] => {
   if (!proposal) return [] as Choice[];

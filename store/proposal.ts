@@ -1,13 +1,13 @@
 import { HedsVoteChoice } from "@/components/cards/ChoiceCard/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Choice, Proposal, QuadraticVote, SpaceData, quadratic } from "hedsvote";
+import { Choice, Proposal, SpaceData, QuadraticVoting } from "@heds-dev/hedsvote";
 import { VoteSelections } from "./activeVote";
 import _ from "lodash";
 
 export type VoteParticipantsProps = {
   voterData: {
-    [wallet: string]: {
+    [userId: string]: {
       display_name: string;
       profile_picture: string;
     };
@@ -43,8 +43,8 @@ export interface HoveringChoiceData {
 }
 
 export interface CanShowResultsData {
-  spaceAuthors: string[];
-  address: string;
+  spaceAuthors: number[];
+  userId: number;
   proposal: Proposal;
 }
 
@@ -55,7 +55,7 @@ export interface CanShowResultsDefault {
 
 export interface ProposalState {
   proposal: Proposal | null;
-  author: string;
+  author: number;
   voteParticipants?: VoteParticipants | undefined;
   spaceData: SpaceData;
   publicStatus: PublicStatus | null;
@@ -76,9 +76,11 @@ export interface ProposalState {
 
 const initialState: ProposalState = {
   proposal: null,
-  author: "",
+  author: 0,
   voteParticipants: {},
   spaceData: {
+    id: 0,
+    description: "",
     name: "",
     authors: [],
     image: "",
@@ -106,7 +108,7 @@ const proposalSlice = createSlice({
     setProposal(state, action: PayloadAction<Proposal>) {
       state.proposal = action.payload;
     },
-    setAuthor(state, action: PayloadAction<string>) {
+    setAuthor(state, action: PayloadAction<number>) {
       state.author = action.payload;
     },
     setVoteParticipants(state, action: PayloadAction<VoteParticipantsProps>) {
@@ -114,7 +116,7 @@ const proposalSlice = createSlice({
       const { proposal, voterData } = action.payload;
       const voteParticipants: VoteParticipants = {};
       proposal.votes?.forEach((vote) => {
-        const voter = vote.voter?.toLowerCase();
+        const voter = vote.voter;
         const displayName = voterData[voter]?.display_name;
         const profilePicture = voterData[voter]?.profile_picture;
         voteParticipants[voter] = { displayName, profilePicture };
@@ -144,8 +146,9 @@ const proposalSlice = createSlice({
     },
     setScoreData(state, action: PayloadAction<Proposal>) {
       const proposal = action.payload;
-      const { getScores } = quadratic({
-        votes: proposal.votes as QuadraticVote[],
+      if (!proposal.votes) return;
+      const { getScores } = QuadraticVoting({
+        votes: proposal.votes,
         choices: proposal.choices,
       });
       const scores = getScores();
@@ -162,25 +165,25 @@ const proposalSlice = createSlice({
       const proposal = action.payload.proposal;
       if (!proposal) return;
       const currentTimeMS = new Date().getTime();
-      const starTimeMS = new Date(proposal?.start_time).getTime();
-      const endTimeMS = new Date(proposal?.end_time).getTime();
+      const starTimeMS = new Date(Number(proposal?.start_time)).getTime();
+      const endTimeMS = new Date(Number(proposal?.end_time)).getTime();
       const proposalIsOpen = currentTimeMS < endTimeMS && currentTimeMS > starTimeMS;
       const proposalIsClosed = currentTimeMS > endTimeMS;
       if (proposalIsOpen) state.isVoteOpen = true;
       else if (proposalIsClosed) state.isVoteOpen = false;
     },
     setCanShowResults(state, action: PayloadAction<CanShowResultsData>) {
-      if (!action.payload.address || !action.payload.proposal || !action.payload.spaceAuthors?.length) return;
-      const { spaceAuthors, address, proposal } = action.payload;
+      if (!action.payload.userId || !action.payload.proposal || !action.payload.spaceAuthors?.length) return;
+      const { spaceAuthors, userId, proposal } = action.payload;
       const currentTimeMS = new Date().getTime();
-      const starTimeMS = new Date(proposal?.start_time).getTime();
-      const endTimeMS = new Date(proposal?.end_time).getTime();
+      const starTimeMS = new Date(Number(proposal?.start_time)).getTime();
+      const endTimeMS = new Date(Number(proposal?.end_time)).getTime();
       const proposalIsOpen = currentTimeMS < endTimeMS && currentTimeMS > starTimeMS;
       const proposalIsClosed = currentTimeMS > endTimeMS;
       const proposalHasVotes = proposal?.votes?.length;
       const isShowingResults = proposal?.show_results;
-      const isAdmin = spaceAuthors?.find((author) => author?.toLowerCase() === address?.toLowerCase()) ? true : false;
-      const isAuthor = address?.toLowerCase() === proposal?.author?.toLowerCase();
+      const isAdmin = spaceAuthors?.find((author) => author === userId ? true : false);
+      const isAuthor = userId === proposal.author;
       if (proposalHasVotes) {
         if (proposalIsOpen && (isAdmin || isAuthor)) state.canShowResults = true;
         else if (proposalIsClosed && isShowingResults) state.canShowResults = true;
@@ -193,8 +196,8 @@ const proposalSlice = createSlice({
       if (!action.payload.proposal) state.canShowResults = false;
       const proposal = action.payload.proposal;
       const currentTimeMS = new Date().getTime();
-      const starTimeMS = new Date(proposal?.start_time).getTime();
-      const endTimeMS = new Date(proposal?.end_time).getTime();
+      const starTimeMS = new Date(Number(proposal?.start_time)).getTime();
+      const endTimeMS = new Date(Number(proposal?.end_time)).getTime();
       const proposalIsOpen = currentTimeMS < endTimeMS && currentTimeMS > starTimeMS;
       if (!proposalIsOpen) state.canShowResults = true;
     },

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { SpaceData } from "hedsvote";
+import { SpaceData } from "@heds-dev/hedsvote";
 
 export interface SpaceState {
   spaceData: SpaceData;
@@ -8,6 +8,8 @@ export interface SpaceState {
 
 const initialState: SpaceState = {
   spaceData: {
+    id: 0,
+    description: "",
     name: "",
     authors: [],
     image: "",

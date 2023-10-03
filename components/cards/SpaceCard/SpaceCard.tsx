@@ -1,5 +1,5 @@
 import { Box, Flex, Typography } from "@/common";
-import { SpaceData } from "hedsvote";
+import { SpaceData } from "@heds-dev/hedsvote";
 import Image from "next/image";
 import * as styles from "@/components/cards/SpaceCard/styles";
 import * as constants from "@/components/cards/SpaceCard/constants";

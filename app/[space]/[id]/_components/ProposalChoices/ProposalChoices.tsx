@@ -1,6 +1,6 @@
 "use client";
 import { useAppSelector } from "@/store/hooks";
-import { Choice } from "hedsvote";
+import { Choice } from "@heds-dev/hedsvote";
 
 import ChoiceCard from "@/components/cards/ChoiceCard/ChoiceCard";
 import { Grid, GridItem } from "@/common";
