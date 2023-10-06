@@ -27,9 +27,7 @@ const authSlice = createSlice({
     setUser(state, action: PayloadAction<any>) {
         state.user = action.payload;
     },
-    reset(state) {
-      state.currentStep = initialState.currentStep;
-    },
+    reset: () => initialState
   },
 });
 

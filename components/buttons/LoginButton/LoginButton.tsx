@@ -54,7 +54,6 @@ const LoginButton = () => {
   }
 
   const authSetUser = (userData: any) => {
-    console.log("data from func", userData)
     dispatch(setUser(userData));
   }
 
@@ -84,7 +83,7 @@ const LoginButton = () => {
     //   }}
     // </ConnectKitButton.Custom>
     <Fragment>
-        <Button onClick={() => onLoginButtonClick(true)}>login</Button>
+        <Button onClick={() => onLoginButtonClick(true)}>{ user ? user.wallet.substring(0, 5) : "login"}</Button>
           <ModalWrapper isOpen={isModalOpen} onLoginButtonClick={onLoginButtonClick}>
               {/* {currentStep === ModalSteps.RETURNING && <ReturningUser />} */}
               {currentStep === ModalSteps.NEW && <NewUser setStep={authSetStep} />}
