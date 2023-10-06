@@ -40,25 +40,26 @@ const ConnectButton = () => {
   }, [isConnected, address]);
   
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, address }) => {
-        return (
-          <Button {...styles.$connectButtonStyles} onClick={show}>
-            {isConnecting ? (
-              <Spinner />
-            ) : isConnected ? (
-              <Typography {...styles.$connectButtonTextStyles}>
-                {address?.slice(0, 5).toLowerCase() + "..."}
-              </Typography>
-            ) : (
-              <Typography {...styles.$connectButtonTextStyles}>
-                connect
-              </Typography>
-            )}
-          </Button>
-        );
-      }}
-    </ConnectKitButton.Custom>
+    // <ConnectKitButton.Custom>
+    //   {({ isConnected, isConnecting, show, address }) => {
+    //     return (
+    //       <Button {...styles.$connectButtonStyles} onClick={show}>
+    //         {isConnecting ? (
+    //           <Spinner />
+    //         ) : isConnected ? (
+    //           <Typography {...styles.$connectButtonTextStyles}>
+    //             {address?.slice(0, 5).toLowerCase() + "..."}
+    //           </Typography>
+    //         ) : (
+    //           <Typography {...styles.$connectButtonTextStyles}>
+    //             connect
+    //           </Typography>
+    //         )}
+    //       </Button>
+    //     );
+    //   }}
+    // </ConnectKitButton.Custom>
+    <></>
   );
 };
 
