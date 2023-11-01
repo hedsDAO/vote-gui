@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { SpaceData } from "@heds-dev/hedsvote";
 import { ModalSteps } from "@heds-dev/auth";
 
 export interface AuthState {
